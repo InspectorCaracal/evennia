@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>evennia.accounts.bots &#8212; Evennia 1.0-dev documentation</title>
     <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +16,9 @@
     <script src="../_static/language_data.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" /> 
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="evennia.accounts.manager" href="evennia.accounts.manager.html" />
+    <link rel="prev" title="evennia.accounts.accounts" href="evennia.accounts.accounts.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -26,7 +29,17 @@
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="evennia.accounts.manager.html" title="evennia.accounts.manager"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="evennia.accounts.accounts.html" title="evennia.accounts.accounts"
+             accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">Evennia 1.0-dev</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../Evennia-API.html" >API Summary</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="evennia-api.html" >evennia</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="evennia.html" >evennia</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="evennia.accounts.html" accesskey="U">evennia.accounts</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">evennia.accounts.bots</a></li> 
       </ul>
         <div class="develop">develop branch</div>
@@ -37,7 +50,7 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-evennia.accounts.bots">
+  <section id="module-evennia.accounts.bots">
 <span id="evennia-accounts-bots"></span><h1>evennia.accounts.bots<a class="headerlink" href="#module-evennia.accounts.bots" title="Permalink to this headline">¶</a></h1>
 <p>Bots are a special child typeclasses of
 Account that are  controlled by the server.</p>
@@ -276,7 +289,7 @@ command. Note that this is the bot.</p></li>
 <li><p><strong>channel</strong> (<em>str</em>) – The name of channel the message was sent to.</p></li>
 <li><p><strong>type</strong> (<em>str</em>) – Nature of message. Either ‘msg’, ‘action’, ‘nicklist’
 or ‘ping’.</p></li>
-<li><p><strong>nicklist</strong> (<a class="reference internal" href="evennia.contrib.barter.html#evennia.contrib.barter.TradeHandler.list" title="evennia.contrib.barter.TradeHandler.list"><em>list</em></a><em>, </em><em>optional</em>) – Set if <strong>type=’nicklist’</strong>. This is a list
+<li><p><strong>nicklist</strong> (<a class="reference internal" href="evennia.contrib.game_systems.barter.barter.html#evennia.contrib.game_systems.barter.barter.TradeHandler.list" title="evennia.contrib.game_systems.barter.barter.TradeHandler.list"><em>list</em></a><em>, </em><em>optional</em>) – Set if <strong>type=’nicklist’</strong>. This is a list
 of nicks returned by calling the <strong>self.get_nicklist</strong>. It must look
 for a list <strong>self._nicklist_callers</strong> which will contain all callers
 waiting for the nicklist.</p></li>
@@ -449,7 +462,7 @@ triggered by the bot_data_in Inputfunc.</p>
 
 </dd></dl>
 
-</div>
+</section>
 
 
             <div class="clearer"></div>
@@ -471,10 +484,16 @@ triggered by the bot_data_in Inputfunc.</p>
     </div>
 </div>
 <script>$('#searchbox').show(0);</script>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="evennia.accounts.accounts.html"
+                        title="previous chapter">evennia.accounts.accounts</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="evennia.accounts.manager.html"
+                        title="next chapter">evennia.accounts.manager</a></p>
   <div role="note" aria-label="source link">
     <!--h3>This Page</h3-->
     <ul class="this-page-menu">
-      <li><a href="../_sources/api/evennia.accounts.bots.rst.txt"
+      <li><a href="../_sources/api/evennia.accounts.bots.md.txt"
             rel="nofollow">Show Page Source</a></li>
     </ul>
    </div><h3>Links</h3>
@@ -482,16 +501,15 @@ triggered by the bot_data_in Inputfunc.</p>
   <li><a href="https://www.evennia.com">Home page</a> </li>
   <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
-  <li><a href="http://webchat.freenode.net/?channels=evennia&uio=MT1mYWxzZSY5PXRydWUmMTE9MTk1JjEyPXRydWUbb">IRC</a> - 
-    <a href="https://discord.gg/NecFePw">Discord</a> - 
-      <a href="https://groups.google.com/forum/#%21forum/evennia">Forums</a>
+  <li>
+    <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
+     <a href="https://github.com/evennia/evennia/discussions">Discussions</a> -
+      <a href="https://evennia.blogspot.com/">Blog</a>
   </li>
-  <li><a href="http://evennia.blogspot.com/">Evennia Dev blog</a> </li>
 </ul>
 <h3>Versions</h3>
 <ul>
   <li><a href="evennia.accounts.bots.html">1.0-dev (develop branch)</a></li>
-  <li><a href="../../0.9.5/api/evennia.accounts.bots.html">0.9.5 (v0.9.5 branch)</a></li>
 </ul>
 
         </div>
@@ -507,7 +525,17 @@ triggered by the bot_data_in Inputfunc.</p>
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="evennia.accounts.manager.html" title="evennia.accounts.manager"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="evennia.accounts.accounts.html" title="evennia.accounts.accounts"
+             >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">Evennia 1.0-dev</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../Evennia-API.html" >API Summary</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="evennia-api.html" >evennia</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="evennia.html" >evennia</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="evennia.accounts.html" >evennia.accounts</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">evennia.accounts.bots</a></li> 
       </ul>
         <div class="develop">develop branch</div>

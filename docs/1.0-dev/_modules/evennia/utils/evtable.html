@@ -281,12 +281,12 @@
                 <span class="k">del</span> <span class="n">chunks</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
             <span class="k">while</span> <span class="n">chunks</span><span class="p">:</span>
-                <span class="n">l</span> <span class="o">=</span> <span class="n">d_len</span><span class="p">(</span><span class="n">chunks</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">ln</span> <span class="o">=</span> <span class="n">d_len</span><span class="p">(</span><span class="n">chunks</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 
                 <span class="c1"># Can at least squeeze this chunk onto the current line.</span>
-                <span class="k">if</span> <span class="n">cur_len</span> <span class="o">+</span> <span class="n">l</span> <span class="o">&lt;=</span> <span class="n">width</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">cur_len</span> <span class="o">+</span> <span class="n">ln</span> <span class="o">&lt;=</span> <span class="n">width</span><span class="p">:</span>
                     <span class="n">cur_line</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">chunks</span><span class="o">.</span><span class="n">pop</span><span class="p">())</span>
-                    <span class="n">cur_len</span> <span class="o">+=</span> <span class="n">l</span>
+                    <span class="n">cur_len</span> <span class="o">+=</span> <span class="n">ln</span>
 
                 <span class="c1"># Nope, this line is full.</span>
                 <span class="k">else</span><span class="p">:</span>
@@ -304,10 +304,10 @@
             <span class="c1"># Convert current line back to a string and store it in list</span>
             <span class="c1"># of all lines (return value).</span>
             <span class="k">if</span> <span class="n">cur_line</span><span class="p">:</span>
-                <span class="n">l</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+                <span class="n">ln</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
                 <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">cur_line</span><span class="p">:</span>  <span class="c1"># ANSI fix</span>
-                    <span class="n">l</span> <span class="o">+=</span> <span class="n">w</span>  <span class="c1">#</span>
-                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">indent</span> <span class="o">+</span> <span class="n">l</span><span class="p">)</span>
+                    <span class="n">ln</span> <span class="o">+=</span> <span class="n">w</span>  <span class="c1">#</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">indent</span> <span class="o">+</span> <span class="n">ln</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">lines</span></div>
 
 
@@ -360,7 +360,7 @@
 <span class="c1"># EvCell class (see further down for the EvTable itself)</span>
 
 
-<div class="viewcode-block" id="EvCell"><a class="viewcode-back" href="../../../api/evennia.utils.evtable.html#evennia.utils.evtable.EvCell">[docs]</a><span class="k">class</span> <span class="nc">EvCell</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="EvCell"><a class="viewcode-back" href="../../../api/evennia.utils.evtable.html#evennia.utils.evtable.EvCell">[docs]</a><span class="k">class</span> <span class="nc">EvCell</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Holds a single data cell for the table. A cell has a certain width</span>
 <span class="sd">    and height and contains one or more lines of data. It can shrink</span>
@@ -1028,14 +1028,17 @@
 <span class="sd">            Available keywods as per `EvCell.__init__`.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># column-level options override those in kwargs</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">}</span>
+
         <span class="n">ypos</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ypos&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">ypos</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">ypos</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="p">):</span>
             <span class="c1"># add to the end</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">EvCell</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">)</span> <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">args</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">EvCell</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span> <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">args</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># insert cells before given index</span>
             <span class="n">ypos</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">ypos</span><span class="p">)))</span>
-            <span class="n">new_cells</span> <span class="o">=</span> <span class="p">[</span><span class="n">EvCell</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">)</span> <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">args</span><span class="p">]</span>
+            <span class="n">new_cells</span> <span class="o">=</span> <span class="p">[</span><span class="n">EvCell</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span> <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">args</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">column</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="p">[:</span><span class="n">ypos</span><span class="p">]</span> <span class="o">+</span> <span class="n">new_cells</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="p">[</span><span class="n">ypos</span><span class="p">:]</span></div>
         <span class="c1"># self._balance(**kwargs)</span>
 
@@ -1062,6 +1065,7 @@
 <span class="sd">            Keywords as per `EvCell.__init__`.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># column-level options take precedence here</span>
         <span class="n">kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">reformat</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
@@ -1141,8 +1145,9 @@
 <span class="sd">            height (int, optional): Fixed height of table. Defaults to being unset. Width is</span>
 <span class="sd">                still given precedence. If given, table cells will crop text rather</span>
 <span class="sd">                than expand vertically.</span>
-<span class="sd">            evenwidth (bool, optional): Used with the `width` keyword. Adjusts columns to have as even width as</span>
-<span class="sd">                     possible. This often looks best also for mixed-length tables. Default is `False`.</span>
+<span class="sd">            evenwidth (bool, optional): Used with the `width` keyword. Adjusts columns to have as</span>
+<span class="sd">                even width as possible. This often looks best also for mixed-length tables. Default</span>
+<span class="sd">                is `False`.</span>
 <span class="sd">            maxwidth (int, optional):  This will set a maximum width</span>
 <span class="sd">                of the table while allowing it to be smaller. Only if it grows wider than this</span>
 <span class="sd">                size will it be resized by expanding horizontally (or crop `height` is given).</span>
@@ -1153,7 +1158,7 @@
 
 <span class="sd">        Notes:</span>
 <span class="sd">            Beyond those table-specific keywords, the non-overlapping keywords</span>
-<span class="sd">            of `EcCell.__init__` are also available. These will be passed down</span>
+<span class="sd">            of `EvCell.__init__` are also available. These will be passed down</span>
 <span class="sd">            to every cell in the table.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1389,7 +1394,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ncols</span> <span class="o">=</span> <span class="n">ncols</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">nrows</span> <span class="o">=</span> <span class="n">nrowmax</span>
 
-        <span class="c1"># add borders - these add to the width/height, so we must do this before calculating width/height</span>
+        <span class="c1"># add borders - these add to the width/height, so we must do this before calculating</span>
+        <span class="c1"># width/height</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_borders</span><span class="p">()</span>
 
         <span class="c1"># equalize widths within each column</span>
@@ -1476,7 +1482,8 @@
             <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                 <span class="k">raise</span>
 
-        <span class="c1"># equalize heights for each row (we must do this here, since it may have changed to fit new widths)</span>
+        <span class="c1"># equalize heights for each row (we must do this here, since it may have changed to fit new</span>
+        <span class="c1"># widths)</span>
         <span class="n">cheights</span> <span class="o">=</span> <span class="p">[</span>
             <span class="nb">max</span><span class="p">(</span><span class="n">cell</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span> <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="p">(</span><span class="n">col</span><span class="p">[</span><span class="n">iy</span><span class="p">]</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">worktable</span><span class="p">))</span>
             <span class="k">for</span> <span class="n">iy</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nrowmax</span><span class="p">)</span>
@@ -1513,31 +1520,13 @@
                         <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="n">chmin</span> <span class="o">+</span> <span class="n">locked_height</span><span class="p">)</span>
                     <span class="p">)</span>
 
-                <span class="c1"># now we add all the extra height up to the desired table-height.</span>
-                <span class="c1"># We do this so that the tallest cells gets expanded first (and</span>
-                <span class="c1"># thus avoid getting cropped)</span>
-
-                <span class="n">even</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span>
-                <span class="n">correction</span> <span class="o">=</span> <span class="mi">0</span>
-                <span class="k">while</span> <span class="n">correction</span> <span class="o">&lt;</span> <span class="n">excess</span><span class="p">:</span>
-                    <span class="c1"># expand the cells with the most rows first</span>
-                    <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">correction</span> <span class="o">&lt;</span> <span class="n">nrowmax</span> <span class="ow">and</span> <span class="n">nrowmax</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-                        <span class="c1"># avoid adding to header first round (looks bad on very small tables)</span>
-                        <span class="n">ci</span> <span class="o">=</span> <span class="n">cheights</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">cheights</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span> <span class="o">+</span> <span class="mi">1</span>
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="n">ci</span> <span class="o">=</span> <span class="n">cheights</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">cheights</span><span class="p">))</span>
-                    <span class="k">if</span> <span class="n">ci</span> <span class="ow">in</span> <span class="n">locked_cols</span><span class="p">:</span>
-                        <span class="c1"># locked row, make sure it&#39;s not picked again</span>
-                        <span class="n">cheights</span><span class="p">[</span><span class="n">ci</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">9999</span>
-                        <span class="n">cheights_min</span><span class="p">[</span><span class="n">ci</span><span class="p">]</span> <span class="o">=</span> <span class="n">locked_cols</span><span class="p">[</span><span class="n">ci</span><span class="p">]</span>
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="n">cheights_min</span><span class="p">[</span><span class="n">ci</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
-                        <span class="c1"># change balance</span>
-                        <span class="k">if</span> <span class="n">ci</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">:</span>
-                            <span class="c1"># it doesn&#39;t look very good if header expands too fast</span>
-                            <span class="n">cheights</span><span class="p">[</span><span class="n">ci</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">2</span> <span class="k">if</span> <span class="n">even</span> <span class="k">else</span> <span class="mi">3</span>
-                        <span class="n">cheights</span><span class="p">[</span><span class="n">ci</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">2</span> <span class="k">if</span> <span class="n">even</span> <span class="k">else</span> <span class="mi">1</span>
-                        <span class="n">correction</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="c1"># Add all the excess at the end of the table</span>
+                <span class="c1"># Note: Older solutions tried to balance individual</span>
+                <span class="c1"># rows&#39; vsize. This could lead to empty rows that</span>
+                <span class="c1"># looked like a bug. This solution instead</span>
+                <span class="c1"># adds empty rows at the end which is less sophisticated</span>
+                <span class="c1"># but much more visually consistent.</span>
+                <span class="n">cheights_min</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">excess</span>
                 <span class="n">cheights</span> <span class="o">=</span> <span class="n">cheights_min</span>
 
                 <span class="c1"># we must tell cells to crop instead of expanding</span>
@@ -1596,7 +1585,7 @@
 <span class="sd">        to the end.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            args (`EvColum` or multiple strings): Either a single EvColumn instance or</span>
+<span class="sd">            args (`EvColumn` or multiple strings): Either a single EvColumn instance or</span>
 <span class="sd">                a number of data string arguments to be used to create a new column.</span>
 <span class="sd">            header (str, optional): The header text for the column</span>
 <span class="sd">            xpos (int, optional): Index position in table *before* which</span>
@@ -1825,16 +1814,15 @@
   <li><a href="https://www.evennia.com">Home page</a> </li>
   <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
-  <li><a href="http://webchat.freenode.net/?channels=evennia&uio=MT1mYWxzZSY5PXRydWUmMTE9MTk1JjEyPXRydWUbb">IRC</a> - 
-    <a href="https://discord.gg/NecFePw">Discord</a> - 
-      <a href="https://groups.google.com/forum/#%21forum/evennia">Forums</a>
+  <li>
+    <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
+     <a href="https://github.com/evennia/evennia/discussions">Discussions</a> -
+      <a href="https://evennia.blogspot.com/">Blog</a>
   </li>
-  <li><a href="http://evennia.blogspot.com/">Evennia Dev blog</a> </li>
 </ul>
 <h3>Versions</h3>
 <ul>
   <li><a href="evtable.html">1.0-dev (develop branch)</a></li>
-  <li><a href="../../../../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 </ul>
 
         </div>

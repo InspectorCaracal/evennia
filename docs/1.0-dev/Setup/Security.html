@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Security &#8212; Evennia 1.0-dev documentation</title>
     <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +16,9 @@
     <script src="../_static/language_data.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" /> 
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Making Evennia, HTTPS and WSS (Secure Websockets) play nicely together" href="HAProxy-Config.html" />
+    <link rel="prev" title="Online Setup" href="Online-Setup.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -26,7 +29,14 @@
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="HAProxy-Config.html" title="Making Evennia, HTTPS and WSS (Secure Websockets) play nicely together"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Online-Setup.html" title="Online Setup"
+             accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">Evennia 1.0-dev</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="Setup-Overview.html" accesskey="U">Server Setup and Life</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Security</a></li> 
       </ul>
         <div class="develop">develop branch</div>
@@ -37,7 +47,7 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="security">
+  <section class="tex2jax_ignore mathjax_ignore" id="security">
 <h1>Security<a class="headerlink" href="#security" title="Permalink to this headline">¶</a></h1>
 <p>Hackers these days aren’t discriminating, and their backgrounds range from bored teenagers to
 international intelligence agencies. Their scripts and bots endlessly crawl the web, looking for
@@ -52,7 +62,7 @@ blacklisted by ISPs. It can be a difficult legal or political battle to undo thi
 fact.</p>
 <p>As a developer about to expose a web application to the threat landscape of the modern internet,
 here are a few tips to consider to increase the security of your Evennia install.</p>
-<div class="section" id="know-your-logs">
+<section id="know-your-logs">
 <h2>Know your logs<a class="headerlink" href="#know-your-logs" title="Permalink to this headline">¶</a></h2>
 <p>In case of emergency, check your logs! By default they are located in the <code class="docutils literal notranslate"><span class="pre">server/logs/</span></code> folder.
 Here are some of the more important ones and why you should care:</p>
@@ -69,26 +79,26 @@ objects, and more. If your game fails to start or crashes and you can’t tell w
 place you should look for answers. Security-related events are prefixed with an <code class="docutils literal notranslate"><span class="pre">[SS]</span></code> so when
 there’s a problem you might want to pay special attention to those.</p></li>
 </ul>
-</div>
-<div class="section" id="disable-development-debugging-options">
+</section>
+<section id="disable-development-debugging-options">
 <h2>Disable development/debugging options<a class="headerlink" href="#disable-development-debugging-options" title="Permalink to this headline">¶</a></h2>
 <p>There are a few Evennia/Django options that are set when you first create your game to make it more
 obvious to you where problems arise. These options should be disabled before you push your game into
 production– leaving them on can expose variables or code someone with malicious intent can easily
 abuse to compromise your environment.</p>
 <p>In <code class="docutils literal notranslate"><span class="pre">server/conf/settings.py</span></code>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Disable Django&#39;s debug mode</span>
-<span class="n">DEBUG</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="c1"># Disable the in-game equivalent</span>
-<span class="n">IN_GAME_ERRORS</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="c1"># If you&#39;ve registered a domain name, force Django to check host headers. Otherwise leave this</span>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># Disable Django&#39;s debug mode
+DEBUG = False
+# Disable the in-game equivalent
+IN_GAME_ERRORS = False
+# If you&#39;ve registered a domain name, force Django to check host headers. Otherwise leave this
 </pre></div>
 </div>
 <p>as-is.
 # Note the leading period– it is not a typo!
 ALLOWED_HOSTS = [‘.example.com’]</p>
-</div>
-<div class="section" id="handle-user-uploaded-images-with-care">
+</section>
+<section id="handle-user-uploaded-images-with-care">
 <h2>Handle user-uploaded images with care<a class="headerlink" href="#handle-user-uploaded-images-with-care" title="Permalink to this headline">¶</a></h2>
 <p>If you decide to allow users to upload their own images to be served from your site, special care
 must be taken. Django will read the file headers to confirm it’s an image (as opposed to a document
@@ -109,8 +119,8 @@ resources in bulk).</p></li>
 bothered with additional infrastructure, then simply reprocess user images upon receipt using an
 image library. Convert them to a different format, for example. <em>Destroy the originals!</em></p></li>
 </ul>
-</div>
-<div class="section" id="disable-the-web-interface">
+</section>
+<section id="disable-the-web-interface">
 <h2>Disable the web interface<a class="headerlink" href="#disable-the-web-interface" title="Permalink to this headline">¶</a></h2>
 <p>The web interface allows visitors to see an informational page as well as log into a browser-based
 telnet client with which to access Evennia. It also provides authentication endpoints against which
@@ -119,14 +129,14 @@ your users. Django’s security is robust, but if you don’t want/need these fe
 to force your users to use traditional clients to access your game, you might consider disabling
 either/both to minimize your attack surface.</p>
 <p>In <code class="docutils literal notranslate"><span class="pre">server/conf/settings.py</span></code>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Disable the Javascript webclient</span>
-<span class="n">WEBCLIENT_ENABLED</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="c1"># Disable the website altogether</span>
-<span class="n">WEBSERVER_ENABLED</span> <span class="o">=</span> <span class="kc">False</span>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># Disable the Javascript webclient
+WEBCLIENT_ENABLED = False
+# Disable the website altogether
+WEBSERVER_ENABLED = False
 </pre></div>
 </div>
-</div>
-<div class="section" id="change-your-ssh-port">
+</section>
+<section id="change-your-ssh-port">
 <h2>Change your ssh port<a class="headerlink" href="#change-your-ssh-port" title="Permalink to this headline">¶</a></h2>
 <p>Automated attacks will often target port 22 seeing as how it’s the standard port for SSH traffic.
 Also,
@@ -136,45 +146,45 @@ server from these locations if you like to work remotely or don’t have a home 
 changing the port used for ssh to 443, which most/all hotspot providers assume is HTTPS traffic and
 allows through.</p>
 <p>(Ubuntu) In /etc/ssh/sshd_config, change the following variable:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># What ports, IPs and protocols we listen for</span>
-<span class="n">Port</span> <span class="mi">443</span>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># What ports, IPs and protocols we listen for
+Port 443
 </pre></div>
 </div>
 <p>Save, close, then run the following command:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">service</span> <span class="n">ssh</span> <span class="n">restart</span>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>sudo service ssh restart
 </pre></div>
 </div>
-</div>
-<div class="section" id="set-up-a-firewall">
+</section>
+<section id="set-up-a-firewall">
 <h2>Set up a firewall<a class="headerlink" href="#set-up-a-firewall" title="Permalink to this headline">¶</a></h2>
 <p>Ubuntu users can make use of the simple ufw utility. Anybody else can use iptables.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install ufw (if not already)</span>
-<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">ufw</span>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># Install ufw (if not already)
+sudo apt-get install ufw
 </pre></div>
 </div>
 <p>UFW’s default policy is to deny everything. We must specify what we want to allow through our
 firewall.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Allow terminal connections to your game</span>
-<span class="n">sudo</span> <span class="n">ufw</span> <span class="n">allow</span> <span class="mi">4000</span><span class="o">/</span><span class="n">tcp</span>
-<span class="c1"># Allow browser connections to your website</span>
-<span class="n">sudo</span> <span class="n">ufw</span> <span class="n">allow</span> <span class="mi">4001</span><span class="o">/</span><span class="n">tcp</span>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># Allow terminal connections to your game
+sudo ufw allow 4000/tcp
+# Allow browser connections to your website
+sudo ufw allow 4001/tcp
 </pre></div>
 </div>
 <p>Use ONE of the next two commands depending on which port your ssh daemon is listening on:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">ufw</span> <span class="n">allow</span> <span class="mi">22</span><span class="o">/</span><span class="n">tcp</span>
-<span class="n">sudo</span> <span class="n">ufw</span> <span class="n">allow</span> <span class="mi">443</span><span class="o">/</span><span class="n">tcp</span>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>sudo ufw allow 22/tcp
+sudo ufw allow 443/tcp
 </pre></div>
 </div>
 <p>Finally:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">ufw</span> <span class="n">enable</span>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>sudo ufw enable
 </pre></div>
 </div>
 <p>Now the only ports open will be your administrative ssh port (whichever you chose), and Evennia on
 4000-4001.</p>
-</div>
-<div class="section" id="use-an-external-webserver">
+</section>
+<section id="use-an-external-webserver">
 <h2>Use an external webserver<a class="headerlink" href="#use-an-external-webserver" title="Permalink to this headline">¶</a></h2>
-<p>Though not officially supported, there are some benefits to <a class="reference internal" href="Apache-Config.html"><span class="doc">deploying a webserver</span></a>
+<p>Though not officially supported, there are some benefits to <a class="reference internal" href="Apache-Config.html"><span class="doc std std-doc">deploying a webserver</span></a>
 to handle/proxy traffic to your Evennia instance.</p>
 <p>For example, Evennia’s game engine and webservice are tightly integrated. If you bring your game
 down for maintenance (or if it simply crashes) your website will go down with it. In these cases a
@@ -190,8 +200,8 @@ nuisances and crowds before they even get in the door.</p>
 automated solutions for installing and configuring TLS (via <a class="reference external" href="https://en.wikipedia.org/wiki/Let%27s_Encrypt">Certbot/Let’s
 Encrypt</a>) to secure your website against hotspot and
 ISP snooping.</p>
-</div>
-</div>
+</section>
+</section>
 
 
             <div class="clearer"></div>
@@ -227,6 +237,12 @@ ISP snooping.</p>
 </li>
 </ul>
 
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Online-Setup.html"
+                        title="previous chapter">Online Setup</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="HAProxy-Config.html"
+                        title="next chapter">Making Evennia, HTTPS and WSS (Secure Websockets) play nicely together</a></p>
   <div role="note" aria-label="source link">
     <!--h3>This Page</h3-->
     <ul class="this-page-menu">
@@ -238,16 +254,15 @@ ISP snooping.</p>
   <li><a href="https://www.evennia.com">Home page</a> </li>
   <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
-  <li><a href="http://webchat.freenode.net/?channels=evennia&uio=MT1mYWxzZSY5PXRydWUmMTE9MTk1JjEyPXRydWUbb">IRC</a> - 
-    <a href="https://discord.gg/NecFePw">Discord</a> - 
-      <a href="https://groups.google.com/forum/#%21forum/evennia">Forums</a>
+  <li>
+    <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
+     <a href="https://github.com/evennia/evennia/discussions">Discussions</a> -
+      <a href="https://evennia.blogspot.com/">Blog</a>
   </li>
-  <li><a href="http://evennia.blogspot.com/">Evennia Dev blog</a> </li>
 </ul>
 <h3>Versions</h3>
 <ul>
   <li><a href="Security.html">1.0-dev (develop branch)</a></li>
-  <li><a href="../../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 </ul>
 
         </div>
@@ -263,7 +278,14 @@ ISP snooping.</p>
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="HAProxy-Config.html" title="Making Evennia, HTTPS and WSS (Secure Websockets) play nicely together"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="Online-Setup.html" title="Online Setup"
+             >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">Evennia 1.0-dev</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="Setup-Overview.html" >Server Setup and Life</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Security</a></li> 
       </ul>
         <div class="develop">develop branch</div>

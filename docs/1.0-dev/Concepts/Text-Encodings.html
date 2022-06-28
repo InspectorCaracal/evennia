@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Text Encodings &#8212; Evennia 1.0-dev documentation</title>
     <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +16,9 @@
     <script src="../_static/language_data.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" /> 
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="In-text tags parsed by Evennia" href="TextTags.html" />
+    <link rel="prev" title="Internationalization" href="Internationalization.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -26,7 +29,14 @@
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="TextTags.html" title="In-text tags parsed by Evennia"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Internationalization.html" title="Internationalization"
+             accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">Evennia 1.0-dev</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="Concepts-Overview.html" accesskey="U">Core Concepts</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Text Encodings</a></li> 
       </ul>
         <div class="develop">develop branch</div>
@@ -37,7 +47,7 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="text-encodings">
+  <section class="tex2jax_ignore mathjax_ignore" id="text-encodings">
 <h1>Text Encodings<a class="headerlink" href="#text-encodings" title="Permalink to this headline">¶</a></h1>
 <p>Evennia is a text-based game server. This makes it important to understand how
 it actually deals with data in the form of text.</p>
@@ -65,7 +75,7 @@ between the two at the points where we send/receive network data.</p>
 impossible for Evennia to guess which encoding was used - it’s just a bunch of
 bytes! Evennia must know the encoding in order to convert back and from the
 correct unicode representation.</p>
-<div class="section" id="how-to-customize-encodings">
+<section id="how-to-customize-encodings">
 <h2>How to customize encodings<a class="headerlink" href="#how-to-customize-encodings" title="Permalink to this headline">¶</a></h2>
 <p>As long as you stick to the standard ASCII character set (which means the
 normal English characters, basically) you should not have to worry much
@@ -94,9 +104,9 @@ error message.</p></li>
 unneccesary overhead. Try to guess the most common encodings you players will
 use and make sure these are tried first. The International <em>UTF-8</em> encoding is
 what Evennia assumes by default (and also what Python/Django use normally). See
-the Wikipedia article <a class="reference external" href="http://en.wikipedia.org/wiki/Text_encodings">here</a> for more help.</p>
-</div>
-</div>
+the Wikipedia article <a class="reference external" href="https://en.wikipedia.org/wiki/Text_encodings">here</a> for more help.</p>
+</section>
+</section>
 
 
             <div class="clearer"></div>
@@ -126,6 +136,12 @@ the Wikipedia article <a class="reference external" href="http://en.wikipedia.or
 </li>
 </ul>
 
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Internationalization.html"
+                        title="previous chapter">Internationalization</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="TextTags.html"
+                        title="next chapter">In-text tags parsed by Evennia</a></p>
   <div role="note" aria-label="source link">
     <!--h3>This Page</h3-->
     <ul class="this-page-menu">
@@ -137,16 +153,15 @@ the Wikipedia article <a class="reference external" href="http://en.wikipedia.or
   <li><a href="https://www.evennia.com">Home page</a> </li>
   <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
-  <li><a href="http://webchat.freenode.net/?channels=evennia&uio=MT1mYWxzZSY5PXRydWUmMTE9MTk1JjEyPXRydWUbb">IRC</a> - 
-    <a href="https://discord.gg/NecFePw">Discord</a> - 
-      <a href="https://groups.google.com/forum/#%21forum/evennia">Forums</a>
+  <li>
+    <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
+     <a href="https://github.com/evennia/evennia/discussions">Discussions</a> -
+      <a href="https://evennia.blogspot.com/">Blog</a>
   </li>
-  <li><a href="http://evennia.blogspot.com/">Evennia Dev blog</a> </li>
 </ul>
 <h3>Versions</h3>
 <ul>
   <li><a href="Text-Encodings.html">1.0-dev (develop branch)</a></li>
-  <li><a href="../../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 </ul>
 
         </div>
@@ -162,7 +177,14 @@ the Wikipedia article <a class="reference external" href="http://en.wikipedia.or
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="TextTags.html" title="In-text tags parsed by Evennia"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="Internationalization.html" title="Internationalization"
+             >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">Evennia 1.0-dev</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="Concepts-Overview.html" >Core Concepts</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Text Encodings</a></li> 
       </ul>
         <div class="develop">develop branch</div>

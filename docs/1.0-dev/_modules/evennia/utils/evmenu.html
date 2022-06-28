@@ -262,7 +262,7 @@
 
 <span class="sd">    ## options</span>
 
-<span class="sd">        # Starting the option-line with &gt;</span>
+<span class="sd">        # Beginner-Tutorial the option-line with &gt;</span>
 <span class="sd">        # allows to perform different actions depending on</span>
 <span class="sd">        # what is inserted.</span>
 
@@ -286,7 +286,7 @@
 
 <span class="sd">        &gt;: start</span>
 
-<span class="sd">    # node abort</span>
+<span class="sd">    ## node abort</span>
 
 <span class="sd">    This exits the menu since there is no `## options` section.</span>
 
@@ -316,12 +316,13 @@
 
 <span class="kn">from</span> <span class="nn">ast</span> <span class="kn">import</span> <span class="n">literal_eval</span>
 <span class="kn">from</span> <span class="nn">fnmatch</span> <span class="kn">import</span> <span class="n">fnmatch</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">ceil</span>
 
 <span class="kn">from</span> <span class="nn">inspect</span> <span class="kn">import</span> <span class="n">isfunction</span><span class="p">,</span> <span class="n">getargspec</span>
 <span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
 <span class="kn">from</span> <span class="nn">evennia</span> <span class="kn">import</span> <span class="n">Command</span><span class="p">,</span> <span class="n">CmdSet</span>
 <span class="kn">from</span> <span class="nn">evennia.utils</span> <span class="kn">import</span> <span class="n">logger</span>
-<span class="kn">from</span> <span class="nn">evennia.utils.evtable</span> <span class="kn">import</span> <span class="n">EvTable</span>
+<span class="kn">from</span> <span class="nn">evennia.utils.evtable</span> <span class="kn">import</span> <span class="n">EvTable</span><span class="p">,</span> <span class="n">EvColumn</span>
 <span class="kn">from</span> <span class="nn">evennia.utils.ansi</span> <span class="kn">import</span> <span class="n">strip_ansi</span>
 <span class="kn">from</span> <span class="nn">evennia.utils.utils</span> <span class="kn">import</span> <span class="n">mod_import</span><span class="p">,</span> <span class="n">make_iter</span><span class="p">,</span> <span class="n">pad</span><span class="p">,</span> <span class="n">to_str</span><span class="p">,</span> <span class="n">m_len</span><span class="p">,</span> <span class="n">is_iter</span><span class="p">,</span> <span class="n">dedent</span><span class="p">,</span> <span class="n">crop</span>
 <span class="kn">from</span> <span class="nn">evennia.commands</span> <span class="kn">import</span> <span class="n">cmdhandler</span>
@@ -436,7 +437,7 @@
 
         <span class="n">caller</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">caller</span>
         <span class="c1"># we store Session on the menu since this can be hard to</span>
-        <span class="c1"># get in multisession environemtns if caller is an Account.</span>
+        <span class="c1"># get in multisession environments if caller is an Account.</span>
         <span class="n">menu</span> <span class="o">=</span> <span class="n">caller</span><span class="o">.</span><span class="n">ndb</span><span class="o">.</span><span class="n">_evmenu</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">menu</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">_restore</span><span class="p">(</span><span class="n">caller</span><span class="p">):</span>
@@ -457,7 +458,8 @@
                     <span class="p">)</span>  <span class="c1"># don&#39;t give the session as a kwarg here, direct to original</span>
                     <span class="k">raise</span> <span class="n">EvMenuError</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
         <span class="c1"># we must do this after the caller with the menu has been correctly identified since it</span>
-        <span class="c1"># can be either Account, Object or Session (in the latter case this info will be superfluous).</span>
+        <span class="c1"># can be either Account, Object or Session (in the latter case this info will be</span>
+        <span class="c1"># superfluous).</span>
         <span class="n">caller</span><span class="o">.</span><span class="n">ndb</span><span class="o">.</span><span class="n">_evmenu</span><span class="o">.</span><span class="n">_session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span>
         <span class="c1"># we have a menu, use it.</span>
         <span class="n">menu</span><span class="o">.</span><span class="n">parse_input</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">raw_string</span><span class="p">)</span></div></div>
@@ -661,7 +663,8 @@
         <span class="p">)</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
         <span class="k">if</span> <span class="n">reserved_clash</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;One or more of the EvMenu `**kwargs` (</span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">reserved_clash</span><span class="p">)</span><span class="si">}</span><span class="s2">) is reserved by EvMenu for internal use.&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;One or more of the EvMenu `**kwargs` (</span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">reserved_clash</span><span class="p">)</span><span class="si">}</span><span class="s2">) &quot;</span>
+                <span class="s2">&quot;is reserved by EvMenu for internal use.&quot;</span>
             <span class="p">)</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
@@ -705,7 +708,7 @@
         <span class="n">menu_cmdset</span> <span class="o">=</span> <span class="n">EvMenuCmdSet</span><span class="p">()</span>
         <span class="n">menu_cmdset</span><span class="o">.</span><span class="n">mergetype</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">cmdset_mergetype</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span> <span class="ow">or</span> <span class="s2">&quot;Replace&quot;</span>
         <span class="n">menu_cmdset</span><span class="o">.</span><span class="n">priority</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">cmdset_priority</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">caller</span><span class="o">.</span><span class="n">cmdset</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">menu_cmdset</span><span class="p">,</span> <span class="n">permanent</span><span class="o">=</span><span class="n">persistent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">caller</span><span class="o">.</span><span class="n">cmdset</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">menu_cmdset</span><span class="p">,</span> <span class="n">persistent</span><span class="o">=</span><span class="n">persistent</span><span class="p">)</span>
 
         <span class="n">reserved_startnode_kwargs</span> <span class="o">=</span> <span class="nb">set</span><span class="p">((</span><span class="s2">&quot;nodename&quot;</span><span class="p">,</span> <span class="s2">&quot;raw_string&quot;</span><span class="p">))</span>
         <span class="n">startnode_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
@@ -1250,7 +1253,6 @@
 <span class="sd">        Args:</span>
 <span class="sd">            optionlist (list): List of (key, description) tuples for every</span>
 <span class="sd">                option related to this node.</span>
-<span class="sd">            caller (Object, Account or None, optional): The caller of the node.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            options (str): The formatted option display.</span>
@@ -1269,7 +1271,7 @@
         <span class="n">table</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">desc</span> <span class="ow">in</span> <span class="n">optionlist</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">key</span> <span class="ow">or</span> <span class="n">desc</span><span class="p">:</span>
-                <span class="n">desc_string</span> <span class="o">=</span> <span class="s2">&quot;: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">desc</span> <span class="k">if</span> <span class="n">desc</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+                <span class="n">desc_string</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;: </span><span class="si">{</span><span class="n">desc</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">desc</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
                 <span class="n">table_width_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span>
                     <span class="n">table_width_max</span><span class="p">,</span>
                     <span class="nb">max</span><span class="p">(</span><span class="n">m_len</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">))</span>
@@ -1279,42 +1281,31 @@
                 <span class="n">raw_key</span> <span class="o">=</span> <span class="n">strip_ansi</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">raw_key</span> <span class="o">!=</span> <span class="n">key</span><span class="p">:</span>
                     <span class="c1"># already decorations in key definition</span>
-                    <span class="n">table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot; |lc</span><span class="si">%s</span><span class="s2">|lt</span><span class="si">%s</span><span class="s2">|le</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">raw_key</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">desc_string</span><span class="p">))</span>
+                    <span class="n">table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; |lc</span><span class="si">{</span><span class="n">raw_key</span><span class="si">}</span><span class="s2">|lt</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">|le</span><span class="si">{</span><span class="n">desc_string</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="c1"># add a default white color to key</span>
-                    <span class="n">table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot; |lc</span><span class="si">%s</span><span class="s2">|lt|w</span><span class="si">%s</span><span class="s2">|n|le</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">raw_key</span><span class="p">,</span> <span class="n">raw_key</span><span class="p">,</span> <span class="n">desc_string</span><span class="p">))</span>
-        <span class="n">ncols</span> <span class="o">=</span> <span class="n">_MAX_TEXT_WIDTH</span> <span class="o">//</span> <span class="n">table_width_max</span>  <span class="c1"># number of ncols</span>
+                    <span class="n">table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; |lc</span><span class="si">{</span><span class="n">raw_key</span><span class="si">}</span><span class="s2">|lt|w</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">|n|le</span><span class="si">{</span><span class="n">desc_string</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">ncols</span> <span class="o">=</span> <span class="n">_MAX_TEXT_WIDTH</span> <span class="o">//</span> <span class="n">table_width_max</span>  <span class="c1"># number of columns</span>
 
         <span class="k">if</span> <span class="n">ncols</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="c1"># no visible option at all</span>
+            <span class="c1"># no visible options at all</span>
             <span class="k">return</span> <span class="s2">&quot;&quot;</span>
 
-        <span class="n">ncols</span> <span class="o">=</span> <span class="n">ncols</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">ncols</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">ncols</span>
-        <span class="c1"># get the amount of rows needed (start with 4 rows)</span>
-        <span class="n">nrows</span> <span class="o">=</span> <span class="mi">4</span>
-        <span class="k">while</span> <span class="n">nrows</span> <span class="o">*</span> <span class="n">ncols</span> <span class="o">&lt;</span> <span class="n">nlist</span><span class="p">:</span>
-            <span class="n">nrows</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="n">ncols</span> <span class="o">=</span> <span class="n">nlist</span> <span class="o">//</span> <span class="n">nrows</span>  <span class="c1"># number of full columns</span>
-        <span class="n">nlastcol</span> <span class="o">=</span> <span class="n">nlist</span> <span class="o">%</span> <span class="n">nrows</span>  <span class="c1"># number of elements in last column</span>
+        <span class="n">ncols</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">ncols</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">ncols</span>
 
-        <span class="c1"># get the final column count</span>
-        <span class="n">ncols</span> <span class="o">=</span> <span class="n">ncols</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">nlastcol</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">ncols</span>
-        <span class="k">if</span> <span class="n">ncols</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="c1"># only extend if longer than one column</span>
-            <span class="n">table</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot; &quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nrows</span> <span class="o">-</span> <span class="n">nlastcol</span><span class="p">)])</span>
+        <span class="c1"># minimum number of rows in a column</span>
+        <span class="n">min_rows</span> <span class="o">=</span> <span class="mi">4</span>
 
-        <span class="c1"># build the actual table grid</span>
-        <span class="n">table</span> <span class="o">=</span> <span class="p">[</span><span class="n">table</span><span class="p">[</span><span class="n">icol</span> <span class="o">*</span> <span class="n">nrows</span> <span class="p">:</span> <span class="p">(</span><span class="n">icol</span> <span class="o">*</span> <span class="n">nrows</span><span class="p">)</span> <span class="o">+</span> <span class="n">nrows</span><span class="p">]</span> <span class="k">for</span> <span class="n">icol</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ncols</span><span class="p">)]</span>
+        <span class="c1"># split the items into columns</span>
+        <span class="n">split</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">min_rows</span><span class="p">,</span> <span class="n">ceil</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">table</span><span class="p">)</span> <span class="o">/</span> <span class="n">ncols</span><span class="p">))</span>
+        <span class="n">max_end</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+        <span class="n">cols_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">icol</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ncols</span><span class="p">):</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="n">icol</span> <span class="o">*</span> <span class="n">split</span>
+            <span class="n">end</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">start</span> <span class="o">+</span> <span class="n">split</span><span class="p">,</span> <span class="n">max_end</span><span class="p">)</span>
+            <span class="n">cols_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">EvColumn</span><span class="p">(</span><span class="o">*</span><span class="n">table</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">]))</span>
 
-        <span class="c1"># adjust the width of each column</span>
-        <span class="k">for</span> <span class="n">icol</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">table</span><span class="p">)):</span>
-            <span class="n">col_width</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="nb">max</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">m_len</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">part</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">))</span> <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">table</span><span class="p">[</span><span class="n">icol</span><span class="p">])</span> <span class="o">+</span> <span class="n">colsep</span>
-            <span class="p">)</span>
-            <span class="n">table</span><span class="p">[</span><span class="n">icol</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">pad</span><span class="p">(</span><span class="n">part</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">col_width</span> <span class="o">+</span> <span class="n">colsep</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s2">&quot;l&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">table</span><span class="p">[</span><span class="n">icol</span><span class="p">]]</span>
-
-        <span class="c1"># format the table into columns</span>
-        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">EvTable</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">table</span><span class="p">,</span> <span class="n">border</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">))</span></div>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">EvTable</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">cols_list</span><span class="p">,</span> <span class="n">border</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="EvMenu.node_formatter"><a class="viewcode-back" href="../../../api/evennia.utils.evmenu.html#evennia.utils.evmenu.EvMenu.node_formatter">[docs]</a>    <span class="k">def</span> <span class="nf">node_formatter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nodetext</span><span class="p">,</span> <span class="n">optionstext</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1373,10 +1364,35 @@
 <span class="sd">    Example:</span>
 
 <span class="sd">        ```python</span>
-<span class="sd">        list_node([&#39;foo&#39;, &#39;bar&#39;], select)</span>
+<span class="sd">        def select(caller, selection, available_choices=None, **kwargs):</span>
+<span class="sd">            &#39;&#39;&#39;</span>
+<span class="sd">            This will be called by all auto-generated options except any &#39;extra_options&#39;</span>
+<span class="sd">            you return from the node (those you need to handle normally).</span>
+
+<span class="sd">            Args:</span>
+<span class="sd">                caller (Object or Account): User of the menu.</span>
+<span class="sd">                selection (str): What caller chose in the menu</span>
+<span class="sd">                available_choices (list): The keys of elements available on the *current listing</span>
+<span class="sd">                    page*.</span>
+<span class="sd">                **kwargs: Kwargs passed on from the node.</span>
+<span class="sd">            Returns:</span>
+<span class="sd">                tuple, str or None: A tuple (nextnodename, **kwargs) or just nextnodename.  Return</span>
+<span class="sd">                    `None` to go back to the listnode.</span>
+<span class="sd">            &#39;&#39;&#39;</span>
+
+<span class="sd">            # (do something with `selection` here)</span>
+
+<span class="sd">            return &quot;nextnode&quot;, **kwargs</span>
+
+<span class="sd">        @list_node([&#39;foo&#39;, &#39;bar&#39;], select)</span>
 <span class="sd">        def node_index(caller):</span>
 <span class="sd">            text = &quot;describing the list&quot;</span>
-<span class="sd">            return text, []</span>
+
+<span class="sd">            # optional extra options in addition to the list-options</span>
+<span class="sd">            extra_options = []</span>
+
+<span class="sd">            return text, extra_options</span>
+
 <span class="sd">        ```</span>
 
 <span class="sd">    Notes:</span>
@@ -1391,23 +1407,31 @@
         <span class="k">def</span> <span class="nf">_select_parser</span><span class="p">(</span><span class="n">caller</span><span class="p">,</span> <span class="n">raw_string</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
             <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Parse the select action</span>
+
 <span class="sd">            &quot;&quot;&quot;</span>
-            <span class="n">available_choices</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;available_choices&quot;</span><span class="p">,</span> <span class="p">[])</span>
+            <span class="n">available_choices</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;available_choices&quot;</span><span class="p">,</span> <span class="p">[])</span>
 
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">index</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">raw_string</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="o">-</span> <span class="mi">1</span>
                 <span class="n">selection</span> <span class="o">=</span> <span class="n">available_choices</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
             <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-                <span class="n">caller</span><span class="o">.</span><span class="n">msg</span><span class="p">(</span><span class="s2">&quot;|rInvalid choice.|n&quot;</span><span class="p">)</span>
+                <span class="n">caller</span><span class="o">.</span><span class="n">msg</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;|rInvalid choice.|n&quot;</span><span class="p">))</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="n">select</span><span class="p">):</span>
                     <span class="k">try</span><span class="p">:</span>
                         <span class="k">if</span> <span class="nb">bool</span><span class="p">(</span><span class="n">getargspec</span><span class="p">(</span><span class="n">select</span><span class="p">)</span><span class="o">.</span><span class="n">keywords</span><span class="p">):</span>
-                            <span class="k">return</span> <span class="n">select</span><span class="p">(</span><span class="n">caller</span><span class="p">,</span> <span class="n">selection</span><span class="p">,</span> <span class="n">available_choices</span><span class="o">=</span><span class="n">available_choices</span><span class="p">)</span>
+                            <span class="k">return</span> <span class="n">select</span><span class="p">(</span>
+                                <span class="n">caller</span><span class="p">,</span> <span class="n">selection</span><span class="p">,</span> <span class="n">available_choices</span><span class="o">=</span><span class="n">available_choices</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+                            <span class="p">)</span>
                         <span class="k">else</span><span class="p">:</span>
-                            <span class="k">return</span> <span class="n">select</span><span class="p">(</span><span class="n">caller</span><span class="p">,</span> <span class="n">selection</span><span class="p">)</span>
+                            <span class="k">return</span> <span class="n">select</span><span class="p">(</span><span class="n">caller</span><span class="p">,</span> <span class="n">selection</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
                     <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-                        <span class="n">logger</span><span class="o">.</span><span class="n">log_trace</span><span class="p">()</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">log_trace</span><span class="p">(</span>
+                            <span class="s2">&quot;Error in EvMenu.list_node decorator:</span><span class="se">\n</span><span class="s2">  &quot;</span>
+                            <span class="sa">f</span><span class="s2">&quot;select-callable: </span><span class="si">{</span><span class="n">select</span><span class="si">}</span><span class="se">\n</span><span class="s2">  with args: (</span><span class="si">{</span><span class="n">caller</span><span class="si">}</span><span class="s2">&quot;</span>
+                            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">selection</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">available_choices</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">kwargs</span><span class="si">}</span><span class="s2">) raised &quot;</span>
+                            <span class="s2">&quot;exception.&quot;</span>
+                        <span class="p">)</span>
                 <span class="k">elif</span> <span class="n">select</span><span class="p">:</span>
                     <span class="c1"># we assume a string was given, we inject the result into the kwargs</span>
                     <span class="c1"># to pass on to the next node</span>
@@ -1444,7 +1468,7 @@
             <span class="c1"># callback being called with a result from the available choices</span>
             <span class="n">options</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
                 <span class="p">[</span>
-                    <span class="p">{</span><span class="s2">&quot;desc&quot;</span><span class="p">:</span> <span class="n">opt</span><span class="p">,</span> <span class="s2">&quot;goto&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">_select_parser</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;available_choices&quot;</span><span class="p">:</span> <span class="n">page</span><span class="p">})}</span>
+                    <span class="p">{</span><span class="s2">&quot;desc&quot;</span><span class="p">:</span> <span class="n">opt</span><span class="p">,</span> <span class="s2">&quot;goto&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">_select_parser</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;available_choices&quot;</span><span class="p">:</span> <span class="n">page</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">})}</span>
                     <span class="k">for</span> <span class="n">opt</span> <span class="ow">in</span> <span class="n">page</span>
                 <span class="p">]</span>
             <span class="p">)</span>
@@ -1455,7 +1479,7 @@
                 <span class="c1"># allows us to call ourselves over and over, using different kwargs.</span>
                 <span class="n">options</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                     <span class="p">{</span>
-                        <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;|Wcurrent|n&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">),</span>
+                        <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;|Wcurrent|n&quot;</span><span class="p">),</span> <span class="s2">&quot;c&quot;</span><span class="p">),</span>
                         <span class="s2">&quot;desc&quot;</span><span class="p">:</span> <span class="s2">&quot;|W(</span><span class="si">{}</span><span class="s2">/</span><span class="si">{}</span><span class="s2">)|n&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">page_index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">npages</span><span class="p">),</span>
                         <span class="s2">&quot;goto&quot;</span><span class="p">:</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">caller</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;optionpage_index&quot;</span><span class="p">:</span> <span class="n">page_index</span><span class="p">}),</span>
                     <span class="p">}</span>
@@ -1463,14 +1487,14 @@
                 <span class="k">if</span> <span class="n">page_index</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                     <span class="n">options</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                         <span class="p">{</span>
-                            <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;|wp|Wrevious page|n&quot;</span><span class="p">,</span> <span class="s2">&quot;p&quot;</span><span class="p">),</span>
+                            <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;|wp|Wrevious page|n&quot;</span><span class="p">),</span> <span class="s2">&quot;p&quot;</span><span class="p">),</span>
                             <span class="s2">&quot;goto&quot;</span><span class="p">:</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">caller</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;optionpage_index&quot;</span><span class="p">:</span> <span class="n">page_index</span> <span class="o">-</span> <span class="mi">1</span><span class="p">}),</span>
                         <span class="p">}</span>
                     <span class="p">)</span>
                 <span class="k">if</span> <span class="n">page_index</span> <span class="o">&lt;</span> <span class="n">npages</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
                     <span class="n">options</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                         <span class="p">{</span>
-                            <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;|wn|Wext page|n&quot;</span><span class="p">,</span> <span class="s2">&quot;n&quot;</span><span class="p">),</span>
+                            <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;|wn|Wext page|n&quot;</span><span class="p">),</span> <span class="s2">&quot;n&quot;</span><span class="p">),</span>
                             <span class="s2">&quot;goto&quot;</span><span class="p">:</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">caller</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;optionpage_index&quot;</span><span class="p">:</span> <span class="n">page_index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">}),</span>
                         <span class="p">}</span>
                     <span class="p">)</span>
@@ -1557,7 +1581,8 @@
             <span class="n">getinput</span> <span class="o">=</span> <span class="n">caller</span><span class="o">.</span><span class="n">ndb</span><span class="o">.</span><span class="n">_getinput</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">getinput</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">caller</span><span class="p">,</span> <span class="s2">&quot;account&quot;</span><span class="p">):</span>
                 <span class="n">getinput</span> <span class="o">=</span> <span class="n">caller</span><span class="o">.</span><span class="n">account</span><span class="o">.</span><span class="n">ndb</span><span class="o">.</span><span class="n">_getinput</span>
-                <span class="n">caller</span> <span class="o">=</span> <span class="n">caller</span><span class="o">.</span><span class="n">account</span>
+                <span class="k">if</span> <span class="n">getinput</span><span class="p">:</span>
+                    <span class="n">caller</span> <span class="o">=</span> <span class="n">caller</span><span class="o">.</span><span class="n">account</span>
             <span class="n">callback</span> <span class="o">=</span> <span class="n">getinput</span><span class="o">.</span><span class="n">_callback</span>
 
             <span class="n">caller</span><span class="o">.</span><span class="n">ndb</span><span class="o">.</span><span class="n">_getinput</span><span class="o">.</span><span class="n">_session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span>
@@ -1596,7 +1621,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">CmdGetInput</span><span class="p">())</span></div></div>
 
 
-<span class="k">class</span> <span class="nc">_Prompt</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">_Prompt</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Dummy holder&quot;&quot;&quot;</span>
 
     <span class="k">pass</span>
@@ -1659,7 +1684,197 @@
     <span class="n">caller</span><span class="o">.</span><span class="n">ndb</span><span class="o">.</span><span class="n">_getinput</span><span class="o">.</span><span class="n">_session</span> <span class="o">=</span> <span class="n">session</span>
     <span class="n">caller</span><span class="o">.</span><span class="n">ndb</span><span class="o">.</span><span class="n">_getinput</span><span class="o">.</span><span class="n">_args</span> <span class="o">=</span> <span class="n">args</span>
     <span class="n">caller</span><span class="o">.</span><span class="n">ndb</span><span class="o">.</span><span class="n">_getinput</span><span class="o">.</span><span class="n">_kwargs</span> <span class="o">=</span> <span class="n">kwargs</span>
-    <span class="n">caller</span><span class="o">.</span><span class="n">cmdset</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">InputCmdSet</span><span class="p">)</span>
+    <span class="n">caller</span><span class="o">.</span><span class="n">cmdset</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">InputCmdSet</span><span class="p">,</span> <span class="n">persistent</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">caller</span><span class="o">.</span><span class="n">msg</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="CmdYesNoQuestion"><a class="viewcode-back" href="../../../api/evennia.utils.evmenu.html#evennia.utils.evmenu.CmdYesNoQuestion">[docs]</a><span class="k">class</span> <span class="nc">CmdYesNoQuestion</span><span class="p">(</span><span class="n">Command</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Handle a prompt for yes or no. Press [return] for the default choice.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">key</span> <span class="o">=</span> <span class="n">_CMD_NOINPUT</span>
+    <span class="n">aliases</span> <span class="o">=</span> <span class="p">[</span><span class="n">_CMD_NOMATCH</span><span class="p">,</span> <span class="s2">&quot;yes&quot;</span><span class="p">,</span> <span class="s2">&quot;no&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;n&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;abort&quot;</span><span class="p">]</span>
+    <span class="n">arg_regex</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;^$&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_clean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">caller</span><span class="p">):</span>
+        <span class="k">del</span> <span class="n">caller</span><span class="o">.</span><span class="n">ndb</span><span class="o">.</span><span class="n">_yes_no_question</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">caller</span><span class="o">.</span><span class="n">cmdset</span><span class="o">.</span><span class="n">has</span><span class="p">(</span><span class="n">YesNoQuestionCmdSet</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">caller</span><span class="p">,</span> <span class="s2">&quot;account&quot;</span><span class="p">):</span>
+            <span class="n">caller</span><span class="o">.</span><span class="n">account</span><span class="o">.</span><span class="n">cmdset</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">YesNoQuestionCmdSet</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">caller</span><span class="o">.</span><span class="n">cmdset</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">YesNoQuestionCmdSet</span><span class="p">)</span>
+
+<div class="viewcode-block" id="CmdYesNoQuestion.func"><a class="viewcode-back" href="../../../api/evennia.utils.evmenu.html#evennia.utils.evmenu.CmdYesNoQuestion.func">[docs]</a>    <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;This is called when user enters anything.&quot;&quot;&quot;</span>
+        <span class="n">caller</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">caller</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">yes_no_question</span> <span class="o">=</span> <span class="n">caller</span><span class="o">.</span><span class="n">ndb</span><span class="o">.</span><span class="n">_yes_no_question</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">yes_no_question</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">caller</span><span class="p">,</span> <span class="s2">&quot;account&quot;</span><span class="p">):</span>
+                <span class="n">yes_no_question</span> <span class="o">=</span> <span class="n">caller</span><span class="o">.</span><span class="n">account</span><span class="o">.</span><span class="n">ndb</span><span class="o">.</span><span class="n">_yes_no_question</span>
+                <span class="n">caller</span> <span class="o">=</span> <span class="n">caller</span><span class="o">.</span><span class="n">account</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">yes_no_question</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_clean</span><span class="p">(</span><span class="n">caller</span><span class="p">)</span>
+                <span class="k">return</span>
+
+            <span class="n">inp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmdname</span>
+
+            <span class="k">if</span> <span class="n">inp</span> <span class="o">==</span> <span class="n">_CMD_NOINPUT</span><span class="p">:</span>
+                <span class="n">raw</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">raw_cmdname</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">raw</span><span class="p">:</span>
+                    <span class="c1"># use default</span>
+                    <span class="n">inp</span> <span class="o">=</span> <span class="n">yes_no_question</span><span class="o">.</span><span class="n">default</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">inp</span> <span class="o">=</span> <span class="n">raw</span>
+
+            <span class="k">if</span> <span class="n">inp</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;abort&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">yes_no_question</span><span class="o">.</span><span class="n">allow_abort</span><span class="p">:</span>
+                <span class="n">caller</span><span class="o">.</span><span class="n">msg</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Aborted.&quot;</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_clean</span><span class="p">(</span><span class="n">caller</span><span class="p">)</span>
+                <span class="k">return</span>
+
+            <span class="n">caller</span><span class="o">.</span><span class="n">ndb</span><span class="o">.</span><span class="n">_yes_no_question</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span>
+
+            <span class="n">args</span> <span class="o">=</span> <span class="n">yes_no_question</span><span class="o">.</span><span class="n">args</span>
+            <span class="n">kwargs</span> <span class="o">=</span> <span class="n">yes_no_question</span><span class="o">.</span><span class="n">kwargs</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;caller_session&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span>
+
+            <span class="k">if</span> <span class="n">inp</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;yes&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">):</span>
+                <span class="n">yes_no_question</span><span class="o">.</span><span class="n">yes_callable</span><span class="p">(</span><span class="n">caller</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">inp</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;no&quot;</span><span class="p">,</span> <span class="s2">&quot;n&quot;</span><span class="p">):</span>
+                <span class="n">yes_no_question</span><span class="o">.</span><span class="n">no_callable</span><span class="p">(</span><span class="n">caller</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># invalid input. Resend prompt without cleaning</span>
+                <span class="n">caller</span><span class="o">.</span><span class="n">msg</span><span class="p">(</span><span class="n">yes_no_question</span><span class="o">.</span><span class="n">prompt</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">)</span>
+                <span class="k">return</span>
+
+            <span class="c1"># cleanup</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_clean</span><span class="p">(</span><span class="n">caller</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="c1"># make sure to clean up cmdset if something goes wrong</span>
+            <span class="n">caller</span><span class="o">.</span><span class="n">msg</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;|rError in ask_yes_no. Choice not confirmed (report to admin)|n&quot;</span><span class="p">))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">log_trace</span><span class="p">(</span><span class="s2">&quot;Error in ask_yes_no&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_clean</span><span class="p">(</span><span class="n">caller</span><span class="p">)</span>
+            <span class="k">raise</span></div></div>
+
+
+<div class="viewcode-block" id="YesNoQuestionCmdSet"><a class="viewcode-back" href="../../../api/evennia.utils.evmenu.html#evennia.utils.evmenu.YesNoQuestionCmdSet">[docs]</a><span class="k">class</span> <span class="nc">YesNoQuestionCmdSet</span><span class="p">(</span><span class="n">CmdSet</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This stores the input command</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;yes_no_question_cmdset&quot;</span>
+    <span class="n">priority</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">mergetype</span> <span class="o">=</span> <span class="s2">&quot;Replace&quot;</span>
+    <span class="n">no_objs</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">no_exits</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">no_channels</span> <span class="o">=</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="YesNoQuestionCmdSet.at_cmdset_creation"><a class="viewcode-back" href="../../../api/evennia.utils.evmenu.html#evennia.utils.evmenu.YesNoQuestionCmdSet.at_cmdset_creation">[docs]</a>    <span class="k">def</span> <span class="nf">at_cmdset_creation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;called once at creation&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">CmdYesNoQuestion</span><span class="p">())</span></div></div>
+
+
+<div class="viewcode-block" id="ask_yes_no"><a class="viewcode-back" href="../../../api/evennia.utils.evmenu.html#evennia.utils.evmenu.ask_yes_no">[docs]</a><span class="k">def</span> <span class="nf">ask_yes_no</span><span class="p">(</span>
+    <span class="n">caller</span><span class="p">,</span>
+    <span class="n">prompt</span><span class="o">=</span><span class="s2">&quot;Yes or No </span><span class="si">{options}</span><span class="s2">?&quot;</span><span class="p">,</span>
+    <span class="n">yes_action</span><span class="o">=</span><span class="s2">&quot;Yes&quot;</span><span class="p">,</span>
+    <span class="n">no_action</span><span class="o">=</span><span class="s2">&quot;No&quot;</span><span class="p">,</span>
+    <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">allow_abort</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">session</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="o">*</span><span class="n">args</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A helper question for asking a simple yes/no question. This will cause</span>
+<span class="sd">    the system to pause and wait for input from the player.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        prompt (str): The yes/no question to ask. This takes an optional formatting</span>
+<span class="sd">            marker `{options}` which will be filled with &#39;Y/N&#39;, &#39;[Y]/N&#39; or</span>
+<span class="sd">            &#39;Y/[N]&#39; depending on the setting of `default`. If `allow_abort` is set,</span>
+<span class="sd">            then the &#39;A(bort)&#39; option will also be available.</span>
+<span class="sd">        yes_action (callable or str): If a callable, this will be called</span>
+<span class="sd">            with `(caller, *args, **kwargs)` when the Yes-choice is made.</span>
+<span class="sd">            If a string, this string will be echoed back to the caller.</span>
+<span class="sd">        no_action (callable or str): If a callable, this will be called</span>
+<span class="sd">            with `(caller, *args, **kwargs)` when the No-choice is made.</span>
+<span class="sd">            If a string, this string will be echoed back to the caller.</span>
+<span class="sd">        default (str optional): This is what the user will get if they just press the</span>
+<span class="sd">            return key without giving any input. One of &#39;N&#39;, &#39;Y&#39;, &#39;A&#39; or `None`</span>
+<span class="sd">            for no default (an explicit choice must be given). If &#39;A&#39; (abort)</span>
+<span class="sd">            is given, `allow_abort` kwarg is ignored and assumed set.</span>
+<span class="sd">        allow_abort (bool, optional): If set, the &#39;A(bort)&#39; option is available</span>
+<span class="sd">            (a third option meaning neither yes or no but just exits the prompt).</span>
+<span class="sd">        session (Session, optional): This allows to specify the</span>
+<span class="sd">            session to send the prompt to. It&#39;s usually only needed if `caller`</span>
+<span class="sd">            is an Account in multisession modes greater than 2. The session is</span>
+<span class="sd">            then updated by the command and is available (for example in</span>
+<span class="sd">            callbacks) through `caller.ndb._yes_no_question.session`.</span>
+<span class="sd">        *args: Additional arguments passed on into callables.</span>
+<span class="sd">        **kwargs: Additional keyword args passed on into callables.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        RuntimeError, FooError: If default and `allow_abort` clashes.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        ::</span>
+
+<span class="sd">            # just returning strings</span>
+<span class="sd">            ask_yes_no(caller, &quot;Are you happy {options}?&quot;,</span>
+<span class="sd">                       &quot;you answered yes&quot;, &quot;you answered no&quot;)</span>
+<span class="sd">            # trigger callables</span>
+<span class="sd">            ask_yes_no(caller, &quot;Are you sad {options}?&quot;,</span>
+<span class="sd">                       _callable_yes, _callable_no, allow_abort=True)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_callable_yes_txt</span><span class="p">(</span><span class="n">caller</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">yes_txt</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;yes_txt&quot;</span><span class="p">]</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;caller_session&quot;</span><span class="p">]</span>
+        <span class="n">caller</span><span class="o">.</span><span class="n">msg</span><span class="p">(</span><span class="n">yes_txt</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_callable_no_txt</span><span class="p">(</span><span class="n">caller</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">no_txt</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;no_txt&quot;</span><span class="p">]</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;caller_session&quot;</span><span class="p">]</span>
+        <span class="n">caller</span><span class="o">.</span><span class="n">msg</span><span class="p">(</span><span class="n">no_txt</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">callable</span><span class="p">(</span><span class="n">yes_action</span><span class="p">):</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;yes_txt&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">yes_action</span><span class="p">)</span>
+        <span class="n">yes_action</span> <span class="o">=</span> <span class="n">_callable_yes_txt</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">callable</span><span class="p">(</span><span class="n">no_action</span><span class="p">):</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;no_txt&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">no_action</span><span class="p">)</span>
+        <span class="n">no_action</span> <span class="o">=</span> <span class="n">_callable_no_txt</span>
+
+    <span class="c1"># prepare the prompt with options</span>
+    <span class="n">options</span> <span class="o">=</span> <span class="s2">&quot;Y/N&quot;</span>
+    <span class="n">abort_txt</span> <span class="o">=</span> <span class="s2">&quot;/Abort&quot;</span> <span class="k">if</span> <span class="n">allow_abort</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">default</span><span class="p">:</span>
+        <span class="n">default</span> <span class="o">=</span> <span class="n">default</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">default</span> <span class="o">==</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span>
+            <span class="n">options</span> <span class="o">=</span> <span class="s2">&quot;[Y]/N&quot;</span>
+        <span class="k">elif</span> <span class="n">default</span> <span class="o">==</span> <span class="s2">&quot;n&quot;</span><span class="p">:</span>
+            <span class="n">options</span> <span class="o">=</span> <span class="s2">&quot;Y/[N]&quot;</span>
+        <span class="k">elif</span> <span class="n">default</span> <span class="o">==</span> <span class="s2">&quot;a&quot;</span><span class="p">:</span>
+            <span class="n">allow_abort</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">abort_txt</span> <span class="o">=</span> <span class="s2">&quot;/[A]bort&quot;</span>
+    <span class="n">options</span> <span class="o">+=</span> <span class="n">abort_txt</span>
+    <span class="n">prompt</span> <span class="o">=</span> <span class="n">prompt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
+
+    <span class="n">caller</span><span class="o">.</span><span class="n">ndb</span><span class="o">.</span><span class="n">_yes_no_question</span> <span class="o">=</span> <span class="n">_Prompt</span><span class="p">()</span>
+    <span class="n">caller</span><span class="o">.</span><span class="n">ndb</span><span class="o">.</span><span class="n">_yes_no_question</span><span class="o">.</span><span class="n">prompt</span> <span class="o">=</span> <span class="n">prompt</span>
+    <span class="n">caller</span><span class="o">.</span><span class="n">ndb</span><span class="o">.</span><span class="n">_yes_no_question</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">session</span>
+    <span class="n">caller</span><span class="o">.</span><span class="n">ndb</span><span class="o">.</span><span class="n">_yes_no_question</span><span class="o">.</span><span class="n">prompt</span> <span class="o">=</span> <span class="n">prompt</span>
+    <span class="n">caller</span><span class="o">.</span><span class="n">ndb</span><span class="o">.</span><span class="n">_yes_no_question</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="n">default</span>
+    <span class="n">caller</span><span class="o">.</span><span class="n">ndb</span><span class="o">.</span><span class="n">_yes_no_question</span><span class="o">.</span><span class="n">allow_abort</span> <span class="o">=</span> <span class="n">allow_abort</span>
+    <span class="n">caller</span><span class="o">.</span><span class="n">ndb</span><span class="o">.</span><span class="n">_yes_no_question</span><span class="o">.</span><span class="n">yes_callable</span> <span class="o">=</span> <span class="n">yes_action</span>
+    <span class="n">caller</span><span class="o">.</span><span class="n">ndb</span><span class="o">.</span><span class="n">_yes_no_question</span><span class="o">.</span><span class="n">no_callable</span> <span class="o">=</span> <span class="n">no_action</span>
+    <span class="n">caller</span><span class="o">.</span><span class="n">ndb</span><span class="o">.</span><span class="n">_yes_no_question</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="n">args</span>
+    <span class="n">caller</span><span class="o">.</span><span class="n">ndb</span><span class="o">.</span><span class="n">_yes_no_question</span><span class="o">.</span><span class="n">kwargs</span> <span class="o">=</span> <span class="n">kwargs</span>
+
+    <span class="n">caller</span><span class="o">.</span><span class="n">cmdset</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">YesNoQuestionCmdSet</span><span class="p">)</span>
     <span class="n">caller</span><span class="o">.</span><span class="n">msg</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">)</span></div>
 
 
@@ -1672,9 +1887,7 @@
 <span class="n">_RE_NODE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;##\s*?NODE\s+?(?P&lt;nodename&gt;\S[\S\s]*?)$&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">I</span> <span class="o">+</span> <span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
 <span class="n">_RE_OPTIONS_SEP</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;##\s*?OPTIONS\s*?$&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">I</span> <span class="o">+</span> <span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
 <span class="n">_RE_CALLABLE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\S+?\(\)&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">I</span> <span class="o">+</span> <span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
-<span class="n">_RE_CALLABLE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
-    <span class="sa">r</span><span class="s2">&quot;(?P&lt;funcname&gt;\S+?)(?:\((?P&lt;kwargs&gt;[\S\s]+?)\)|\(\))&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">I</span> <span class="o">+</span> <span class="n">re</span><span class="o">.</span><span class="n">M</span>
-<span class="p">)</span>
+<span class="n">_RE_CALLABLE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(?P&lt;funcname&gt;\S+?)(?:\((?P&lt;kwargs&gt;[\S\s]+?)\)|\(\))&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">I</span> <span class="o">+</span> <span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">)</span>
 
 <span class="n">_HELP_NO_OPTION_MATCH</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Choose an option or try &#39;help&#39;.&quot;</span><span class="p">)</span>
 
@@ -1688,8 +1901,8 @@
 <span class="c1"># Input/option/goto handler functions that allows for dynamically generated</span>
 <span class="c1"># nodes read from the menu template.</span>
 
-<span class="k">def</span> <span class="nf">_process_callable</span><span class="p">(</span><span class="n">caller</span><span class="p">,</span> <span class="n">goto</span><span class="p">,</span> <span class="n">goto_callables</span><span class="p">,</span> <span class="n">raw_string</span><span class="p">,</span>
-                      <span class="n">current_nodename</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">):</span>
+
+<span class="k">def</span> <span class="nf">_process_callable</span><span class="p">(</span><span class="n">caller</span><span class="p">,</span> <span class="n">goto</span><span class="p">,</span> <span class="n">goto_callables</span><span class="p">,</span> <span class="n">raw_string</span><span class="p">,</span> <span class="n">current_nodename</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Central helper for parsing a goto-callable (`funcname(**kwargs)`) out of</span>
 <span class="sd">    the right-hand-side of the template options and map this to an actual</span>
@@ -1705,12 +1918,18 @@
             <span class="k">for</span> <span class="n">kwarg</span> <span class="ow">in</span> <span class="n">gotokwargs</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">kwarg</span> <span class="ow">and</span> <span class="s2">&quot;=&quot;</span> <span class="ow">in</span> <span class="n">kwarg</span><span class="p">:</span>
                     <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="p">[</span><span class="n">part</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">kwarg</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
-                    <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;evmenu_goto&quot;</span><span class="p">,</span> <span class="s2">&quot;evmenu_gotomap&quot;</span><span class="p">,</span> <span class="s2">&quot;_current_nodename&quot;</span><span class="p">,</span>
-                               <span class="s2">&quot;evmenu_current_nodename&quot;</span><span class="p">,</span> <span class="s2">&quot;evmenu_goto_callables&quot;</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span>
+                        <span class="s2">&quot;evmenu_goto&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;evmenu_gotomap&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;_current_nodename&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;evmenu_current_nodename&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;evmenu_goto_callables&quot;</span><span class="p">,</span>
+                    <span class="p">):</span>
                         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
                             <span class="sa">f</span><span class="s2">&quot;EvMenu template error: goto-callable &#39;</span><span class="si">{</span><span class="n">goto</span><span class="si">}</span><span class="s2">&#39; uses a &quot;</span>
                             <span class="sa">f</span><span class="s2">&quot;kwarg (</span><span class="si">{</span><span class="n">kwarg</span><span class="si">}</span><span class="s2">) that is reserved for the EvMenu templating &quot;</span>
-                            <span class="s2">&quot;system. Rename the kwarg.&quot;</span><span class="p">)</span>
+                            <span class="s2">&quot;system. Rename the kwarg.&quot;</span>
+                        <span class="p">)</span>
                     <span class="k">try</span><span class="p">:</span>
                         <span class="n">key</span> <span class="o">=</span> <span class="n">literal_eval</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
                     <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
@@ -1737,8 +1956,7 @@
     <span class="n">goto</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;evmenu_goto&quot;</span><span class="p">]</span>
     <span class="n">goto_callables</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;evmenu_goto_callables&quot;</span><span class="p">]</span>
     <span class="n">current_nodename</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;evmenu_current_nodename&quot;</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">_process_callable</span><span class="p">(</span><span class="n">caller</span><span class="p">,</span> <span class="n">goto</span><span class="p">,</span> <span class="n">goto_callables</span><span class="p">,</span> <span class="n">raw_string</span><span class="p">,</span>
-                             <span class="n">current_nodename</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_process_callable</span><span class="p">(</span><span class="n">caller</span><span class="p">,</span> <span class="n">goto</span><span class="p">,</span> <span class="n">goto_callables</span><span class="p">,</span> <span class="n">raw_string</span><span class="p">,</span> <span class="n">current_nodename</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_generated_input_goto_func</span><span class="p">(</span><span class="n">caller</span><span class="p">,</span> <span class="n">raw_string</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -1758,13 +1976,15 @@
     <span class="c1"># start with glob patterns</span>
     <span class="k">for</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">goto</span> <span class="ow">in</span> <span class="n">gotomap</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">if</span> <span class="n">fnmatch</span><span class="p">(</span><span class="n">raw_string</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">pattern</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">_process_callable</span><span class="p">(</span><span class="n">caller</span><span class="p">,</span> <span class="n">goto</span><span class="p">,</span> <span class="n">goto_callables</span><span class="p">,</span> <span class="n">raw_string</span><span class="p">,</span>
-                                     <span class="n">current_nodename</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">_process_callable</span><span class="p">(</span>
+                <span class="n">caller</span><span class="p">,</span> <span class="n">goto</span><span class="p">,</span> <span class="n">goto_callables</span><span class="p">,</span> <span class="n">raw_string</span><span class="p">,</span> <span class="n">current_nodename</span><span class="p">,</span> <span class="n">kwargs</span>
+            <span class="p">)</span>
     <span class="c1"># no glob pattern match; try regex</span>
     <span class="k">for</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">goto</span> <span class="ow">in</span> <span class="n">gotomap</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">if</span> <span class="n">pattern</span> <span class="ow">and</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">raw_string</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">I</span> <span class="o">+</span> <span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">_process_callable</span><span class="p">(</span><span class="n">caller</span><span class="p">,</span> <span class="n">goto</span><span class="p">,</span> <span class="n">goto_callables</span><span class="p">,</span> <span class="n">raw_string</span><span class="p">,</span>
-                                     <span class="n">current_nodename</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">_process_callable</span><span class="p">(</span>
+                <span class="n">caller</span><span class="p">,</span> <span class="n">goto</span><span class="p">,</span> <span class="n">goto_callables</span><span class="p">,</span> <span class="n">raw_string</span><span class="p">,</span> <span class="n">current_nodename</span><span class="p">,</span> <span class="n">kwargs</span>
+            <span class="p">)</span>
     <span class="c1"># no match, show error</span>
     <span class="k">raise</span> <span class="n">EvMenuGotoAbortMessage</span><span class="p">(</span><span class="n">_HELP_NO_OPTION_MATCH</span><span class="p">)</span>
 
@@ -1795,27 +2015,36 @@
 <span class="sd">        dict: A `{&quot;node&quot;: nodefunc}` menutree suitable to pass into EvMenu.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="nf">_validate_kwarg</span><span class="p">(</span><span class="n">goto</span><span class="p">,</span> <span class="n">kwarg</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Validate goto-callable kwarg is on correct form.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="s2">&quot;=&quot;</span> <span class="ow">in</span> <span class="n">kwarg</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">&quot;=&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwarg</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;EvMenu template error: goto-callable &#39;</span><span class="si">{</span><span class="n">goto</span><span class="si">}</span><span class="s2">&#39; has a &quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;non-kwarg argument (</span><span class="si">{</span><span class="n">kwarg</span><span class="si">}</span><span class="s2">). All callables in the &quot;</span>
                 <span class="s2">&quot;template must have only keyword-arguments, or no &quot;</span>
-                <span class="s2">&quot;args at all.&quot;</span><span class="p">)</span>
+                <span class="s2">&quot;args at all.&quot;</span>
+            <span class="p">)</span>
         <span class="n">key</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="p">[</span><span class="n">part</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">kwarg</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
-        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;evmenu_goto&quot;</span><span class="p">,</span> <span class="s2">&quot;evmenu_gotomap&quot;</span><span class="p">,</span> <span class="s2">&quot;_current_nodename&quot;</span><span class="p">,</span>
-                   <span class="s2">&quot;evmenu_current_nodename&quot;</span><span class="p">,</span> <span class="s2">&quot;evmenu_goto_callables&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span>
+            <span class="s2">&quot;evmenu_goto&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;evmenu_gotomap&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;_current_nodename&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;evmenu_current_nodename&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;evmenu_goto_callables&quot;</span><span class="p">,</span>
+        <span class="p">):</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;EvMenu template error: goto-callable &#39;</span><span class="si">{</span><span class="n">goto</span><span class="si">}</span><span class="s2">&#39; uses a &quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;kwarg (</span><span class="si">{</span><span class="n">kwarg</span><span class="si">}</span><span class="s2">) that is reserved for the EvMenu templating &quot;</span>
-                <span class="s2">&quot;system. Rename the kwarg.&quot;</span><span class="p">)</span>
+                <span class="s2">&quot;system. Rename the kwarg.&quot;</span>
+            <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_parse_options</span><span class="p">(</span><span class="n">nodename</span><span class="p">,</span> <span class="n">optiontxt</span><span class="p">,</span> <span class="n">goto_callables</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parse option section into option dict.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">options</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">optiontxt</span> <span class="o">=</span> <span class="n">optiontxt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">if</span> <span class="n">optiontxt</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
@@ -1841,7 +2070,7 @@
             <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
                 <span class="n">kwargs</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;kwargs&quot;</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">kwargs</span><span class="p">:</span>
-                    <span class="k">for</span> <span class="n">kwarg</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">):</span>
+                    <span class="k">for</span> <span class="n">kwarg</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">):</span>
                         <span class="n">_validate_kwarg</span><span class="p">(</span><span class="n">goto</span><span class="p">,</span> <span class="n">kwarg</span><span class="p">)</span>
 
             <span class="c1"># parse key [;aliases|pattern]</span>
@@ -1853,7 +2082,7 @@
 
             <span class="k">if</span> <span class="n">main_key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">_OPTION_INPUT_MARKER</span><span class="p">):</span>
                 <span class="c1"># if we have a pattern, build the arguments for _default later</span>
-                <span class="n">pattern</span> <span class="o">=</span> <span class="n">main_key</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">_OPTION_INPUT_MARKER</span><span class="p">):]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="n">pattern</span> <span class="o">=</span> <span class="n">main_key</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">_OPTION_INPUT_MARKER</span><span class="p">)</span> <span class="p">:]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
                 <span class="n">inputparsemap</span><span class="p">[</span><span class="n">pattern</span><span class="p">]</span> <span class="o">=</span> <span class="n">goto</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># a regular goto string/callable target</span>
@@ -1893,6 +2122,7 @@
     <span class="k">def</span> <span class="nf">_parse</span><span class="p">(</span><span class="n">caller</span><span class="p">,</span> <span class="n">menu_template</span><span class="p">,</span> <span class="n">goto_callables</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parse the menu string format into a node tree.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">nodetree</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">splits</span> <span class="o">=</span> <span class="n">_RE_NODE</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">menu_template</span><span class="p">)</span>
@@ -1975,16 +2205,15 @@
   <li><a href="https://www.evennia.com">Home page</a> </li>
   <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
-  <li><a href="http://webchat.freenode.net/?channels=evennia&uio=MT1mYWxzZSY5PXRydWUmMTE9MTk1JjEyPXRydWUbb">IRC</a> - 
-    <a href="https://discord.gg/NecFePw">Discord</a> - 
-      <a href="https://groups.google.com/forum/#%21forum/evennia">Forums</a>
+  <li>
+    <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
+     <a href="https://github.com/evennia/evennia/discussions">Discussions</a> -
+      <a href="https://evennia.blogspot.com/">Blog</a>
   </li>
-  <li><a href="http://evennia.blogspot.com/">Evennia Dev blog</a> </li>
 </ul>
 <h3>Versions</h3>
 <ul>
   <li><a href="evmenu.html">1.0-dev (develop branch)</a></li>
-  <li><a href="../../../../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 </ul>
 
         </div>

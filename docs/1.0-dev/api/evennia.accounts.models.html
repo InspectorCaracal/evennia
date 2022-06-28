@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>evennia.accounts.models &#8212; Evennia 1.0-dev documentation</title>
     <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +16,9 @@
     <script src="../_static/language_data.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" /> 
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="evennia.commands" href="evennia.commands.html" />
+    <link rel="prev" title="evennia.accounts.manager" href="evennia.accounts.manager.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -26,7 +29,17 @@
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="evennia.commands.html" title="evennia.commands"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="evennia.accounts.manager.html" title="evennia.accounts.manager"
+             accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">Evennia 1.0-dev</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../Evennia-API.html" >API Summary</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="evennia-api.html" >evennia</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="evennia.html" >evennia</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="evennia.accounts.html" accesskey="U">evennia.accounts</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">evennia.accounts.models</a></li> 
       </ul>
         <div class="develop">develop branch</div>
@@ -37,7 +50,7 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-evennia.accounts.models">
+  <section id="module-evennia.accounts.models">
 <span id="evennia-accounts-models"></span><h1>evennia.accounts.models<a class="headerlink" href="#module-evennia.accounts.models" title="Permalink to this headline">¶</a></h1>
 <p>Account</p>
 <p>The account class is an extension of the default Django user class,
@@ -160,6 +173,13 @@ class built by <strong>**create_forward_many_to_many_manager()**</strong> define
 </dd></dl>
 
 <dl class="py attribute">
+<dt id="evennia.accounts.models.AccountDB.date_joined">
+<code class="sig-name descname">date_joined</code><a class="headerlink" href="#evennia.accounts.models.AccountDB.date_joined" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
 <dt id="evennia.accounts.models.AccountDB.db_attributes">
 <code class="sig-name descname">db_attributes</code><a class="headerlink" href="#evennia.accounts.models.AccountDB.db_attributes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Accessor to the related objects manager on the forward and reverse sides of
@@ -176,6 +196,27 @@ class built by <strong>**create_forward_many_to_many_manager()**</strong> define
 </dd></dl>
 
 <dl class="py attribute">
+<dt id="evennia.accounts.models.AccountDB.db_date_created">
+<code class="sig-name descname">db_date_created</code><a class="headerlink" href="#evennia.accounts.models.AccountDB.db_date_created" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="evennia.accounts.models.AccountDB.db_key">
+<code class="sig-name descname">db_key</code><a class="headerlink" href="#evennia.accounts.models.AccountDB.db_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="evennia.accounts.models.AccountDB.db_lock_storage">
+<code class="sig-name descname">db_lock_storage</code><a class="headerlink" href="#evennia.accounts.models.AccountDB.db_lock_storage" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
 <dt id="evennia.accounts.models.AccountDB.db_tags">
 <code class="sig-name descname">db_tags</code><a class="headerlink" href="#evennia.accounts.models.AccountDB.db_tags" title="Permalink to this definition">¶</a></dt>
 <dd><p>Accessor to the related objects manager on the forward and reverse sides of
@@ -189,6 +230,27 @@ a many-to-many relation.</p>
 instances.</p>
 <p>Most of the implementation is delegated to a dynamically defined manager
 class built by <strong>**create_forward_many_to_many_manager()**</strong> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="evennia.accounts.models.AccountDB.db_typeclass_path">
+<code class="sig-name descname">db_typeclass_path</code><a class="headerlink" href="#evennia.accounts.models.AccountDB.db_typeclass_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="evennia.accounts.models.AccountDB.email">
+<code class="sig-name descname">email</code><a class="headerlink" href="#evennia.accounts.models.AccountDB.email" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="evennia.accounts.models.AccountDB.first_name">
+<code class="sig-name descname">first_name</code><a class="headerlink" href="#evennia.accounts.models.AccountDB.first_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -250,6 +312,13 @@ class built by <strong>**create_forward_many_to_many_manager()**</strong> define
 object the first time, the query is executed.</p>
 </dd></dl>
 
+<dl class="py attribute">
+<dt id="evennia.accounts.models.AccountDB.is_active">
+<code class="sig-name descname">is_active</code><a class="headerlink" href="#evennia.accounts.models.AccountDB.is_active" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt id="evennia.accounts.models.AccountDB.is_bot">
 <em class="property">property </em><code class="sig-name descname">is_bot</code><a class="headerlink" href="#evennia.accounts.models.AccountDB.is_bot" title="Permalink to this definition">¶</a></dt>
@@ -260,6 +329,34 @@ object the first time, the query is executed.</p>
 <dt id="evennia.accounts.models.AccountDB.is_connected">
 <em class="property">property </em><code class="sig-name descname">is_connected</code><a class="headerlink" href="#evennia.accounts.models.AccountDB.is_connected" title="Permalink to this definition">¶</a></dt>
 <dd><p>A wrapper for getting database field <strong>db_is_connected</strong>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="evennia.accounts.models.AccountDB.is_staff">
+<code class="sig-name descname">is_staff</code><a class="headerlink" href="#evennia.accounts.models.AccountDB.is_staff" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="evennia.accounts.models.AccountDB.is_superuser">
+<code class="sig-name descname">is_superuser</code><a class="headerlink" href="#evennia.accounts.models.AccountDB.is_superuser" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="evennia.accounts.models.AccountDB.last_login">
+<code class="sig-name descname">last_login</code><a class="headerlink" href="#evennia.accounts.models.AccountDB.last_login" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="evennia.accounts.models.AccountDB.last_name">
+<code class="sig-name descname">last_name</code><a class="headerlink" href="#evennia.accounts.models.AccountDB.last_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -290,6 +387,13 @@ many-to-one relation.</p>
 <p><strong>**Parent.children**</strong> is a <strong>**ReverseManyToOneDescriptor**</strong> instance.</p>
 <p>Most of the implementation is delegated to a dynamically defined manager
 class built by <strong>**create_forward_many_to_many_manager()**</strong> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="evennia.accounts.models.AccountDB.password">
+<code class="sig-name descname">password</code><a class="headerlink" href="#evennia.accounts.models.AccountDB.password" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -365,9 +469,16 @@ instances.</p>
 class built by <strong>**create_forward_many_to_many_manager()**</strong> defined below.</p>
 </dd></dl>
 
+<dl class="py attribute">
+<dt id="evennia.accounts.models.AccountDB.username">
+<code class="sig-name descname">username</code><a class="headerlink" href="#evennia.accounts.models.AccountDB.username" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
 </dd></dl>
 
-</div>
+</dd></dl>
+
+</section>
 
 
             <div class="clearer"></div>
@@ -389,10 +500,16 @@ class built by <strong>**create_forward_many_to_many_manager()**</strong> define
     </div>
 </div>
 <script>$('#searchbox').show(0);</script>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="evennia.accounts.manager.html"
+                        title="previous chapter">evennia.accounts.manager</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="evennia.commands.html"
+                        title="next chapter">evennia.commands</a></p>
   <div role="note" aria-label="source link">
     <!--h3>This Page</h3-->
     <ul class="this-page-menu">
-      <li><a href="../_sources/api/evennia.accounts.models.rst.txt"
+      <li><a href="../_sources/api/evennia.accounts.models.md.txt"
             rel="nofollow">Show Page Source</a></li>
     </ul>
    </div><h3>Links</h3>
@@ -400,16 +517,15 @@ class built by <strong>**create_forward_many_to_many_manager()**</strong> define
   <li><a href="https://www.evennia.com">Home page</a> </li>
   <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
-  <li><a href="http://webchat.freenode.net/?channels=evennia&uio=MT1mYWxzZSY5PXRydWUmMTE9MTk1JjEyPXRydWUbb">IRC</a> - 
-    <a href="https://discord.gg/NecFePw">Discord</a> - 
-      <a href="https://groups.google.com/forum/#%21forum/evennia">Forums</a>
+  <li>
+    <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
+     <a href="https://github.com/evennia/evennia/discussions">Discussions</a> -
+      <a href="https://evennia.blogspot.com/">Blog</a>
   </li>
-  <li><a href="http://evennia.blogspot.com/">Evennia Dev blog</a> </li>
 </ul>
 <h3>Versions</h3>
 <ul>
   <li><a href="evennia.accounts.models.html">1.0-dev (develop branch)</a></li>
-  <li><a href="../../0.9.5/api/evennia.accounts.models.html">0.9.5 (v0.9.5 branch)</a></li>
 </ul>
 
         </div>
@@ -425,7 +541,17 @@ class built by <strong>**create_forward_many_to_many_manager()**</strong> define
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="evennia.commands.html" title="evennia.commands"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="evennia.accounts.manager.html" title="evennia.accounts.manager"
+             >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">Evennia 1.0-dev</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../Evennia-API.html" >API Summary</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="evennia-api.html" >evennia</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="evennia.html" >evennia</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="evennia.accounts.html" >evennia.accounts</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">evennia.accounts.models</a></li> 
       </ul>
         <div class="develop">develop branch</div>

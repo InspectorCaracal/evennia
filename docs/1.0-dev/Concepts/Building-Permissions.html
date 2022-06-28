@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Building Permissions &#8212; Evennia 1.0-dev documentation</title>
     <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +16,9 @@
     <script src="../_static/language_data.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" /> 
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Guest Logins" href="Guest-Logins.html" />
+    <link rel="prev" title="Multisession modes" href="Multisession-modes.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -26,7 +29,14 @@
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="Guest-Logins.html" title="Guest Logins"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Multisession-modes.html" title="Multisession modes"
+             accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">Evennia 1.0-dev</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="Concepts-Overview.html" accesskey="U">Core Concepts</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Building Permissions</a></li> 
       </ul>
         <div class="develop">develop branch</div>
@@ -37,11 +47,11 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="building-permissions">
+  <section class="tex2jax_ignore mathjax_ignore" id="building-permissions">
 <h1>Building Permissions<a class="headerlink" href="#building-permissions" title="Permalink to this headline">¶</a></h1>
 <p><em>OBS: This gives only a brief introduction to the access system. Locks and permissions are fully
-detailed</em> <a class="reference internal" href="../Components/Locks.html"><span class="doc">here</span></a>.</p>
-<div class="section" id="the-super-user">
+detailed</em> <a class="reference internal" href="../Components/Locks.html"><span class="doc std std-doc">here</span></a>.</p>
+<section id="the-super-user">
 <h2>The super user<a class="headerlink" href="#the-super-user" title="Permalink to this headline">¶</a></h2>
 <p>There are strictly speaking two types of users in Evennia, the <em>super user</em> and everyone else. The
 superuser is the first user you create, object <code class="docutils literal notranslate"><span class="pre">#1</span></code>. This is the all-powerful server-owner account.
@@ -49,12 +59,12 @@ Technically the superuser not only has access to everything, it <em>bypasses</em
 entirely. This makes the superuser impossible to lock out, but makes it unsuitable to actually play-
 test the game’s locks and restrictions with (see <code class="docutils literal notranslate"><span class="pre">&#64;quell</span></code> below). Usually there is no need to have
 but one superuser.</p>
-</div>
-<div class="section" id="assigning-permissions">
+</section>
+<section id="assigning-permissions">
 <h2>Assigning permissions<a class="headerlink" href="#assigning-permissions" title="Permalink to this headline">¶</a></h2>
 <p>Whereas permissions can be used for anything, those put in <code class="docutils literal notranslate"><span class="pre">settings.PERMISSION_HIERARCHY</span></code> will have
 a ranking relative each other as well. We refer to these types of permissions as <em>hierarchical
-permissions</em>. When building locks to check these permissions, the <code class="docutils literal notranslate"><span class="pre">perm()</span></code> <a class="reference internal" href="../Components/Locks.html"><span class="doc">lock function</span></a> is
+permissions</em>. When building locks to check these permissions, the <code class="docutils literal notranslate"><span class="pre">perm()</span></code> <a class="reference internal" href="../Components/Locks.html"><span class="doc std std-doc">lock function</span></a> is
 used. By default Evennia creates the following hierarchy (spelled exactly like this):</p>
 <ol class="simple">
 <li><p><strong>Developers</strong> basically have the same access as superusers except that they do <em>not</em> sidestep
@@ -78,11 +88,11 @@ This is an <em>Developer</em>-level command, but it could in principle be made l
 allows assignments equal or lower to your current level (so you cannot use it to escalate your own
 permission level).  So, assuming you yourself have <em>Developer</em> access (or is superuser), you  assign
 a new account “Tommy” to your core staff with the command</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@perm</span><span class="o">/</span><span class="n">account</span> <span class="n">Tommy</span> <span class="o">=</span> <span class="n">Developer</span>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>@perm/account Tommy = Developer
 </pre></div>
 </div>
 <p>or</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@perm</span> <span class="o">*</span><span class="n">Tommy</span> <span class="o">=</span> <span class="n">Developer</span>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>@perm *Tommy = Developer
 </pre></div>
 </div>
 <p>We use a switch or the <code class="docutils literal notranslate"><span class="pre">*name</span></code> format to make sure to put the permission on the <em>Account</em> and not on
@@ -91,23 +101,23 @@ Account will then remain an Developer regardless of which Character they are cur
 To limit permission to a per-Character level you should instead use <em>quelling</em> (see below). Normally
 permissions can be any string, but for these special hierarchical permissions you can also use
 plural (“Developer” and “Developers” both grant the same powers).</p>
-</div>
-<div class="section" id="quelling-your-permissions">
+</section>
+<section id="quelling-your-permissions">
 <h2>Quelling your permissions<a class="headerlink" href="#quelling-your-permissions" title="Permalink to this headline">¶</a></h2>
 <p>When developing it can be useful to check just how things would look had your permission-level been
 lower. For this you can use <em>quelling</em>.  Normally, when you puppet a Character you are using your
 Account-level permission. So even if your Character only has <em>Accounts</em> level permissions, your
 <em>Developer</em>-level Account will take precedence. With the <code class="docutils literal notranslate"><span class="pre">&#64;quell</span></code> command you can change so that the
 Character’s permission takes precedence instead:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="nd">@quell</span>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span> @quell
 </pre></div>
 </div>
 <p>This will allow you to test out the game using the current Character’s permission level. A developer
 or builder can thus in principle maintain several test characters, all using different permission
 levels. Note that you cannot escalate your permissions this way; If the Character happens to have a
 <em>higher</em> permission level than the Account, the <em>Account’s</em> (lower) permission will still be used.</p>
-</div>
-</div>
+</section>
+</section>
 
 
             <div class="clearer"></div>
@@ -139,6 +149,12 @@ levels. Note that you cannot escalate your permissions this way; If the Characte
 </li>
 </ul>
 
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Multisession-modes.html"
+                        title="previous chapter">Multisession modes</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="Guest-Logins.html"
+                        title="next chapter">Guest Logins</a></p>
   <div role="note" aria-label="source link">
     <!--h3>This Page</h3-->
     <ul class="this-page-menu">
@@ -150,16 +166,15 @@ levels. Note that you cannot escalate your permissions this way; If the Characte
   <li><a href="https://www.evennia.com">Home page</a> </li>
   <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
-  <li><a href="http://webchat.freenode.net/?channels=evennia&uio=MT1mYWxzZSY5PXRydWUmMTE9MTk1JjEyPXRydWUbb">IRC</a> - 
-    <a href="https://discord.gg/NecFePw">Discord</a> - 
-      <a href="https://groups.google.com/forum/#%21forum/evennia">Forums</a>
+  <li>
+    <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
+     <a href="https://github.com/evennia/evennia/discussions">Discussions</a> -
+      <a href="https://evennia.blogspot.com/">Blog</a>
   </li>
-  <li><a href="http://evennia.blogspot.com/">Evennia Dev blog</a> </li>
 </ul>
 <h3>Versions</h3>
 <ul>
   <li><a href="Building-Permissions.html">1.0-dev (develop branch)</a></li>
-  <li><a href="../../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 </ul>
 
         </div>
@@ -175,7 +190,14 @@ levels. Note that you cannot escalate your permissions this way; If the Characte
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="Guest-Logins.html" title="Guest Logins"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="Multisession-modes.html" title="Multisession modes"
+             >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">Evennia 1.0-dev</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="Concepts-Overview.html" >Core Concepts</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Building Permissions</a></li> 
       </ul>
         <div class="develop">develop branch</div>

@@ -61,17 +61,17 @@
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">update_wrapper</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span><span class="p">,</span> <span class="n">MutableSequence</span><span class="p">,</span> <span class="n">MutableSet</span><span class="p">,</span> <span class="n">MutableMapping</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span><span class="p">,</span> <span class="n">deque</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">deque</span><span class="p">,</span> <span class="n">OrderedDict</span><span class="p">,</span> <span class="n">defaultdict</span>
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">MutableSequence</span><span class="p">,</span> <span class="n">MutableSet</span><span class="p">,</span> <span class="n">MutableMapping</span>
 
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">pickle</span> <span class="kn">import</span> <span class="n">dumps</span><span class="p">,</span> <span class="n">loads</span>
+    <span class="kn">from</span> <span class="nn">pickle</span> <span class="kn">import</span> <span class="n">dumps</span><span class="p">,</span> <span class="n">loads</span><span class="p">,</span> <span class="n">UnpicklingError</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">pickle</span> <span class="kn">import</span> <span class="n">dumps</span><span class="p">,</span> <span class="n">loads</span>
 <span class="kn">from</span> <span class="nn">django.core.exceptions</span> <span class="kn">import</span> <span class="n">ObjectDoesNotExist</span>
 <span class="kn">from</span> <span class="nn">django.contrib.contenttypes.models</span> <span class="kn">import</span> <span class="n">ContentType</span>
 <span class="kn">from</span> <span class="nn">django.utils.safestring</span> <span class="kn">import</span> <span class="n">SafeString</span>
-<span class="kn">from</span> <span class="nn">evennia.utils.utils</span> <span class="kn">import</span> <span class="n">uses_database</span><span class="p">,</span> <span class="n">is_iter</span><span class="p">,</span> <span class="n">to_str</span><span class="p">,</span> <span class="n">to_bytes</span>
+<span class="kn">from</span> <span class="nn">evennia.utils.utils</span> <span class="kn">import</span> <span class="n">uses_database</span><span class="p">,</span> <span class="n">is_iter</span><span class="p">,</span> <span class="n">to_bytes</span>
 <span class="kn">from</span> <span class="nn">evennia.utils</span> <span class="kn">import</span> <span class="n">logger</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;to_pickle&quot;</span><span class="p">,</span> <span class="s2">&quot;from_pickle&quot;</span><span class="p">,</span> <span class="s2">&quot;do_pickle&quot;</span><span class="p">,</span> <span class="s2">&quot;do_unpickle&quot;</span><span class="p">,</span> <span class="s2">&quot;dbserialize&quot;</span><span class="p">,</span> <span class="s2">&quot;dbunserialize&quot;</span><span class="p">)</span>
@@ -245,6 +245,10 @@
                 <span class="n">dat</span> <span class="o">=</span> <span class="n">_SaverDict</span><span class="p">(</span><span class="n">_parent</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
                 <span class="n">dat</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">update</span><span class="p">((</span><span class="n">key</span><span class="p">,</span> <span class="n">process_tree</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">dat</span><span class="p">))</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
                 <span class="k">return</span> <span class="n">dat</span>
+            <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="n">defaultdict</span><span class="p">:</span>
+                <span class="n">dat</span> <span class="o">=</span> <span class="n">_SaverDefaultDict</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">default_factory</span><span class="p">,</span> <span class="n">_parent</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
+                <span class="n">dat</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">update</span><span class="p">((</span><span class="n">key</span><span class="p">,</span> <span class="n">process_tree</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">dat</span><span class="p">))</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+                <span class="k">return</span> <span class="n">dat</span>
             <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="nb">set</span><span class="p">:</span>
                 <span class="n">dat</span> <span class="o">=</span> <span class="n">_SaverSet</span><span class="p">(</span><span class="n">_parent</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
                 <span class="n">dat</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">process_tree</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">dat</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">item</span><span class="p">)</span>
@@ -277,6 +281,9 @@
     <span class="k">def</span> <span class="fm">__gt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">&gt;</span> <span class="n">other</span>
 
+    <span class="k">def</span> <span class="fm">__or__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">|</span> <span class="n">other</span>
+
     <span class="nd">@_save</span>
     <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert_mutables</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
@@ -284,6 +291,10 @@
     <span class="nd">@_save</span>
     <span class="k">def</span> <span class="fm">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="fm">__delitem__</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">deserialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Deserializes this mutable into its corresponding non-Saver type.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">deserialize</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
 
 <span class="k">class</span> <span class="nc">_SaverList</span><span class="p">(</span><span class="n">_SaverMutable</span><span class="p">,</span> <span class="n">MutableSequence</span><span class="p">):</span>
@@ -345,6 +356,25 @@
     <span class="nd">@_save</span>
     <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">_SaverDefaultDict</span><span class="p">(</span><span class="n">_SaverDict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A defaultdict that stores changes to an attribute when updated</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factory</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="n">factory</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_factory</span> <span class="o">=</span> <span class="n">factory</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="c1"># detect the case of db.foo[&#39;a&#39;] with no immediate assignment</span>
+            <span class="c1"># (important: using `key in self._data` would be always True!)</span>
+            <span class="n">default_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">default_value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
 
 
 <span class="k">class</span> <span class="nc">_SaverSet</span><span class="p">(</span><span class="n">_SaverMutable</span><span class="p">,</span> <span class="n">MutableSet</span><span class="p">):</span>
@@ -434,6 +464,10 @@
     <span class="k">def</span> <span class="nf">rotate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
 
+    <span class="nd">@_save</span>
+    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+
 
 <span class="n">_DESERIALIZE_MAPPING</span> <span class="o">=</span> <span class="p">{</span>
     <span class="n">_SaverList</span><span class="o">.</span><span class="vm">__name__</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
@@ -441,6 +475,7 @@
     <span class="n">_SaverSet</span><span class="o">.</span><span class="vm">__name__</span><span class="p">:</span> <span class="nb">set</span><span class="p">,</span>
     <span class="n">_SaverOrderedDict</span><span class="o">.</span><span class="vm">__name__</span><span class="p">:</span> <span class="n">OrderedDict</span><span class="p">,</span>
     <span class="n">_SaverDeque</span><span class="o">.</span><span class="vm">__name__</span><span class="p">:</span> <span class="n">deque</span><span class="p">,</span>
+    <span class="n">_SaverDefaultDict</span><span class="o">.</span><span class="vm">__name__</span><span class="p">:</span> <span class="n">defaultdict</span><span class="p">,</span>
 <span class="p">}</span>
 
 
@@ -452,10 +487,17 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">_iter</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+        <span class="c1"># breakpoint()</span>
         <span class="n">typ</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
         <span class="n">tname</span> <span class="o">=</span> <span class="n">typ</span><span class="o">.</span><span class="vm">__name__</span>
         <span class="k">if</span> <span class="n">tname</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;_SaverDict&quot;</span><span class="p">,</span> <span class="s2">&quot;dict&quot;</span><span class="p">):</span>
             <span class="k">return</span> <span class="p">{</span><span class="n">_iter</span><span class="p">(</span><span class="n">key</span><span class="p">):</span> <span class="n">_iter</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        <span class="k">elif</span> <span class="n">tname</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;_SaverOrderedDict&quot;</span><span class="p">,</span> <span class="s2">&quot;OrderedDict&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">OrderedDict</span><span class="p">([(</span><span class="n">_iter</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="n">_iter</span><span class="p">(</span><span class="n">val</span><span class="p">))</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span>
+        <span class="k">elif</span> <span class="n">tname</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;_SaverDefaultDict&quot;</span><span class="p">,</span> <span class="s2">&quot;defaultdict&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">defaultdict</span><span class="p">(</span>
+                <span class="n">obj</span><span class="o">.</span><span class="n">default_factory</span><span class="p">,</span> <span class="p">{</span><span class="n">_iter</span><span class="p">(</span><span class="n">key</span><span class="p">):</span> <span class="n">_iter</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+            <span class="p">)</span>
         <span class="k">elif</span> <span class="n">tname</span> <span class="ow">in</span> <span class="n">_DESERIALIZE_MAPPING</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">_DESERIALIZE_MAPPING</span><span class="p">[</span><span class="n">tname</span><span class="p">](</span><span class="n">_iter</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">obj</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">is_iter</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
@@ -607,7 +649,9 @@
 
     <span class="k">def</span> <span class="nf">process_item</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Recursive processor and identification of data&quot;&quot;&quot;</span>
+
         <span class="n">dtype</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">SafeString</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">item</span>
         <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="nb">tuple</span><span class="p">:</span>
@@ -616,6 +660,11 @@
             <span class="k">return</span> <span class="p">[</span><span class="n">process_item</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">item</span><span class="p">]</span>
         <span class="k">elif</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">dict</span><span class="p">,</span> <span class="n">_SaverDict</span><span class="p">):</span>
             <span class="k">return</span> <span class="nb">dict</span><span class="p">((</span><span class="n">process_item</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="n">process_item</span><span class="p">(</span><span class="n">val</span><span class="p">))</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+        <span class="k">elif</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="p">(</span><span class="n">defaultdict</span><span class="p">,</span> <span class="n">_SaverDefaultDict</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">defaultdict</span><span class="p">(</span>
+                <span class="n">item</span><span class="o">.</span><span class="n">default_factory</span><span class="p">,</span>
+                <span class="p">((</span><span class="n">process_item</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="n">process_item</span><span class="p">(</span><span class="n">val</span><span class="p">))</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">items</span><span class="p">()),</span>
+            <span class="p">)</span>
         <span class="k">elif</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">set</span><span class="p">,</span> <span class="n">_SaverSet</span><span class="p">):</span>
             <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="n">process_item</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">item</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="p">(</span><span class="n">OrderedDict</span><span class="p">,</span> <span class="n">_SaverOrderedDict</span><span class="p">):</span>
@@ -623,7 +672,20 @@
         <span class="k">elif</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="p">(</span><span class="n">deque</span><span class="p">,</span> <span class="n">_SaverDeque</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">deque</span><span class="p">(</span><span class="n">process_item</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">item</span><span class="p">)</span>
 
-        <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;__iter__&quot;</span><span class="p">):</span>
+        <span class="c1"># not one of the base types</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;__serialize_dbobjs__&quot;</span><span class="p">):</span>
+            <span class="c1"># Allows custom serialization of any dbobjects embedded in</span>
+            <span class="c1"># the item that Evennia will otherwise not find (these would</span>
+            <span class="c1"># otherwise lead to an error). Use the dbserialize helper from</span>
+            <span class="c1"># this method.</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">item</span><span class="o">.</span><span class="n">__serialize_dbobjs__</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+                <span class="c1"># we catch typerrors so we can handle both classes (requiring</span>
+                <span class="c1"># classmethods) and instances</span>
+                <span class="k">pass</span>
+
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;__iter__&quot;</span><span class="p">):</span>
             <span class="c1"># we try to conserve the iterable class, if not convert to list</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">item</span><span class="o">.</span><span class="vm">__class__</span><span class="p">([</span><span class="n">process_item</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">item</span><span class="p">])</span>
@@ -667,6 +729,7 @@
 
     <span class="k">def</span> <span class="nf">process_item</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Recursive processor and identification of data&quot;&quot;&quot;</span>
+        <span class="c1"># breakpoint()</span>
         <span class="n">dtype</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">SafeString</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">item</span>
@@ -679,6 +742,11 @@
             <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">process_item</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">item</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="nb">dict</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">dict</span><span class="p">((</span><span class="n">process_item</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="n">process_item</span><span class="p">(</span><span class="n">val</span><span class="p">))</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+        <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="n">defaultdict</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">defaultdict</span><span class="p">(</span>
+                <span class="n">item</span><span class="o">.</span><span class="n">default_factory</span><span class="p">,</span>
+                <span class="p">((</span><span class="n">process_item</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="n">process_item</span><span class="p">(</span><span class="n">val</span><span class="p">))</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">items</span><span class="p">()),</span>
+            <span class="p">)</span>
         <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="nb">set</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="n">process_item</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">item</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="n">OrderedDict</span><span class="p">:</span>
@@ -692,10 +760,27 @@
                 <span class="k">return</span> <span class="n">item</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">process_item</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">item</span><span class="p">)</span>
             <span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
                 <span class="k">return</span> <span class="p">[</span><span class="n">process_item</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">item</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="s2">&quot;__deserialize_dbobjs__&quot;</span><span class="p">):</span>
+            <span class="c1"># this allows the object to custom-deserialize any embedded dbobjs</span>
+            <span class="c1"># that we previously serialized with __serialize_dbobjs__.</span>
+            <span class="c1"># use the dbunserialize helper in this module.</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">item</span><span class="o">.</span><span class="n">__deserialize_dbobjs__</span><span class="p">()</span>
+            <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="n">UnpicklingError</span><span class="p">):</span>
+                <span class="c1"># handle recoveries both of classes (requiring classmethods</span>
+                <span class="c1"># or instances. Unpickling errors can happen when re-loading the</span>
+                <span class="c1"># data from cache (because the hidden entity was already</span>
+                <span class="c1"># deserialized and stored back on the object, unpickling it</span>
+                <span class="c1"># again fails). TODO: Maybe one could avoid this retry in a</span>
+                <span class="c1"># more graceful way?</span>
+                <span class="k">pass</span>
+
         <span class="k">return</span> <span class="n">item</span>
 
     <span class="k">def</span> <span class="nf">process_tree</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Recursive processor, building a parent-tree from iterable data&quot;&quot;&quot;</span>
+        <span class="c1"># breakpoint()</span>
         <span class="n">dtype</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">SafeString</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">item</span>
@@ -710,6 +795,12 @@
             <span class="k">return</span> <span class="n">dat</span>
         <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="nb">dict</span><span class="p">:</span>
             <span class="n">dat</span> <span class="o">=</span> <span class="n">_SaverDict</span><span class="p">(</span><span class="n">_parent</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
+            <span class="n">dat</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">process_item</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="n">process_tree</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">dat</span><span class="p">))</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">dat</span>
+        <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="n">defaultdict</span><span class="p">:</span>
+            <span class="n">dat</span> <span class="o">=</span> <span class="n">_SaverDefaultDict</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">default_factory</span><span class="p">,</span> <span class="n">_parent</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
             <span class="n">dat</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
                 <span class="p">(</span><span class="n">process_item</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="n">process_tree</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">dat</span><span class="p">))</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
             <span class="p">)</span>
@@ -749,6 +840,12 @@
             <span class="k">return</span> <span class="n">dat</span>
         <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="nb">dict</span><span class="p">:</span>
             <span class="n">dat</span> <span class="o">=</span> <span class="n">_SaverDict</span><span class="p">(</span><span class="n">_db_obj</span><span class="o">=</span><span class="n">db_obj</span><span class="p">)</span>
+            <span class="n">dat</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">process_item</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="n">process_tree</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">dat</span><span class="p">))</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">dat</span>
+        <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="n">defaultdict</span><span class="p">:</span>
+            <span class="n">dat</span> <span class="o">=</span> <span class="n">_SaverDefaultDict</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">default_factory</span><span class="p">,</span> <span class="n">_db_obj</span><span class="o">=</span><span class="n">db_obj</span><span class="p">)</span>
             <span class="n">dat</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
                 <span class="p">(</span><span class="n">process_item</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="n">process_tree</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">dat</span><span class="p">))</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
             <span class="p">)</span>
@@ -821,16 +918,15 @@
   <li><a href="https://www.evennia.com">Home page</a> </li>
   <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
-  <li><a href="http://webchat.freenode.net/?channels=evennia&uio=MT1mYWxzZSY5PXRydWUmMTE9MTk1JjEyPXRydWUbb">IRC</a> - 
-    <a href="https://discord.gg/NecFePw">Discord</a> - 
-      <a href="https://groups.google.com/forum/#%21forum/evennia">Forums</a>
+  <li>
+    <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
+     <a href="https://github.com/evennia/evennia/discussions">Discussions</a> -
+      <a href="https://evennia.blogspot.com/">Blog</a>
   </li>
-  <li><a href="http://evennia.blogspot.com/">Evennia Dev blog</a> </li>
 </ul>
 <h3>Versions</h3>
 <ul>
   <li><a href="dbserialize.html">1.0-dev (develop branch)</a></li>
-  <li><a href="../../../../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 </ul>
 
         </div>

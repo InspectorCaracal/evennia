@@ -52,12 +52,13 @@
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">traceback</span>
 
 <span class="kn">from</span> <span class="nn">twisted.web</span> <span class="kn">import</span> <span class="n">static</span>
 <span class="kn">from</span> <span class="nn">twisted.application</span> <span class="kn">import</span> <span class="n">internet</span><span class="p">,</span> <span class="n">service</span>
 <span class="kn">from</span> <span class="nn">twisted.internet</span> <span class="kn">import</span> <span class="n">reactor</span><span class="p">,</span> <span class="n">defer</span>
 <span class="kn">from</span> <span class="nn">twisted.internet.task</span> <span class="kn">import</span> <span class="n">LoopingCall</span>
-<span class="kn">from</span> <span class="nn">twisted.python.log</span> <span class="kn">import</span> <span class="n">ILogObserver</span>
+<span class="kn">from</span> <span class="nn">twisted.logger</span> <span class="kn">import</span> <span class="n">globalLogPublisher</span>
 
 <span class="kn">import</span> <span class="nn">django</span>
 
@@ -78,7 +79,6 @@
 
 <span class="kn">from</span> <span class="nn">evennia.utils.utils</span> <span class="kn">import</span> <span class="n">get_evennia_version</span><span class="p">,</span> <span class="n">mod_import</span><span class="p">,</span> <span class="n">make_iter</span>
 <span class="kn">from</span> <span class="nn">evennia.utils</span> <span class="kn">import</span> <span class="n">logger</span>
-<span class="kn">from</span> <span class="nn">evennia.comms</span> <span class="kn">import</span> <span class="n">channelhandler</span>
 <span class="kn">from</span> <span class="nn">evennia.server.sessionhandler</span> <span class="kn">import</span> <span class="n">SESSIONS</span>
 
 <span class="kn">from</span> <span class="nn">django.utils.translation</span> <span class="kn">import</span> <span class="n">gettext</span> <span class="k">as</span> <span class="n">_</span>
@@ -182,13 +182,10 @@
     <span class="n">_GAMETIME_MODULE</span><span class="o">.</span><span class="n">SERVER_RUNTIME_LAST_UPDATED</span> <span class="o">=</span> <span class="n">now</span>
     <span class="n">ServerConfig</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">conf</span><span class="p">(</span><span class="s2">&quot;runtime&quot;</span><span class="p">,</span> <span class="n">_GAMETIME_MODULE</span><span class="o">.</span><span class="n">SERVER_RUNTIME</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">_MAINTENANCE_COUNT</span> <span class="o">%</span> <span class="mi">300</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">_MAINTENANCE_COUNT</span> <span class="o">%</span> <span class="mi">5</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="c1"># check cache size every 5 minutes</span>
         <span class="n">_FLUSH_CACHE</span><span class="p">(</span><span class="n">_IDMAPPER_CACHE_MAXSIZE</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">_MAINTENANCE_COUNT</span> <span class="o">%</span> <span class="mi">3700</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="c1"># validate channels off-sync with scripts</span>
-        <span class="n">evennia</span><span class="o">.</span><span class="n">CHANNEL_HANDLER</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">_MAINTENANCE_COUNT</span> <span class="o">%</span> <span class="p">(</span><span class="mi">3600</span> <span class="o">*</span> <span class="mi">7</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">_MAINTENANCE_COUNT</span> <span class="o">%</span> <span class="p">(</span><span class="mi">60</span> <span class="o">*</span> <span class="mi">7</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="c1"># drop database connection every 7 hrs to avoid default timeouts on MySQL</span>
         <span class="c1"># (see https://github.com/evennia/evennia/issues/1376)</span>
         <span class="n">connection</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
@@ -220,6 +217,7 @@
 <span class="sd">    The main Evennia server handler. This object sets up the database and</span>
 <span class="sd">    tracks and interlinks all the twisted network services that make up</span>
 <span class="sd">    evennia.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="Evennia.__init__"><a class="viewcode-back" href="../../../api/evennia.server.server.html#evennia.server.server.Evennia.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">application</span><span class="p">):</span>
@@ -243,12 +241,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">sqlite3_prep</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-
-        <span class="c1"># initialize channelhandler</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">channelhandler</span><span class="o">.</span><span class="n">CHANNELHANDLER</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
-        <span class="k">except</span> <span class="n">OperationalError</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;channelhandler couldn&#39;t update - db not set up&quot;</span><span class="p">)</span>
 
         <span class="c1"># wrap the SIGINT handler to make sure we empty the threadpool</span>
         <span class="c1"># even when we reload and we have long-running requests in queue.</span>
@@ -295,6 +287,7 @@
 <span class="sd">        This allows for changing default cmdset locations and default</span>
 <span class="sd">        typeclasses in the settings file and have them auto-update all</span>
 <span class="sd">        already existing objects.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">global</span> <span class="n">INFO_DICT</span>
 
@@ -333,9 +326,12 @@
                 <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">tup</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tup</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">tup</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">settings_compare</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">mismatches</span>
             <span class="p">):</span>
                 <span class="c1"># update the database</span>
-                <span class="n">INFO_DICT</span><span class="p">[</span><span class="s2">&quot;info&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="s2">&quot; </span><span class="si">%s</span><span class="s2">:</span><span class="se">\n</span><span class="s2"> &#39;</span><span class="si">%s</span><span class="s2">&#39; changed to &#39;</span><span class="si">%s</span><span class="s2">&#39;. Updating unchanged entries in database ...&quot;</span>
-                    <span class="o">%</span> <span class="p">(</span><span class="n">settings_names</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">prev</span><span class="p">,</span> <span class="n">curr</span><span class="p">)</span>
+                <span class="n">INFO_DICT</span><span class="p">[</span>
+                    <span class="s2">&quot;info&quot;</span>
+                <span class="p">]</span> <span class="o">=</span> <span class="s2">&quot; </span><span class="si">%s</span><span class="s2">:</span><span class="se">\n</span><span class="s2"> &#39;</span><span class="si">%s</span><span class="s2">&#39; changed to &#39;</span><span class="si">%s</span><span class="s2">&#39;. Updating unchanged entries in database ...&quot;</span> <span class="o">%</span> <span class="p">(</span>
+                    <span class="n">settings_names</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                    <span class="n">prev</span><span class="p">,</span>
+                    <span class="n">curr</span><span class="p">,</span>
                 <span class="p">)</span>
                 <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                     <span class="n">ObjectDB</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">db_cmdset_storage__exact</span><span class="o">=</span><span class="n">prev</span><span class="p">)</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
@@ -381,25 +377,60 @@
 <span class="sd">        to the portal has been established.</span>
 <span class="sd">        This attempts to run the initial_setup script of the server.</span>
 <span class="sd">        It returns if this is not the first time the server starts.</span>
-<span class="sd">        Once finished the last_initial_setup_step is set to -1.</span>
+<span class="sd">        Once finished the last_initial_setup_step is set to &#39;done&#39;</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">global</span> <span class="n">INFO_DICT</span>
         <span class="n">initial_setup</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">INITIAL_SETUP_MODULE</span><span class="p">)</span>
         <span class="n">last_initial_setup_step</span> <span class="o">=</span> <span class="n">ServerConfig</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">conf</span><span class="p">(</span><span class="s2">&quot;last_initial_setup_step&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">last_initial_setup_step</span><span class="p">:</span>
-            <span class="c1"># None is only returned if the config does not exist,</span>
-            <span class="c1"># i.e. this is an empty DB that needs populating.</span>
-            <span class="n">INFO_DICT</span><span class="p">[</span><span class="s2">&quot;info&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot; Server started for the first time. Setting defaults.&quot;</span>
-            <span class="n">initial_setup</span><span class="o">.</span><span class="n">handle_setup</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">int</span><span class="p">(</span><span class="n">last_initial_setup_step</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="c1"># a positive value means the setup crashed on one of its</span>
-            <span class="c1"># modules and setup will resume from this step, retrying</span>
-            <span class="c1"># the last failed module. When all are finished, the step</span>
-            <span class="c1"># is set to -1 to show it does not need to be run again.</span>
-            <span class="n">INFO_DICT</span><span class="p">[</span><span class="s2">&quot;info&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot; Resuming initial setup from step </span><span class="si">{last}</span><span class="s2">.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">last</span><span class="o">=</span><span class="n">last_initial_setup_step</span>
-            <span class="p">)</span>
-            <span class="n">initial_setup</span><span class="o">.</span><span class="n">handle_setup</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">last_initial_setup_step</span><span class="p">))</span></div>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">last_initial_setup_step</span><span class="p">:</span>
+                <span class="c1"># None is only returned if the config does not exist,</span>
+                <span class="c1"># i.e. this is an empty DB that needs populating.</span>
+                <span class="n">INFO_DICT</span><span class="p">[</span><span class="s2">&quot;info&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot; Server started for the first time. Setting defaults.&quot;</span>
+                <span class="n">initial_setup</span><span class="o">.</span><span class="n">handle_setup</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">last_initial_setup_step</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;done&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                <span class="c1"># last step crashed, so we weill resume from this step.</span>
+                <span class="c1"># modules and setup will resume from this step, retrying</span>
+                <span class="c1"># the last failed module. When all are finished, the step</span>
+                <span class="c1"># is set to &#39;done&#39; to show it does not need to be run again.</span>
+                <span class="n">INFO_DICT</span><span class="p">[</span><span class="s2">&quot;info&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot; Resuming initial setup from step &#39;</span><span class="si">{last}</span><span class="s2">&#39;.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">last</span><span class="o">=</span><span class="n">last_initial_setup_step</span>
+                <span class="p">)</span>
+                <span class="n">initial_setup</span><span class="o">.</span><span class="n">handle_setup</span><span class="p">(</span><span class="n">last_initial_setup_step</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="c1"># stop server if this happens.</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">())</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error in initial setup. Stopping Server + Portal.&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sessions</span><span class="o">.</span><span class="n">portal_shutdown</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Evennia.create_default_channels"><a class="viewcode-back" href="../../../api/evennia.server.server.html#evennia.server.server.Evennia.create_default_channels">[docs]</a>    <span class="k">def</span> <span class="nf">create_default_channels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        check so default channels exist on every restart, create if not.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="kn">from</span> <span class="nn">evennia.comms.models</span> <span class="kn">import</span> <span class="n">ChannelDB</span>
+        <span class="kn">from</span> <span class="nn">evennia.accounts.models</span> <span class="kn">import</span> <span class="n">AccountDB</span>
+        <span class="kn">from</span> <span class="nn">evennia.utils.create</span> <span class="kn">import</span> <span class="n">create_channel</span>
+
+        <span class="n">superuser</span> <span class="o">=</span> <span class="n">AccountDB</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="c1"># mudinfo</span>
+        <span class="n">mudinfo_chan</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">CHANNEL_MUDINFO</span>
+        <span class="k">if</span> <span class="n">mudinfo_chan</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">ChannelDB</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">db_key</span><span class="o">=</span><span class="n">mudinfo_chan</span><span class="p">[</span><span class="s2">&quot;key&quot;</span><span class="p">]):</span>
+                <span class="n">channel</span> <span class="o">=</span> <span class="n">create_channel</span><span class="p">(</span><span class="o">**</span><span class="n">mudinfo_chan</span><span class="p">)</span>
+                <span class="n">channel</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">superuser</span><span class="p">)</span>
+        <span class="c1"># connectinfo</span>
+        <span class="n">connectinfo_chan</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">CHANNEL_MUDINFO</span>
+        <span class="k">if</span> <span class="n">connectinfo_chan</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">ChannelDB</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">db_key</span><span class="o">=</span><span class="n">mudinfo_chan</span><span class="p">[</span><span class="s2">&quot;key&quot;</span><span class="p">]):</span>
+                <span class="n">channel</span> <span class="o">=</span> <span class="n">create_channel</span><span class="p">(</span><span class="o">**</span><span class="n">connectinfo_chan</span><span class="p">)</span>
+        <span class="c1"># default channels</span>
+        <span class="k">for</span> <span class="n">chan_info</span> <span class="ow">in</span> <span class="n">settings</span><span class="o">.</span><span class="n">DEFAULT_CHANNELS</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">ChannelDB</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">db_key</span><span class="o">=</span><span class="n">chan_info</span><span class="p">[</span><span class="s2">&quot;key&quot;</span><span class="p">]):</span>
+                <span class="n">channel</span> <span class="o">=</span> <span class="n">create_channel</span><span class="p">(</span><span class="o">**</span><span class="n">chan_info</span><span class="p">)</span>
+                <span class="n">channel</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">superuser</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Evennia.run_init_hooks"><a class="viewcode-back" href="../../../api/evennia.server.server.html#evennia.server.server.Evennia.run_init_hooks">[docs]</a>    <span class="k">def</span> <span class="nf">run_init_hooks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -409,7 +440,7 @@
 <span class="sd">            mode (str): One of shutdown, reload or reset</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">from</span> <span class="nn">evennia.objects.models</span> <span class="kn">import</span> <span class="n">ObjectDB</span>
+        <span class="kn">from</span> <span class="nn">evennia.typeclasses.models</span> <span class="kn">import</span> <span class="n">TypedObject</span>
 
         <span class="c1"># start server time and maintenance task</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">maintenance_task</span> <span class="o">=</span> <span class="n">LoopingCall</span><span class="p">(</span><span class="n">_server_maintenance</span><span class="p">)</span>
@@ -418,8 +449,11 @@
         <span class="c1"># update eventual changed defaults</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update_defaults</span><span class="p">()</span>
 
-        <span class="p">[</span><span class="n">o</span><span class="o">.</span><span class="n">at_init</span><span class="p">()</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">ObjectDB</span><span class="o">.</span><span class="n">get_all_cached_instances</span><span class="p">()]</span>
-        <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">at_init</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">AccountDB</span><span class="o">.</span><span class="n">get_all_cached_instances</span><span class="p">()]</span>
+        <span class="c1"># run at_init() on all cached entities on reconnect</span>
+        <span class="p">[</span>
+            <span class="p">[</span><span class="n">entity</span><span class="o">.</span><span class="n">at_init</span><span class="p">()</span> <span class="k">for</span> <span class="n">entity</span> <span class="ow">in</span> <span class="n">typeclass_db</span><span class="o">.</span><span class="n">get_all_cached_instances</span><span class="p">()]</span>
+            <span class="k">for</span> <span class="n">typeclass_db</span> <span class="ow">in</span> <span class="n">TypedObject</span><span class="o">.</span><span class="n">__subclasses__</span><span class="p">()</span>
+        <span class="p">]</span>
 
         <span class="c1"># call correct server hook based on start file value</span>
         <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;reload&quot;</span><span class="p">:</span>
@@ -430,6 +464,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">at_server_cold_start</span><span class="p">()</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">log_msg</span><span class="p">(</span><span class="s2">&quot;Evennia Server successfully restarted in &#39;reset&#39; mode.&quot;</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;shutdown&quot;</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">evennia.objects.models</span> <span class="kn">import</span> <span class="n">ObjectDB</span>
+
             <span class="bp">self</span><span class="o">.</span><span class="n">at_server_cold_start</span><span class="p">()</span>
             <span class="c1"># clear eventual lingering session storages</span>
             <span class="n">ObjectDB</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">clear_all_sessids</span><span class="p">()</span>
@@ -523,7 +559,10 @@
         <span class="n">ServerConfig</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">conf</span><span class="p">(</span><span class="s2">&quot;runtime&quot;</span><span class="p">,</span> <span class="n">_GAMETIME_MODULE</span><span class="o">.</span><span class="n">runtime</span><span class="p">())</span></div>
 
 <div class="viewcode-block" id="Evennia.get_info_dict"><a class="viewcode-back" href="../../../api/evennia.server.server.html#evennia.server.server.Evennia.get_info_dict">[docs]</a>    <span class="k">def</span> <span class="nf">get_info_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="s2">&quot;Return the server info, for display.&quot;</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the server info, for display.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">INFO_DICT</span></div>
 
     <span class="c1"># server start/stop hooks</span>
@@ -532,6 +571,7 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This is called every time the server starts up, regardless of</span>
 <span class="sd">        how it was shut down.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">SERVER_STARTSTOP_MODULE</span><span class="p">:</span>
             <span class="n">SERVER_STARTSTOP_MODULE</span><span class="o">.</span><span class="n">at_server_start</span><span class="p">()</span></div>
@@ -540,6 +580,7 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This is called just before a server is shut down, regardless</span>
 <span class="sd">        of it is fore a reload, reset or shutdown.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">SERVER_STARTSTOP_MODULE</span><span class="p">:</span>
             <span class="n">SERVER_STARTSTOP_MODULE</span><span class="o">.</span><span class="n">at_server_stop</span><span class="p">()</span></div>
@@ -547,6 +588,7 @@
 <div class="viewcode-block" id="Evennia.at_server_reload_start"><a class="viewcode-back" href="../../../api/evennia.server.server.html#evennia.server.server.Evennia.at_server_reload_start">[docs]</a>    <span class="k">def</span> <span class="nf">at_server_reload_start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This is called only when server starts back up after a reload.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">SERVER_STARTSTOP_MODULE</span><span class="p">:</span>
             <span class="n">SERVER_STARTSTOP_MODULE</span><span class="o">.</span><span class="n">at_server_reload_start</span><span class="p">()</span></div>
@@ -557,7 +599,7 @@
 <span class="sd">        after reconnecting.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            mode (str): One of reload, reset or shutdown.</span>
+<span class="sd">            mode (str): One of &#39;reload&#39;, &#39;reset&#39; or &#39;shutdown&#39;.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -578,29 +620,8 @@
         <span class="n">TASK_HANDLER</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
         <span class="n">TASK_HANDLER</span><span class="o">.</span><span class="n">create_delays</span><span class="p">()</span>
 
-        <span class="c1"># check so default channels exist</span>
-        <span class="kn">from</span> <span class="nn">evennia.comms.models</span> <span class="kn">import</span> <span class="n">ChannelDB</span>
-        <span class="kn">from</span> <span class="nn">evennia.accounts.models</span> <span class="kn">import</span> <span class="n">AccountDB</span>
-        <span class="kn">from</span> <span class="nn">evennia.utils.create</span> <span class="kn">import</span> <span class="n">create_channel</span>
-
-        <span class="n">god_account</span> <span class="o">=</span> <span class="n">AccountDB</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="c1"># mudinfo</span>
-        <span class="n">mudinfo_chan</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">CHANNEL_MUDINFO</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">mudinfo_chan</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;settings.CHANNEL_MUDINFO must be defined.&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">ChannelDB</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">db_key</span><span class="o">=</span><span class="n">mudinfo_chan</span><span class="p">[</span><span class="s2">&quot;key&quot;</span><span class="p">]):</span>
-            <span class="n">channel</span> <span class="o">=</span> <span class="n">create_channel</span><span class="p">(</span><span class="o">**</span><span class="n">mudinfo_chan</span><span class="p">)</span>
-            <span class="n">channel</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">god_account</span><span class="p">)</span>
-        <span class="c1"># connectinfo</span>
-        <span class="n">connectinfo_chan</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">CHANNEL_MUDINFO</span>
-        <span class="k">if</span> <span class="n">connectinfo_chan</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">ChannelDB</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">db_key</span><span class="o">=</span><span class="n">mudinfo_chan</span><span class="p">[</span><span class="s2">&quot;key&quot;</span><span class="p">]):</span>
-                <span class="n">channel</span> <span class="o">=</span> <span class="n">create_channel</span><span class="p">(</span><span class="o">**</span><span class="n">connectinfo_chan</span><span class="p">)</span>
-        <span class="c1"># default channels</span>
-        <span class="k">for</span> <span class="n">chan_info</span> <span class="ow">in</span> <span class="n">settings</span><span class="o">.</span><span class="n">DEFAULT_CHANNELS</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">ChannelDB</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">db_key</span><span class="o">=</span><span class="n">chan_info</span><span class="p">[</span><span class="s2">&quot;key&quot;</span><span class="p">]):</span>
-                <span class="n">channel</span> <span class="o">=</span> <span class="n">create_channel</span><span class="p">(</span><span class="o">**</span><span class="n">chan_info</span><span class="p">)</span>
-                <span class="n">channel</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">god_account</span><span class="p">)</span>
+        <span class="c1"># create/update channels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">create_default_channels</span><span class="p">()</span>
 
         <span class="c1"># delete the temporary setting</span>
         <span class="n">ServerConfig</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">conf</span><span class="p">(</span><span class="s2">&quot;server_restart_mode&quot;</span><span class="p">,</span> <span class="n">delete</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
@@ -608,6 +629,7 @@
 <div class="viewcode-block" id="Evennia.at_server_reload_stop"><a class="viewcode-back" href="../../../api/evennia.server.server.html#evennia.server.server.Evennia.at_server_reload_stop">[docs]</a>    <span class="k">def</span> <span class="nf">at_server_reload_stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This is called only time the server stops before a reload.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">SERVER_STARTSTOP_MODULE</span><span class="p">:</span>
             <span class="n">SERVER_STARTSTOP_MODULE</span><span class="o">.</span><span class="n">at_server_reload_stop</span><span class="p">()</span></div>
@@ -616,6 +638,7 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This is called only when the server starts &quot;cold&quot;, i.e. after a</span>
 <span class="sd">        shutdown or a reset.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># We need to do this just in case the server was killed in a way where</span>
         <span class="c1"># the normal cleanup operations did not have time to run.</span>
@@ -643,6 +666,7 @@
 <div class="viewcode-block" id="Evennia.at_server_cold_stop"><a class="viewcode-back" href="../../../api/evennia.server.server.html#evennia.server.server.Evennia.at_server_cold_stop">[docs]</a>    <span class="k">def</span> <span class="nf">at_server_cold_stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This is called only when the server goes down due to a shutdown or reset.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">SERVER_STARTSTOP_MODULE</span><span class="p">:</span>
             <span class="n">SERVER_STARTSTOP_MODULE</span><span class="o">.</span><span class="n">at_server_cold_stop</span><span class="p">()</span></div></div>
@@ -666,15 +690,17 @@
 <span class="c1"># what to execute from.</span>
 <span class="n">application</span> <span class="o">=</span> <span class="n">service</span><span class="o">.</span><span class="n">Application</span><span class="p">(</span><span class="s2">&quot;Evennia&quot;</span><span class="p">)</span>
 
-<span class="k">if</span> <span class="s2">&quot;--nodaemon&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">:</span>
-    <span class="c1"># custom logging, but only if we are not running in interactive mode</span>
+
+<span class="k">if</span> <span class="s2">&quot;--nodaemon&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span> <span class="ow">and</span> <span class="s2">&quot;test&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">:</span>
+    <span class="c1"># activate logging for interactive/testing mode</span>
     <span class="n">logfile</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">WeeklyLogFile</span><span class="p">(</span>
         <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">SERVER_LOG_FILE</span><span class="p">),</span>
         <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">SERVER_LOG_FILE</span><span class="p">),</span>
         <span class="n">day_rotation</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">SERVER_LOG_DAY_ROTATION</span><span class="p">,</span>
         <span class="n">max_size</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">SERVER_LOG_MAX_SIZE</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">application</span><span class="o">.</span><span class="n">setComponent</span><span class="p">(</span><span class="n">ILogObserver</span><span class="p">,</span> <span class="n">logger</span><span class="o">.</span><span class="n">ServerLogObserver</span><span class="p">(</span><span class="n">logfile</span><span class="p">)</span><span class="o">.</span><span class="n">emit</span><span class="p">)</span>
+    <span class="n">globalLogPublisher</span><span class="o">.</span><span class="n">addObserver</span><span class="p">(</span><span class="n">logger</span><span class="o">.</span><span class="n">GetServerLogObserver</span><span class="p">()(</span><span class="n">logfile</span><span class="p">))</span>
+
 
 <span class="c1"># The main evennia server program. This sets up the database</span>
 <span class="c1"># and is where we store all the other services.</span>
@@ -801,16 +827,15 @@
   <li><a href="https://www.evennia.com">Home page</a> </li>
   <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
-  <li><a href="http://webchat.freenode.net/?channels=evennia&uio=MT1mYWxzZSY5PXRydWUmMTE9MTk1JjEyPXRydWUbb">IRC</a> - 
-    <a href="https://discord.gg/NecFePw">Discord</a> - 
-      <a href="https://groups.google.com/forum/#%21forum/evennia">Forums</a>
+  <li>
+    <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
+     <a href="https://github.com/evennia/evennia/discussions">Discussions</a> -
+      <a href="https://evennia.blogspot.com/">Blog</a>
   </li>
-  <li><a href="http://evennia.blogspot.com/">Evennia Dev blog</a> </li>
 </ul>
 <h3>Versions</h3>
 <ul>
   <li><a href="server.html">1.0-dev (develop branch)</a></li>
-  <li><a href="../../../../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 </ul>
 
         </div>

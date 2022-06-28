@@ -4,8 +4,9 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Webclient &#8212; Evennia 1.0-dev documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Web Client &#8212; Evennia 1.0-dev documentation</title>
     <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -15,7 +16,9 @@
     <script src="../_static/language_data.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" /> 
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Bootstrap Components and Utilities" href="Bootstrap-Components-and-Utilities.html" />
+    <link rel="prev" title="Webserver" href="Webserver.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -26,8 +29,15 @@
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="Bootstrap-Components-and-Utilities.html" title="Bootstrap Components and Utilities"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Webserver.html" title="Webserver"
+             accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">Evennia 1.0-dev</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Webclient</a></li> 
+          <li class="nav-item nav-item-1"><a href="Components-Overview.html" accesskey="U">Core Components</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Web Client</a></li> 
       </ul>
         <div class="develop">develop branch</div>
     </div>  
@@ -37,11 +47,8 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="webclient">
-<h1>Webclient<a class="headerlink" href="#webclient" title="Permalink to this headline">¶</a></h1>
-</div>
-<div class="section" id="web-client">
-<h1><strong>Web client</strong><a class="headerlink" href="#web-client" title="Permalink to this headline">¶</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="web-client">
+<h1>Web Client<a class="headerlink" href="#web-client" title="Permalink to this headline">¶</a></h1>
 <p>Evennia comes with a MUD client accessible from a normal web browser. During development you can try
 it at <code class="docutils literal notranslate"><span class="pre">http://localhost:4001/webclient</span></code>. The client consists of several parts, all under
 <code class="docutils literal notranslate"><span class="pre">evennia/web/webclient/</span></code>:</p>
@@ -62,7 +69,7 @@ to display ANSI/Xterm256 colors etc.</p>
 <p>The server-side webclient protocols are found in <code class="docutils literal notranslate"><span class="pre">evennia/server/portal/webclient.py</span></code> and
 <code class="docutils literal notranslate"><span class="pre">webclient_ajax.py</span></code> for the two types of connections. You can’t (and should not need to) modify
 these.</p>
-<div class="section" id="customizing-the-web-client">
+<section id="customizing-the-web-client">
 <h2>Customizing the web client<a class="headerlink" href="#customizing-the-web-client" title="Permalink to this headline">¶</a></h2>
 <p>Like was the case for the website, you override the webclient from your game directory. You need to
 add/modify a file in the matching directory location within one of the _overrides directories.
@@ -75,9 +82,9 @@ your browser cache, and see if your edit shows up.</strong></p>
 <p>Example: To change the utilized plugin list, you need to override base.html by copying
 <code class="docutils literal notranslate"><span class="pre">evennia/web/webclient/templates/webclient/base.html</span></code> to
 <code class="docutils literal notranslate"><span class="pre">mygame/web/template_overrides/webclient/base.html</span></code> and  editing it to add your new plugin.</p>
-</div>
-</div>
-<div class="section" id="evennia-web-client-api-from-evennia-js">
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="evennia-web-client-api-from-evennia-js">
 <h1>Evennia Web Client API (from evennia.js)<a class="headerlink" href="#evennia-web-client-api-from-evennia-js" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">Evennia.init(</span> <span class="pre">opts</span> <span class="pre">)</span></code></p></li>
@@ -87,8 +94,8 @@ your browser cache, and see if your edit shows up.</strong></p>
 <li><p><code class="docutils literal notranslate"><span class="pre">Evennia.emit(</span> <span class="pre">cmdname,</span> <span class="pre">args,</span> <span class="pre">kwargs</span> <span class="pre">)</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">log()</span></code></p></li>
 </ul>
-</div>
-<div class="section" id="plugin-manager-api-from-webclient-gui-js">
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="plugin-manager-api-from-webclient-gui-js">
 <h1>Plugin Manager API (from webclient_gui.js)<a class="headerlink" href="#plugin-manager-api-from-webclient-gui-js" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">options</span></code> Object, Stores key/value ‘state’ that can be used by plugins to coordinate behavior.</p></li>
@@ -100,8 +107,8 @@ your browser cache, and see if your edit shows up.</strong></p>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="plugin-callbacks-api">
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="plugin-callbacks-api">
 <h1>Plugin callbacks API<a class="headerlink" href="#plugin-callbacks-api" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">init()</span></code> – The only required callback</p></li>
@@ -124,8 +131,8 @@ true will short-circuit the execution, so no other plugins lower in the base.htm
 their callback for this event called.  This enables things like the up/down arrow keys for the
 history.js plugin to always occur before the default_in.js plugin adds that key to the current input
 buffer.</p>
-</div>
-<div class="section" id="example-default-plugins-plugins-js">
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="example-default-plugins-plugins-js">
 <h1>Example/Default Plugins (plugins/*.js)<a class="headerlink" href="#example-default-plugins-plugins-js" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">clienthelp.js</span></code> Defines onOptionsUI from the options2 plugin.  This is a mostly empty plugin to
@@ -159,13 +166,13 @@ while the tab is hidden.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">options2.js</span></code> Defines most callbacks. Provides a goldenlayout-based version of the options/settings tab.  Integrates with other plugins via the custom onOptionsUI callback.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">popups.js</span></code> Provides default popups/Dialog UI for other plugins to use.</p></li>
 </ul>
-</div>
-<div class="section" id="writing-your-own-plugins">
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="writing-your-own-plugins">
 <h1>Writing your own Plugins<a class="headerlink" href="#writing-your-own-plugins" title="Permalink to this headline">¶</a></h1>
 <p>So, you love the functionality of the webclient, but your game has specific
 types of text that need to be separated out into their own space, visually.
 The Goldenlayout plugin framework can help with this.</p>
-<div class="section" id="goldenlayout">
+<section id="goldenlayout">
 <h2>GoldenLayout<a class="headerlink" href="#goldenlayout" title="Permalink to this headline">¶</a></h2>
 <p>GoldenLayout is a web framework that allows web developers and their users to create their own
 tabbed/windowed layouts.  Windows/tabs can be click-and-dragged from location to location by
@@ -291,8 +298,8 @@ window.plugin_handler.add(&quot;myplugin&quot;, myplugin);
 </div>
 <p>You can then add “mycomponent” to an item’s componentName in your goldenlayout_default_config.js.</p>
 <p>Make sure to stop your server, evennia collectstatic, and restart your server.  Then make sure to clear your browser cache before loading the webclient page.</p>
-</div>
-</div>
+</section>
+</section>
 
 
             <div class="clearer"></div>
@@ -316,8 +323,7 @@ window.plugin_handler.add(&quot;myplugin&quot;, myplugin);
 <script>$('#searchbox').show(0);</script>
 <p><h3><a href="../index.html">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Webclient</a></li>
-<li><a class="reference internal" href="#web-client"><strong>Web client</strong></a><ul>
+<li><a class="reference internal" href="#">Web Client</a><ul>
 <li><a class="reference internal" href="#customizing-the-web-client">Customizing the web client</a></li>
 </ul>
 </li>
@@ -331,6 +337,12 @@ window.plugin_handler.add(&quot;myplugin&quot;, myplugin);
 </li>
 </ul>
 
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Webserver.html"
+                        title="previous chapter">Webserver</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="Bootstrap-Components-and-Utilities.html"
+                        title="next chapter">Bootstrap Components and Utilities</a></p>
   <div role="note" aria-label="source link">
     <!--h3>This Page</h3-->
     <ul class="this-page-menu">
@@ -342,16 +354,15 @@ window.plugin_handler.add(&quot;myplugin&quot;, myplugin);
   <li><a href="https://www.evennia.com">Home page</a> </li>
   <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
-  <li><a href="http://webchat.freenode.net/?channels=evennia&uio=MT1mYWxzZSY5PXRydWUmMTE9MTk1JjEyPXRydWUbb">IRC</a> - 
-    <a href="https://discord.gg/NecFePw">Discord</a> - 
-      <a href="https://groups.google.com/forum/#%21forum/evennia">Forums</a>
+  <li>
+    <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
+     <a href="https://github.com/evennia/evennia/discussions">Discussions</a> -
+      <a href="https://evennia.blogspot.com/">Blog</a>
   </li>
-  <li><a href="http://evennia.blogspot.com/">Evennia Dev blog</a> </li>
 </ul>
 <h3>Versions</h3>
 <ul>
   <li><a href="Webclient.html">1.0-dev (develop branch)</a></li>
-  <li><a href="../../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 </ul>
 
         </div>
@@ -367,8 +378,15 @@ window.plugin_handler.add(&quot;myplugin&quot;, myplugin);
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="Bootstrap-Components-and-Utilities.html" title="Bootstrap Components and Utilities"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="Webserver.html" title="Webserver"
+             >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">Evennia 1.0-dev</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Webclient</a></li> 
+          <li class="nav-item nav-item-1"><a href="Components-Overview.html" >Core Components</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Web Client</a></li> 
       </ul>
         <div class="develop">develop branch</div>
     </div>

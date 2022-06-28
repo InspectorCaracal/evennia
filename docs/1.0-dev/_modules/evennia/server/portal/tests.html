@@ -58,7 +58,7 @@
 
 <span class="kn">from</span> <span class="nn">mock</span> <span class="kn">import</span> <span class="n">Mock</span><span class="p">,</span> <span class="n">MagicMock</span>
 <span class="kn">from</span> <span class="nn">evennia.server.portal</span> <span class="kn">import</span> <span class="n">irc</span>
-<span class="kn">from</span> <span class="nn">evennia.utils.test_resources</span> <span class="kn">import</span> <span class="n">EvenniaTest</span>
+<span class="kn">from</span> <span class="nn">evennia.utils.test_resources</span> <span class="kn">import</span> <span class="n">BaseEvenniaTest</span>
 
 <span class="kn">from</span> <span class="nn">twisted.conch.telnet</span> <span class="kn">import</span> <span class="n">IAC</span><span class="p">,</span> <span class="n">WILL</span><span class="p">,</span> <span class="n">DONT</span><span class="p">,</span> <span class="n">SB</span><span class="p">,</span> <span class="n">SE</span><span class="p">,</span> <span class="n">NAWS</span><span class="p">,</span> <span class="n">DO</span>
 <span class="kn">from</span> <span class="nn">twisted.test</span> <span class="kn">import</span> <span class="n">proto_helpers</span>
@@ -88,7 +88,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="TestAMPServer.setUp"><a class="viewcode-back" href="../../../../api/evennia.server.portal.tests.html#evennia.server.portal.tests.TestAMPServer.setUp">[docs]</a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">TestAMPServer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">setUp</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">setUp</span><span class="p">()</span>
         <span class="n">portal</span> <span class="o">=</span> <span class="n">Mock</span><span class="p">()</span>
         <span class="n">factory</span> <span class="o">=</span> <span class="n">AMPServerFactory</span><span class="p">(</span><span class="n">portal</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">proto</span> <span class="o">=</span> <span class="n">factory</span><span class="o">.</span><span class="n">buildProtocol</span><span class="p">((</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
@@ -259,7 +259,7 @@
 
 <div class="viewcode-block" id="TestTelnet"><a class="viewcode-back" href="../../../../api/evennia.server.portal.tests.html#evennia.server.portal.tests.TestTelnet">[docs]</a><span class="k">class</span> <span class="nc">TestTelnet</span><span class="p">(</span><span class="n">TwistedTestCase</span><span class="p">):</span>
 <div class="viewcode-block" id="TestTelnet.setUp"><a class="viewcode-back" href="../../../../api/evennia.server.portal.tests.html#evennia.server.portal.tests.TestTelnet.setUp">[docs]</a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">TestTelnet</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">setUp</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">setUp</span><span class="p">()</span>
         <span class="n">factory</span> <span class="o">=</span> <span class="n">TelnetServerFactory</span><span class="p">()</span>
         <span class="n">factory</span><span class="o">.</span><span class="n">protocol</span> <span class="o">=</span> <span class="n">TelnetProtocol</span>
         <span class="n">factory</span><span class="o">.</span><span class="n">sessionhandler</span> <span class="o">=</span> <span class="n">PORTAL_SESSIONS</span>
@@ -273,7 +273,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;localhost&quot;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">setTcpKeepAlive</span> <span class="o">=</span> <span class="n">Mock</span><span class="p">()</span>
         <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">proto</span><span class="o">.</span><span class="n">makeConnection</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="p">)</span>
-
         <span class="c1"># test suppress_ga</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">proto</span><span class="o">.</span><span class="n">protocol_flags</span><span class="p">[</span><span class="s2">&quot;NOGOAHEAD&quot;</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">proto</span><span class="o">.</span><span class="n">dataReceived</span><span class="p">(</span><span class="n">IAC</span> <span class="o">+</span> <span class="n">DONT</span> <span class="o">+</span> <span class="n">SUPPRESS_GA</span><span class="p">)</span>
@@ -288,13 +287,15 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">proto</span><span class="o">.</span><span class="n">protocol_flags</span><span class="p">[</span><span class="s2">&quot;SCREENHEIGHT&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="mi">45</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">proto</span><span class="o">.</span><span class="n">handshakes</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
         <span class="c1"># test ttype</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">proto</span><span class="o">.</span><span class="n">protocol_flags</span><span class="p">[</span><span class="s2">&quot;FORCEDENDLINE&quot;</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">proto</span><span class="o">.</span><span class="n">protocol_flags</span><span class="p">[</span><span class="s2">&quot;TTYPE&quot;</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">proto</span><span class="o">.</span><span class="n">protocol_flags</span><span class="p">[</span><span class="s2">&quot;ANSI&quot;</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">proto</span><span class="o">.</span><span class="n">dataReceived</span><span class="p">(</span><span class="n">IAC</span> <span class="o">+</span> <span class="n">WILL</span> <span class="o">+</span> <span class="n">TTYPE</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">proto</span><span class="o">.</span><span class="n">dataReceived</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">IAC</span><span class="p">,</span> <span class="n">SB</span><span class="p">,</span> <span class="n">TTYPE</span><span class="p">,</span> <span class="n">IS</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;MUDLET&quot;</span><span class="p">,</span> <span class="n">IAC</span><span class="p">,</span> <span class="n">SE</span><span class="p">]))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">proto</span><span class="o">.</span><span class="n">protocol_flags</span><span class="p">[</span><span class="s2">&quot;XTERM256&quot;</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">proto</span><span class="o">.</span><span class="n">protocol_flags</span><span class="p">[</span><span class="s2">&quot;CLIENTNAME&quot;</span><span class="p">],</span> <span class="s2">&quot;MUDLET&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">proto</span><span class="o">.</span><span class="n">protocol_flags</span><span class="p">[</span><span class="s2">&quot;FORCEDENDLINE&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">proto</span><span class="o">.</span><span class="n">protocol_flags</span><span class="p">[</span><span class="s2">&quot;NOGOAHEAD&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertFalse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">proto</span><span class="o">.</span><span class="n">protocol_flags</span><span class="p">[</span><span class="s2">&quot;NOPROMPTGOAHEAD&quot;</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">proto</span><span class="o">.</span><span class="n">dataReceived</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">IAC</span><span class="p">,</span> <span class="n">SB</span><span class="p">,</span> <span class="n">TTYPE</span><span class="p">,</span> <span class="n">IS</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;XTERM&quot;</span><span class="p">,</span> <span class="n">IAC</span><span class="p">,</span> <span class="n">SE</span><span class="p">]))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">proto</span><span class="o">.</span><span class="n">dataReceived</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">IAC</span><span class="p">,</span> <span class="n">SB</span><span class="p">,</span> <span class="n">TTYPE</span><span class="p">,</span> <span class="n">IS</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;MTTS 137&quot;</span><span class="p">,</span> <span class="n">IAC</span><span class="p">,</span> <span class="n">SE</span><span class="p">]))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">proto</span><span class="o">.</span><span class="n">handshakes</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
@@ -322,7 +323,7 @@
         <span class="k">return</span> <span class="n">d</span></div></div>
 
 
-<div class="viewcode-block" id="TestWebSocket"><a class="viewcode-back" href="../../../../api/evennia.server.portal.tests.html#evennia.server.portal.tests.TestWebSocket">[docs]</a><span class="k">class</span> <span class="nc">TestWebSocket</span><span class="p">(</span><span class="n">EvenniaTest</span><span class="p">):</span>
+<div class="viewcode-block" id="TestWebSocket"><a class="viewcode-back" href="../../../../api/evennia.server.portal.tests.html#evennia.server.portal.tests.TestWebSocket">[docs]</a><span class="k">class</span> <span class="nc">TestWebSocket</span><span class="p">(</span><span class="n">BaseEvenniaTest</span><span class="p">):</span>
 <div class="viewcode-block" id="TestWebSocket.setUp"><a class="viewcode-back" href="../../../../api/evennia.server.portal.tests.html#evennia.server.portal.tests.TestWebSocket.setUp">[docs]</a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">setUp</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">proto</span> <span class="o">=</span> <span class="n">WebSocketClient</span><span class="p">()</span>
@@ -385,16 +386,15 @@
   <li><a href="https://www.evennia.com">Home page</a> </li>
   <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
-  <li><a href="http://webchat.freenode.net/?channels=evennia&uio=MT1mYWxzZSY5PXRydWUmMTE9MTk1JjEyPXRydWUbb">IRC</a> - 
-    <a href="https://discord.gg/NecFePw">Discord</a> - 
-      <a href="https://groups.google.com/forum/#%21forum/evennia">Forums</a>
+  <li>
+    <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
+     <a href="https://github.com/evennia/evennia/discussions">Discussions</a> -
+      <a href="https://evennia.blogspot.com/">Blog</a>
   </li>
-  <li><a href="http://evennia.blogspot.com/">Evennia Dev blog</a> </li>
 </ul>
 <h3>Versions</h3>
 <ul>
   <li><a href="tests.html">1.0-dev (develop branch)</a></li>
-  <li><a href="../../../../../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 </ul>
 
         </div>

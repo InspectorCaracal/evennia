@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>evennia.utils.evtable &#8212; Evennia 1.0-dev documentation</title>
     <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +16,9 @@
     <script src="../_static/language_data.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" /> 
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="evennia.utils.funcparser" href="evennia.utils.funcparser.html" />
+    <link rel="prev" title="evennia.utils.evmore" href="evennia.utils.evmore.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -26,7 +29,17 @@
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="evennia.utils.funcparser.html" title="evennia.utils.funcparser"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="evennia.utils.evmore.html" title="evennia.utils.evmore"
+             accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">Evennia 1.0-dev</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../Evennia-API.html" >API Summary</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="evennia-api.html" >evennia</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="evennia.html" >evennia</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="evennia.utils.html" accesskey="U">evennia.utils</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">evennia.utils.evtable</a></li> 
       </ul>
         <div class="develop">develop branch</div>
@@ -37,7 +50,7 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-evennia.utils.evtable">
+  <section id="module-evennia.utils.evtable">
 <span id="evennia-utils-evtable"></span><h1>evennia.utils.evtable<a class="headerlink" href="#module-evennia.utils.evtable" title="Permalink to this headline">¶</a></h1>
 <p>This is an advanced ASCII table creator. It was inspired by Prettytable
 (<a class="reference external" href="https://code.google.com/p/prettytable/">https://code.google.com/p/prettytable/</a>) but shares no code and is considerably
@@ -478,8 +491,9 @@ resize individual columns in the vertical direction to fit.</p></li>
 <li><p><strong>height</strong> (<em>int</em><em>, </em><em>optional</em>) – Fixed height of table. Defaults to being unset. Width is
 still given precedence. If given, table cells will crop text rather
 than expand vertically.</p></li>
-<li><p><strong>evenwidth</strong> (<em>bool</em><em>, </em><em>optional</em>) – Used with the <strong>width</strong> keyword. Adjusts columns to have as even width as
-possible. This often looks best also for mixed-length tables. Default is <strong>False</strong>.</p></li>
+<li><p><strong>evenwidth</strong> (<em>bool</em><em>, </em><em>optional</em>) – Used with the <strong>width</strong> keyword. Adjusts columns to have as
+even width as possible. This often looks best also for mixed-length tables. Default
+is <strong>False</strong>.</p></li>
 <li><p><strong>maxwidth</strong> (<em>int</em><em>, </em><em>optional</em>) – This will set a maximum width
 of the table while allowing it to be smaller. Only if it grows wider than this
 size will it be resized by expanding horizontally (or crop <strong>height</strong> is given).
@@ -492,7 +506,7 @@ This keyword has no meaning if <strong>width</strong> is set.</p></li>
 </dl>
 <p class="rubric">Notes</p>
 <p>Beyond those table-specific keywords, the non-overlapping keywords
-of <strong>EcCell.__init__</strong> are also available. These will be passed down
+of <strong>EvCell.__init__</strong> are also available. These will be passed down
 to every cell in the table.</p>
 </dd></dl>
 
@@ -525,7 +539,7 @@ to the end.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>args</strong> (<strong>EvColum</strong> or multiple strings) – Either a single EvColumn instance or
+<li><p><strong>args</strong> (<strong>EvColumn</strong> or multiple strings) – Either a single EvColumn instance or
 a number of data string arguments to be used to create a new column.</p></li>
 <li><p><strong>header</strong> (<em>str</em><em>, </em><em>optional</em>) – The header text for the column</p></li>
 <li><p><strong>xpos</strong> (<em>int</em><em>, </em><em>optional</em>) – Index position in table <em>before</em> which
@@ -606,7 +620,7 @@ given from 0 to Ncolumns-1.</p>
 
 </dd></dl>
 
-</div>
+</section>
 
 
             <div class="clearer"></div>
@@ -628,10 +642,16 @@ given from 0 to Ncolumns-1.</p>
     </div>
 </div>
 <script>$('#searchbox').show(0);</script>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="evennia.utils.evmore.html"
+                        title="previous chapter">evennia.utils.evmore</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="evennia.utils.funcparser.html"
+                        title="next chapter">evennia.utils.funcparser</a></p>
   <div role="note" aria-label="source link">
     <!--h3>This Page</h3-->
     <ul class="this-page-menu">
-      <li><a href="../_sources/api/evennia.utils.evtable.rst.txt"
+      <li><a href="../_sources/api/evennia.utils.evtable.md.txt"
             rel="nofollow">Show Page Source</a></li>
     </ul>
    </div><h3>Links</h3>
@@ -639,16 +659,15 @@ given from 0 to Ncolumns-1.</p>
   <li><a href="https://www.evennia.com">Home page</a> </li>
   <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
-  <li><a href="http://webchat.freenode.net/?channels=evennia&uio=MT1mYWxzZSY5PXRydWUmMTE9MTk1JjEyPXRydWUbb">IRC</a> - 
-    <a href="https://discord.gg/NecFePw">Discord</a> - 
-      <a href="https://groups.google.com/forum/#%21forum/evennia">Forums</a>
+  <li>
+    <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
+     <a href="https://github.com/evennia/evennia/discussions">Discussions</a> -
+      <a href="https://evennia.blogspot.com/">Blog</a>
   </li>
-  <li><a href="http://evennia.blogspot.com/">Evennia Dev blog</a> </li>
 </ul>
 <h3>Versions</h3>
 <ul>
   <li><a href="evennia.utils.evtable.html">1.0-dev (develop branch)</a></li>
-  <li><a href="../../0.9.5/api/evennia.utils.evtable.html">0.9.5 (v0.9.5 branch)</a></li>
 </ul>
 
         </div>
@@ -664,7 +683,17 @@ given from 0 to Ncolumns-1.</p>
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="evennia.utils.funcparser.html" title="evennia.utils.funcparser"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="evennia.utils.evmore.html" title="evennia.utils.evmore"
+             >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">Evennia 1.0-dev</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../Evennia-API.html" >API Summary</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="evennia-api.html" >evennia</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="evennia.html" >evennia</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="evennia.utils.html" >evennia.utils</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">evennia.utils.evtable</a></li> 
       </ul>
         <div class="develop">develop branch</div>

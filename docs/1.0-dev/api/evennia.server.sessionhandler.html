@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>evennia.server.sessionhandler &#8212; Evennia 1.0-dev documentation</title>
     <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +16,9 @@
     <script src="../_static/language_data.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" /> 
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="evennia.server.signals" href="evennia.server.signals.html" />
+    <link rel="prev" title="evennia.server.session" href="evennia.server.session.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -26,7 +29,17 @@
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="evennia.server.signals.html" title="evennia.server.signals"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="evennia.server.session.html" title="evennia.server.session"
+             accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">Evennia 1.0-dev</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../Evennia-API.html" >API Summary</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="evennia-api.html" >evennia</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="evennia.html" >evennia</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="evennia.server.html" accesskey="U">evennia.server</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">evennia.server.sessionhandler</a></li> 
       </ul>
         <div class="develop">develop branch</div>
@@ -37,7 +50,7 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-evennia.server.sessionhandler">
+  <section id="module-evennia.server.sessionhandler">
 <span id="evennia-server-sessionhandler"></span><h1>evennia.server.sessionhandler<a class="headerlink" href="#module-evennia.server.sessionhandler" title="Permalink to this headline">¶</a></h1>
 <p>This module defines handlers for storing sessions when handles
 sessions of users connecting to the server.</p>
@@ -120,8 +133,7 @@ FuncParser using callables from <strong>settings.FUNCPARSER_OUTGOING_MESSAGES_MO
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>session</strong> (<a class="reference internal" href="evennia.server.session.html#evennia.server.session.Session" title="evennia.server.session.Session"><em>Session</em></a>) – The relevant session instance.</p></li>
-<li><p><strong>kwargs</strong> (<em>dict</em>) – of the instruction (like “text”). Suitable values for each
-keyword are:
+<li><p><strong>kwargs</strong> (<em>dict</em>) – the name of the instruction (like “text”). Suitable values for each keyword are:
 - arg                -&gt;  [[arg], {}]
 - [args]             -&gt;  [[args], {}]
 - {kwargs}           -&gt;  [[], {kwargs}]
@@ -144,13 +156,10 @@ applied.</p>
 <dt id="evennia.server.sessionhandler.ServerSessionHandler">
 <em class="property">class </em><code class="sig-prename descclassname">evennia.server.sessionhandler.</code><code class="sig-name descname">ServerSessionHandler</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/evennia/server/sessionhandler.html#ServerSessionHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#evennia.server.sessionhandler.ServerSessionHandler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#evennia.server.sessionhandler.SessionHandler" title="evennia.server.sessionhandler.SessionHandler"><code class="xref py py-class docutils literal notranslate"><span class="pre">evennia.server.sessionhandler.SessionHandler</span></code></a></p>
-<p>This object holds the stack of sessions active in the game at
-any time.</p>
-<p>A session register with the handler in two steps, first by
-registering itself with the connect() method. This indicates an
-non-authenticated session. Whenever the session is authenticated
-the session together with the related account is sent to the login()
-method.</p>
+<p>This object holds the stack of sessions active in the game at any time.</p>
+<p>A session register with the handler in two steps, first by registering itself with the connect()
+method. This indicates an non-authenticated session. Whenever the session is authenticated the
+session together with the related account is sent to the login() method.</p>
 <dl class="py method">
 <dt id="evennia.server.sessionhandler.ServerSessionHandler.__init__">
 <code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/evennia/server/sessionhandler.html#ServerSessionHandler.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#evennia.server.sessionhandler.ServerSessionHandler.__init__" title="Permalink to this definition">¶</a></dt>
@@ -270,9 +279,8 @@ itself down)</p>
 <dl class="py method">
 <dt id="evennia.server.sessionhandler.ServerSessionHandler.login">
 <code class="sig-name descname">login</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">session</span></em>, <em class="sig-param"><span class="n">account</span></em>, <em class="sig-param"><span class="n">force</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">testmode</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/evennia/server/sessionhandler.html#ServerSessionHandler.login"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#evennia.server.sessionhandler.ServerSessionHandler.login" title="Permalink to this definition">¶</a></dt>
-<dd><p>Log in the previously unloggedin session and the account we by
-now should know is connected to it. After this point we assume
-the session to be logged in one way or another.</p>
+<dd><p>Log in the previously unloggedin session and the account we by now should know is connected
+to it. After this point we assume the session to be logged in one way or another.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -384,7 +392,7 @@ Only logged-in accounts are counted here.</p>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p><p><em>accounts (list)</em> –</p>
 <dl class="simple">
-<dt>All conected Accounts (which may be fewer than the</dt><dd><p>amount of Sessions due to multi-playing).</p>
+<dt>All connected Accounts (which may be fewer than the</dt><dd><p>amount of Sessions due to multi-playing).</p>
 </dd>
 </dl>
 </p>
@@ -454,7 +462,7 @@ object.</p>
 </dl>
 <dl class="simple">
 <dt>Returns.</dt><dd><dl class="simple">
-<dt>sessions (Session or list): Can be more than one of Object is controlled by</dt><dd><p>more than one Session (MULTISESSION_MODE &gt; 1).</p>
+<dt>sessions (Session or list): Can be more than one of Object is controlled by more than</dt><dd><p>one Session (MULTISESSION_MODE &gt; 1).</p>
 </dd>
 </dl>
 </dd>
@@ -472,7 +480,7 @@ object.</p>
 </dl>
 <dl class="simple">
 <dt>Returns.</dt><dd><dl class="simple">
-<dt>sessions (Session or list): Can be more than one of Object is controlled by</dt><dd><p>more than one Session (MULTISESSION_MODE &gt; 1).</p>
+<dt>sessions (Session or list): Can be more than one of Object is controlled by more than</dt><dd><p>one Session (MULTISESSION_MODE &gt; 1).</p>
 </dd>
 </dl>
 </dd>
@@ -564,7 +572,7 @@ on the form <strong>commandname=((args), {kwargs})</strong>.</p>
 
 </dd></dl>
 
-</div>
+</section>
 
 
             <div class="clearer"></div>
@@ -586,10 +594,16 @@ on the form <strong>commandname=((args), {kwargs})</strong>.</p>
     </div>
 </div>
 <script>$('#searchbox').show(0);</script>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="evennia.server.session.html"
+                        title="previous chapter">evennia.server.session</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="evennia.server.signals.html"
+                        title="next chapter">evennia.server.signals</a></p>
   <div role="note" aria-label="source link">
     <!--h3>This Page</h3-->
     <ul class="this-page-menu">
-      <li><a href="../_sources/api/evennia.server.sessionhandler.rst.txt"
+      <li><a href="../_sources/api/evennia.server.sessionhandler.md.txt"
             rel="nofollow">Show Page Source</a></li>
     </ul>
    </div><h3>Links</h3>
@@ -597,16 +611,15 @@ on the form <strong>commandname=((args), {kwargs})</strong>.</p>
   <li><a href="https://www.evennia.com">Home page</a> </li>
   <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
-  <li><a href="http://webchat.freenode.net/?channels=evennia&uio=MT1mYWxzZSY5PXRydWUmMTE9MTk1JjEyPXRydWUbb">IRC</a> - 
-    <a href="https://discord.gg/NecFePw">Discord</a> - 
-      <a href="https://groups.google.com/forum/#%21forum/evennia">Forums</a>
+  <li>
+    <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
+     <a href="https://github.com/evennia/evennia/discussions">Discussions</a> -
+      <a href="https://evennia.blogspot.com/">Blog</a>
   </li>
-  <li><a href="http://evennia.blogspot.com/">Evennia Dev blog</a> </li>
 </ul>
 <h3>Versions</h3>
 <ul>
   <li><a href="evennia.server.sessionhandler.html">1.0-dev (develop branch)</a></li>
-  <li><a href="../../0.9.5/api/evennia.server.sessionhandler.html">0.9.5 (v0.9.5 branch)</a></li>
 </ul>
 
         </div>
@@ -622,7 +635,17 @@ on the form <strong>commandname=((args), {kwargs})</strong>.</p>
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="evennia.server.signals.html" title="evennia.server.signals"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="evennia.server.session.html" title="evennia.server.session"
+             >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">Evennia 1.0-dev</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../Evennia-API.html" >API Summary</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="evennia-api.html" >evennia</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="evennia.html" >evennia</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="evennia.server.html" >evennia.server</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">evennia.server.sessionhandler</a></li> 
       </ul>
         <div class="develop">develop branch</div>

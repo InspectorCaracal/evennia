@@ -1,7 +1,7 @@
 # Command Sets
 
 
-Command Sets are intimately linked with [Commands](./Commands) and you should be familiar with
+Command Sets are intimately linked with [Commands](./Commands.md) and you should be familiar with
 Commands before reading this page. The two pages were split for ease of reading.
 
 A *Command Set* (often referred to as a CmdSet or cmdset) is the basic unit for storing one or more
@@ -11,7 +11,7 @@ classes in a command set is the way to make commands available to use in your ga
 When storing a CmdSet on an object, you will make the commands in that command set available to the
 object. An example is the default command set stored on new Characters. This command set contains
 all the useful commands, from `look` and `inventory` to `@dig` and `@reload`
-([permissions](./Locks#Permissions) then limit which players may use them, but that's a separate
+([permissions](./Permissions.md) then limit which players may use them, but that's a separate
 topic).
 
 When an account enters a command, cmdsets from the Account, Character, its location, and elsewhere
@@ -26,7 +26,7 @@ on. The tutorial world included with Evennia showcases a dark room that replaces
 commands with its own versions because the Character cannot see.
 
 If you want a quick start into defining your first commands and using them with command sets, you
-can head over to the [Adding Command Tutorial](../Howto/Starting/Part1/Adding-Commands) which steps through things
+can head over to the [Adding Command Tutorial](../Howtos/Beginner-Tutorial/Part1/Adding-Commands.md) which steps through things
 without the explanations.
 
 ## Defining Command Sets
@@ -42,16 +42,16 @@ Sets#merge-rules) section).
 
 from evennia import CmdSet
 
-# this is a theoretical custom module with commands we 
+# this is a theoretical custom module with commands we
 # created previously: mygame/commands/mycommands.py
 from commands import mycommands
 
-class MyCmdSet(CmdSet):    
+class MyCmdSet(CmdSet):
     def at_cmdset_creation(self):
         """
         The only thing this method should need
         to do is to add commands to the set.
-        """ 
+        """
         self.add(mycommands.MyCommand1())
         self.add(mycommands.MyCommand2())
         self.add(mycommands.MyCommand3())
@@ -61,7 +61,7 @@ The CmdSet's `add()` method can also take another CmdSet as input. In this case 
 from that CmdSet will be appended to this one as if you added them line by line:
 
 ```python
-    def at_cmdset_creation(): 
+    def at_cmdset_creation():
         ...
         self.add(AdditionalCmdSet) # adds all command from this set
         ...
@@ -71,10 +71,10 @@ If you added your command to an existing cmdset (like to the default cmdset), th
 loaded into memory. You need to make the server aware of the code changes:
 
 ```
-@reload 
+@reload
 ```
 
-You should now be able to use the command. 
+You should now be able to use the command.
 
 If you created a new, fresh cmdset, this must be added to an object in order to make the commands
 within available. A simple way to temporarily test a cmdset on yourself is use the `@py` command to
@@ -93,15 +93,15 @@ This will stay with you until you `@reset` or `@shutdown` the server, or you run
 In the example above, a specific Cmdset class is removed. Calling `delete` without arguments will
 remove the latest added cmdset.
 
-> Note: Command sets added using `cmdset.add` are, by default, *not* persistent in the database. 
+> Note: Command sets added using `cmdset.add` are, by default, *not* persistent in the database.
 
-If you want the cmdset to survive a reload, you can do: 
+If you want the cmdset to survive a reload, you can do:
 
 ```
-@py self.cmdset.add(commands.mycmdset.MyCmdSet, permanent=True)
+@py self.cmdset.add(commands.mycmdset.MyCmdSet, persistent=True)
 ```
 
-Or you could add the cmdset as the *default* cmdset: 
+Or you could add the cmdset as the *default* cmdset:
 
 ```
 @py self.cmdset.add_default(commands.mycmdset.MyCmdSet)
@@ -112,11 +112,11 @@ back even if all other cmdsets fail or are removed. It is always persistent and 
 by `cmdset.delete()`. To remove a default cmdset you must explicitly call `cmdset.remove_default()`.
 
 Command sets are often added to an object in its `at_object_creation` method. For more examples of
-adding commands, read the [Step by step tutorial](../Howto/Starting/Part1/Adding-Commands). Generally you can
+adding commands, read the [Step by step tutorial](../Howtos/Beginner-Tutorial/Part1/Adding-Commands.md). Generally you can
 customize which command sets are added to your objects by using `self.cmdset.add()` or
 `self.cmdset.add_default()`.
 
-> Important: Commands are identified uniquely by key *or* alias (see [Commands](./Commands)). If any
+> Important: Commands are identified uniquely by key *or* alias (see [Commands](./Commands.md)). If any
 overlap exists, two commands are considered identical. Adding a Command to a command set that
 already has an identical command will *replace* the previous command. This is very important. You
 must take this behavior into account when attempting to overload any default Evennia commands with
@@ -127,7 +127,7 @@ new one that has a matching alias.
 
 There are several extra flags that you can set on CmdSets in order to modify how they work. All are
 optional and will be set to defaults otherwise.  Since many of these relate to *merging* cmdsets,
-you might want to read the [Adding and Merging Command Sets](./Command-Sets#adding-and-merging-
+you might want to read the [Adding and Merging Command Sets](./Command-Sets.md#adding-and-merging-
 command-sets) section for some of these to make sense.
 
 - `key` (string) - an identifier for the cmdset. This is optional, but should be unique. It is used
@@ -138,7 +138,7 @@ dictionary below.
 - `priority` (int) - This defines the merge order of the merge stack - cmdsets will merge in rising
 order of priority with the highest priority set merging last. During a merger, the commands from the
 set with the higher priority will have precedence (just what happens depends on the [merge
-type](Command-Sets#adding-and-merging-command-sets)). If priority is identical, the order in the
+type](./Command-Sets.md#adding-and-merging-command-sets)). If priority is identical, the order in the
 merge stack determines preference. The priority value must be greater or equal to `-100`. Most in-
 game sets should usually have priorities between `0` and `100`. Evennia default sets have priorities
 as follows (these can be changed if you want a different distribution):
@@ -154,7 +154,7 @@ arguments, there is no collision between exits named the same as a channel even 
 differently with certain named cmdsets. If the cmdset to merge with has a `key` matching an entry in
 `key_mergetype`, it will not be merged according to the setting in `mergetype` but according to the
 mode in this dict. Please note that this is more complex than it may seem due to the [merge
-order](Command-Sets#adding-and-merging-command-sets) of command sets.  Please review that section
+order](./Command-Sets.md#adding-and-merging-command-sets) of command sets.  Please review that section
 before using `key_mergetype`.
 - `duplicates` (bool/None default `None`) - this determines what happens when merging same-priority
 cmdsets containing same-key commands together. The`dupicate` option will *only* apply when merging
@@ -195,15 +195,15 @@ priority determines what is used.
 
 ## Command Sets Searched
 
-When a user issues a command, it is matched against the [merged](./Command-Sets#adding-and-merging-
+When a user issues a command, it is matched against the [merged](./Command-Sets.md#adding-and-merging-
 command-sets) command sets available to the player at the moment. Which those are may change at any
 time (such as when the player walks into the room with the `Window` object described earlier).
 
 The currently valid command sets are collected from the following sources:
 
-- The cmdsets stored on the currently active [Session](./Sessions). Default is the empty
+- The cmdsets stored on the currently active [Session](./Sessions.md). Default is the empty
 `SessionCmdSet` with merge priority `-20`.
-- The cmdsets defined on the [Account](./Accounts). Default is the AccountCmdSet with merge priority
+- The cmdsets defined on the [Account](./Accounts.md). Default is the AccountCmdSet with merge priority
 `-10`.
 - All cmdsets on the Character/Object (assuming the Account is currently puppeting such a
 Character/Object). Merge priority `0`.
@@ -215,14 +215,14 @@ included if `no_objs` option is active in the merge stack.
 `no_objs` option is active in the merge stack.
 - The cmdsets of Exits in the location. Merge priority `+101`. Will not be included if `no_exits`
 *or* `no_objs` option is active in the merge stack.
-- The [channel](./Communications) cmdset containing commands for posting to all channels the account
+- The [channel](./Channels.md) cmdset containing commands for posting to all channels the account
 or character is currently connected to. Merge priority `+101`. Will not be included if `no_channels`
 option is active in the merge stack.
 
 Note that an object does not *have* to share its commands with its surroundings. A Character's
 cmdsets should not be shared for example, or all other Characters would get multi-match errors just
 by being in the same room. The ability of an object to share its cmdsets is managed by its `call`
-[lock](./Locks). For example, [Character objects](./Objects) defaults to `call:false()` so that any
+[lock](./Locks.md). For example, [Character objects](./Objects.md) defaults to `call:false()` so that any
 cmdsets on them can only be accessed by themselves, not by other objects around them. Another
 example might be to lock an object with `call:inside()` to only make their commands available to
 objects inside them, or `cmd:holds()` to make their commands available only if they are held.
@@ -282,18 +282,18 @@ type **A** has, and which relative priorities the two sets have. By convention, 
 statement as "New command set **A** is merged onto the old command set **B** to form **?**".
 
 Below are the available merge types and how they work. Names are partly borrowed from [Set
-theory](http://en.wikipedia.org/wiki/Set_theory).
+theory](https://en.wikipedia.org/wiki/Set_theory).
 
 - **Union** (default) - The two cmdsets are merged so that as many commands as possible from each
 cmdset ends up in the merged cmdset. Same-key commands are merged by priority.
 
          # Union
-         A1,A2 + B1,B2,B3,B4 = A1,A2,B3,B4 
+         A1,A2 + B1,B2,B3,B4 = A1,A2,B3,B4
 
 - **Intersect** - Only commands found in *both* cmdsets (i.e. which have the same keys) end up in
 the merged cmdset, with the higher-priority cmdset replacing the lower one's commands.
 
-         # Intersect 
+         # Intersect
          A1,A3,A5 + B1,B2,B4,B5 = A1,A5
 
 - **Replace** -   The commands of the higher-prio cmdset completely replaces the lower-priority
@@ -337,23 +337,23 @@ onto E and not B, our `key_mergetype` directive won't trigger. To make sure it w
 sure we merge onto B.  Setting E's priority to, say, -4 will make sure to merge it onto B and affect
 it appropriately.
 
-More advanced cmdset example: 
+More advanced cmdset example:
 
 ```python
 from commands import mycommands
 
 class MyCmdSet(CmdSet):
-    
+
     key = "MyCmdSet"
     priority = 4
     mergetype = "Replace"
-    key_mergetypes = {'MyOtherCmdSet':'Union'}  
-    
+    key_mergetypes = {'MyOtherCmdSet':'Union'}
+
     def at_cmdset_creation(self):
         """
         The only thing this method should need
         to do is to add commands to the set.
-        """     
+        """
         self.add(mycommands.MyCommand1())
         self.add(mycommands.MyCommand2())
         self.add(mycommands.MyCommand3())
@@ -373,4 +373,4 @@ exits are merged in), these two commands will be considered *identical* since th
 means only one of them will remain after the merger. Each will also be compared with all other
 commands having any combination of the keys and/or aliases "kick", "punch" or "fight".
 
-... So avoid duplicate aliases, it will only cause confusion. 
+... So avoid duplicate aliases, it will only cause confusion.

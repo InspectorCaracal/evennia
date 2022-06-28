@@ -47,8 +47,8 @@
 
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
 <span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
 <span class="kn">from</span> <span class="nn">twisted.protocols</span> <span class="kn">import</span> <span class="n">amp</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span><span class="p">,</span> <span class="n">namedtuple</span>
 <span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
@@ -89,12 +89,12 @@
 <span class="n">AMP_MAXLEN</span> <span class="o">=</span> <span class="n">amp</span><span class="o">.</span><span class="n">MAX_VALUE_LENGTH</span>  <span class="c1"># max allowed data length in AMP protocol (cannot be changed)</span>
 
 <span class="c1"># amp internal</span>
-<span class="n">ASK</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;_ask&#39;</span>
-<span class="n">ANSWER</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;_answer&#39;</span>
-<span class="n">ERROR</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;_error&#39;</span>
-<span class="n">ERROR_CODE</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;_error_code&#39;</span>
-<span class="n">ERROR_DESCRIPTION</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;_error_description&#39;</span>
-<span class="n">UNKNOWN_ERROR_CODE</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;UNKNOWN&#39;</span>
+<span class="n">ASK</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;_ask&quot;</span>
+<span class="n">ANSWER</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;_answer&quot;</span>
+<span class="n">ERROR</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;_error&quot;</span>
+<span class="n">ERROR_CODE</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;_error_code&quot;</span>
+<span class="n">ERROR_DESCRIPTION</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;_error_description&quot;</span>
+<span class="n">UNKNOWN_ERROR_CODE</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;UNKNOWN&quot;</span>
 
 <span class="c1"># buffers</span>
 <span class="n">_SENDBATCH</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
@@ -135,7 +135,10 @@
 
 
 <span class="k">def</span> <span class="nf">_get_logger</span><span class="p">():</span>
-    <span class="s2">&quot;Delay import of logger until absolutely necessary&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Delay import of logger until absolutely necessary</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">global</span> <span class="n">_LOGGER</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">_LOGGER</span><span class="p">:</span>
         <span class="kn">from</span> <span class="nn">evennia.utils</span> <span class="kn">import</span> <span class="n">logger</span> <span class="k">as</span> <span class="n">_LOGGER</span>
@@ -144,7 +147,10 @@
 
 <span class="nd">@wraps</span>
 <span class="k">def</span> <span class="nf">catch_traceback</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
-    <span class="s2">&quot;Helper decorator&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Helper decorator</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
@@ -213,14 +219,14 @@
 <span class="sd">        Note: In Py3 this is really a byte stream.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">zlib</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="nb">super</span><span class="p">(</span><span class="n">Compressed</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">toString</span><span class="p">(</span><span class="n">inObject</span><span class="p">),</span> <span class="mi">9</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">zlib</span><span class="o">.</span><span class="n">compress</span><span class="p">(</span><span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">toString</span><span class="p">(</span><span class="n">inObject</span><span class="p">),</span> <span class="mi">9</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Compressed.fromString"><a class="viewcode-back" href="../../../../api/evennia.server.portal.amp.html#evennia.server.amp_client.Compressed.fromString">[docs]</a>    <span class="k">def</span> <span class="nf">fromString</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inString</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Convert (decompress) from the string-representation on the wire to Python.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">Compressed</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">fromString</span><span class="p">(</span><span class="n">zlib</span><span class="o">.</span><span class="n">decompress</span><span class="p">(</span><span class="n">inString</span><span class="p">))</span></div></div>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">fromString</span><span class="p">(</span><span class="n">zlib</span><span class="o">.</span><span class="n">decompress</span><span class="p">(</span><span class="n">inString</span><span class="p">))</span></div></div>
 
 
 <div class="viewcode-block" id="MsgLauncher2Portal"><a class="viewcode-back" href="../../../../api/evennia.server.portal.amp.html#evennia.server.amp_client.MsgLauncher2Portal">[docs]</a><span class="k">class</span> <span class="nc">MsgLauncher2Portal</span><span class="p">(</span><span class="n">amp</span><span class="o">.</span><span class="n">Command</span><span class="p">):</span>
@@ -349,7 +355,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">send_task</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">multibatches</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="c1"># later twisted amp has its own __init__</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">AMPMultiConnectionProtocol</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">_commandReceived</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">box</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -358,6 +364,7 @@
 <span class="sd">        add a specific log of the problem on the erroring side.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="k">def</span> <span class="nf">formatAnswer</span><span class="p">(</span><span class="n">answerBox</span><span class="p">):</span>
             <span class="n">answerBox</span><span class="p">[</span><span class="n">ANSWER</span><span class="p">]</span> <span class="o">=</span> <span class="n">box</span><span class="p">[</span><span class="n">ASK</span><span class="p">]</span>
             <span class="k">return</span> <span class="n">answerBox</span>
@@ -386,15 +393,59 @@
             <span class="n">errorBox</span><span class="p">[</span><span class="n">ERROR_DESCRIPTION</span><span class="p">]</span> <span class="o">=</span> <span class="n">desc</span>
             <span class="n">errorBox</span><span class="p">[</span><span class="n">ERROR_CODE</span><span class="p">]</span> <span class="o">=</span> <span class="n">code</span>
             <span class="k">return</span> <span class="n">errorBox</span>
+
         <span class="n">deferred</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dispatchCommand</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">ASK</span> <span class="ow">in</span> <span class="n">box</span><span class="p">:</span>
             <span class="n">deferred</span><span class="o">.</span><span class="n">addCallbacks</span><span class="p">(</span><span class="n">formatAnswer</span><span class="p">,</span> <span class="n">formatError</span><span class="p">)</span>
             <span class="n">deferred</span><span class="o">.</span><span class="n">addCallback</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_safeEmit</span><span class="p">)</span>
         <span class="n">deferred</span><span class="o">.</span><span class="n">addErrback</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unhandledError</span><span class="p">)</span>
 
+<div class="viewcode-block" id="AMPMultiConnectionProtocol.stringReceived"><a class="viewcode-back" href="../../../../api/evennia.server.portal.amp.html#evennia.server.amp_client.AMPMultiConnectionProtocol.stringReceived">[docs]</a>    <span class="k">def</span> <span class="nf">stringReceived</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Overrides the base stringReceived of twisted in order to handle</span>
+<span class="sd">        the strange error reported in https://github.com/evennia/evennia/issues/2053,</span>
+<span class="sd">        which can lead to the amp connection locking up.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            string (str): the data coming in.</span>
+
+<span class="sd">        Notes:</span>
+
+<span class="sd">            To test, add the following code to the beginning of</span>
+<span class="sd">            `evennia.server.amp_client.AMPServerClientProtocol.data_to_portal`, then</span>
+<span class="sd">            run multiple commands until the error trigger:</span>
+<span class="sd">            ::</span>
+
+<span class="sd">                import random</span>
+<span class="sd">                from twisted.protocols.amp import AmpBox</span>
+<span class="sd">                always_fail = False</span>
+<span class="sd">                if always_fail or random.random() &lt; 0.05:</span>
+<span class="sd">                    breaker = AmpBox()</span>
+<span class="sd">                    breaker[&#39;_answer&#39;.encode()]=&#39;13541&#39;.encode()</span>
+<span class="sd">                    self.transport.write(breaker.serialize())</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">pto</span> <span class="o">=</span> <span class="s2">&quot;proto_&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span>
+            <span class="n">statehandler</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pto</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">msg</span><span class="p">(</span><span class="s2">&quot;callback&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="s2">&quot;not found&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c1"># make sure to catch a KeyError cleanly here</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">statehandler</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s2">&quot;done&quot;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">loseConnection</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+                <span class="n">_get_logger</span><span class="p">()</span><span class="o">.</span><span class="n">log_err</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;AMP error (KeyError: </span><span class="si">{</span><span class="n">err</span><span class="si">}</span><span class="s2">). Discarded data (see &quot;</span>
+                    <span class="s2">&quot;https://github.com/evennia/evennia/issues/2053)&quot;</span>
+                <span class="p">)</span></div>
+
 <div class="viewcode-block" id="AMPMultiConnectionProtocol.dataReceived"><a class="viewcode-back" href="../../../../api/evennia.server.portal.amp.html#evennia.server.amp_client.AMPMultiConnectionProtocol.dataReceived">[docs]</a>    <span class="k">def</span> <span class="nf">dataReceived</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Handle non-AMP messages, such as HTTP communication.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># print(&quot;dataReceived: {}&quot;.format(data))</span>
         <span class="k">if</span> <span class="n">data</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">NUL</span><span class="p">:</span>
@@ -403,7 +454,7 @@
                 <span class="c1"># an incomplete AMP box means more batches are forthcoming.</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">multibatches</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="nb">super</span><span class="p">(</span><span class="n">AMPMultiConnectionProtocol</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">dataReceived</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+                <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">dataReceived</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
                 <span class="n">_get_logger</span><span class="p">()</span><span class="o">.</span><span class="n">log_trace</span><span class="p">(</span>
                     <span class="s2">&quot;Discarded incoming partial (packed) data (len </span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
@@ -414,7 +465,7 @@
                 <span class="c1"># end of existing multibatch</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">multibatches</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">multibatches</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="nb">super</span><span class="p">(</span><span class="n">AMPMultiConnectionProtocol</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">dataReceived</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+                <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">dataReceived</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
                 <span class="n">_get_logger</span><span class="p">()</span><span class="o">.</span><span class="n">log_trace</span><span class="p">(</span>
                     <span class="s2">&quot;Discarded incoming multi-batch (packed) data (len </span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
@@ -455,6 +506,7 @@
 <span class="sd">        that is irrelevant. If a true connection error happens, the</span>
 <span class="sd">        portal will continuously try to reconnect, showing the problem</span>
 <span class="sd">        that way.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># print(&quot;ConnectionLost: {}: {}&quot;.format(self, reason))</span>
         <span class="k">try</span><span class="p">:</span>
@@ -464,20 +516,20 @@
 
     <span class="c1"># Error handling</span>
 
-<div class="viewcode-block" id="AMPMultiConnectionProtocol.errback"><a class="viewcode-back" href="../../../../api/evennia.server.portal.amp.html#evennia.server.amp_client.AMPMultiConnectionProtocol.errback">[docs]</a>    <span class="k">def</span> <span class="nf">errback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">info</span><span class="p">):</span>
+<div class="viewcode-block" id="AMPMultiConnectionProtocol.errback"><a class="viewcode-back" href="../../../../api/evennia.server.portal.amp.html#evennia.server.amp_client.AMPMultiConnectionProtocol.errback">[docs]</a>    <span class="k">def</span> <span class="nf">errback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">err</span><span class="p">,</span> <span class="n">info</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Error callback.</span>
 <span class="sd">        Handles errors to avoid dropping connections on server tracebacks.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            e (Failure): Deferred error instance.</span>
+<span class="sd">            err (Failure): Deferred error instance.</span>
 <span class="sd">            info (str): Error string.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">e</span><span class="o">.</span><span class="n">trap</span><span class="p">(</span><span class="ne">Exception</span><span class="p">)</span>
+        <span class="n">err</span><span class="o">.</span><span class="n">trap</span><span class="p">(</span><span class="ne">Exception</span><span class="p">)</span>
         <span class="n">_get_logger</span><span class="p">()</span><span class="o">.</span><span class="n">log_err</span><span class="p">(</span>
             <span class="s2">&quot;AMP Error from </span><span class="si">{info}</span><span class="s2">: </span><span class="si">{trcbck}</span><span class="s2"> </span><span class="si">{err}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">info</span><span class="o">=</span><span class="n">info</span><span class="p">,</span> <span class="n">trcbck</span><span class="o">=</span><span class="n">e</span><span class="o">.</span><span class="n">getTraceback</span><span class="p">(),</span> <span class="n">err</span><span class="o">=</span><span class="n">e</span><span class="o">.</span><span class="n">getErrorMessage</span><span class="p">()</span>
+                <span class="n">info</span><span class="o">=</span><span class="n">info</span><span class="p">,</span> <span class="n">trcbck</span><span class="o">=</span><span class="n">err</span><span class="o">.</span><span class="n">getTraceback</span><span class="p">(),</span> <span class="n">err</span><span class="o">=</span><span class="n">err</span><span class="o">.</span><span class="n">getErrorMessage</span><span class="p">()</span>
             <span class="p">)</span>
         <span class="p">)</span></div>
 
@@ -605,16 +657,15 @@
   <li><a href="https://www.evennia.com">Home page</a> </li>
   <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
-  <li><a href="http://webchat.freenode.net/?channels=evennia&uio=MT1mYWxzZSY5PXRydWUmMTE9MTk1JjEyPXRydWUbb">IRC</a> - 
-    <a href="https://discord.gg/NecFePw">Discord</a> - 
-      <a href="https://groups.google.com/forum/#%21forum/evennia">Forums</a>
+  <li>
+    <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
+     <a href="https://github.com/evennia/evennia/discussions">Discussions</a> -
+      <a href="https://evennia.blogspot.com/">Blog</a>
   </li>
-  <li><a href="http://evennia.blogspot.com/">Evennia Dev blog</a> </li>
 </ul>
 <h3>Versions</h3>
 <ul>
   <li><a href="amp.html">1.0-dev (develop branch)</a></li>
-  <li><a href="../../../../../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 </ul>
 
         </div>

@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Clickable links &#8212; Evennia 1.0-dev documentation</title>
     <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +16,9 @@
     <script src="../_static/language_data.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" /> 
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Colors" href="Colors.html" />
+    <link rel="prev" title="Sending different messages depending on viewpoint and receiver" href="Change-Messages-Per-Receiver.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -26,7 +29,14 @@
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="Colors.html" title="Colors"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Change-Messages-Per-Receiver.html" title="Sending different messages depending on viewpoint and receiver"
+             accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">Evennia 1.0-dev</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="Concepts-Overview.html" accesskey="U">Core Concepts</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Clickable links</a></li> 
       </ul>
         <div class="develop">develop branch</div>
@@ -37,14 +47,15 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="clickable-links">
+  <section class="tex2jax_ignore mathjax_ignore" id="clickable-links">
 <h1>Clickable links<a class="headerlink" href="#clickable-links" title="Permalink to this headline">¶</a></h1>
 <p>Evennia supports clickable links for clients that supports it. This marks certain text so it can be
-clicked by a mouse and trigger a given Evennia command. To support clickable links, Evennia requires
-the webclient or an third-party telnet client with <a class="reference external" href="http://www.zuggsoft.com/zmud/mxp.htm">MXP</a>
-support (<em>Note: Evennia only supports clickable links, no other MXP features</em>).</p>
+clicked by a mouse and either trigger a given Evennia command, or open a URL in an external web
+browser. To support clickable links, Evennia requires the webclient or an third-party telnet client
+with <a class="reference external" href="http://www.zuggsoft.com/zmud/mxp.htm">MXP</a> support (<em>Note: Evennia only supports clickable links, no other MXP features</em>).</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">|lc</span></code> to start the link, by defining the command to execute.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">|lu</span></code> to start the link, by defining the URL to open.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">|lt</span></code> to continue with the text to show to the user (the link text).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">|le</span></code> to end the link text and the link definition.</p></li>
 </ul>
@@ -55,7 +66,7 @@ support (<em>Note: Evennia only supports clickable links, no other MXP features<
 <p>This will display as “If you go <strong>to the north</strong> you will find a cottage.” where clicking the link
 will execute the command <code class="docutils literal notranslate"><span class="pre">north</span></code>. If the client does not support clickable links, only the link text
 will be shown.</p>
-</div>
+</section>
 
 
             <div class="clearer"></div>
@@ -77,6 +88,12 @@ will be shown.</p>
     </div>
 </div>
 <script>$('#searchbox').show(0);</script>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Change-Messages-Per-Receiver.html"
+                        title="previous chapter">Sending different messages depending on viewpoint and receiver</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="Colors.html"
+                        title="next chapter">Colors</a></p>
   <div role="note" aria-label="source link">
     <!--h3>This Page</h3-->
     <ul class="this-page-menu">
@@ -88,16 +105,15 @@ will be shown.</p>
   <li><a href="https://www.evennia.com">Home page</a> </li>
   <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
-  <li><a href="http://webchat.freenode.net/?channels=evennia&uio=MT1mYWxzZSY5PXRydWUmMTE9MTk1JjEyPXRydWUbb">IRC</a> - 
-    <a href="https://discord.gg/NecFePw">Discord</a> - 
-      <a href="https://groups.google.com/forum/#%21forum/evennia">Forums</a>
+  <li>
+    <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
+     <a href="https://github.com/evennia/evennia/discussions">Discussions</a> -
+      <a href="https://evennia.blogspot.com/">Blog</a>
   </li>
-  <li><a href="http://evennia.blogspot.com/">Evennia Dev blog</a> </li>
 </ul>
 <h3>Versions</h3>
 <ul>
   <li><a href="Clickable-Links.html">1.0-dev (develop branch)</a></li>
-  <li><a href="../../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
 </ul>
 
         </div>
@@ -113,7 +129,14 @@ will be shown.</p>
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="Colors.html" title="Colors"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="Change-Messages-Per-Receiver.html" title="Sending different messages depending on viewpoint and receiver"
+             >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">Evennia 1.0-dev</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="Concepts-Overview.html" >Core Concepts</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Clickable links</a></li> 
       </ul>
         <div class="develop">develop branch</div>

@@ -4,7 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>evennia.prototypes.prototypes &#8212; Evennia 1.0-dev documentation</title>
     <link rel="stylesheet" href="../_static/nature.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -15,7 +16,9 @@
     <script src="../_static/language_data.js"></script>
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" /> 
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="evennia.prototypes.spawner" href="evennia.prototypes.spawner.html" />
+    <link rel="prev" title="evennia.prototypes.protfuncs" href="evennia.prototypes.protfuncs.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -26,7 +29,17 @@
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="evennia.prototypes.spawner.html" title="evennia.prototypes.spawner"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="evennia.prototypes.protfuncs.html" title="evennia.prototypes.protfuncs"
+             accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">Evennia 1.0-dev</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../Evennia-API.html" >API Summary</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="evennia-api.html" >evennia</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="evennia.html" >evennia</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="evennia.prototypes.html" accesskey="U">evennia.prototypes</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">evennia.prototypes.prototypes</a></li> 
       </ul>
         <div class="develop">develop branch</div>
@@ -37,7 +50,7 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-evennia.prototypes.prototypes">
+  <section id="module-evennia.prototypes.prototypes">
 <span id="evennia-prototypes-prototypes"></span><h1>evennia.prototypes.prototypes<a class="headerlink" href="#module-evennia.prototypes.prototypes" title="Permalink to this headline">¶</a></h1>
 <p>Handling storage of prototypes, both database-based ones (DBPrototypes) and those defined in modules
 (Read-only prototypes). Also contains utility functions, formatters and manager functions.</p>
@@ -79,9 +92,28 @@ the default reserved keys.</p></li>
 
 <dl class="py function">
 <dt id="evennia.prototypes.prototypes.load_module_prototypes">
-<code class="sig-prename descclassname">evennia.prototypes.prototypes.</code><code class="sig-name descname">load_module_prototypes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/evennia/prototypes/prototypes.html#load_module_prototypes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#evennia.prototypes.prototypes.load_module_prototypes" title="Permalink to this definition">¶</a></dt>
-<dd><p>This is called by <strong>evennia.__init__</strong> as Evennia initializes. It’s important
-to do this late so as to not interfere with evennia initialization.</p>
+<code class="sig-prename descclassname">evennia.prototypes.prototypes.</code><code class="sig-name descname">load_module_prototypes</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">mod_or_prototypes</span></em>, <em class="sig-param"><span class="n">override</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/evennia/prototypes/prototypes.html#load_module_prototypes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#evennia.prototypes.prototypes.load_module_prototypes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load module prototypes. Also prototype-dicts passed directly to this function are considered
+‘module’ prototypes (they are impossible to change) but will have a module of None.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>*mod_or_prototypes</strong> (<em>module</em><em> or </em><em>dict</em>) – Each arg should be a separate module or
+prototype-dict to load. If none are given, <strong>settings.PROTOTYPE_MODULES</strong> will be used.</p></li>
+<li><p><strong>override</strong> (<em>bool</em><em>, </em><em>optional</em>) – If prototypes should override existing ones already loaded.
+Disabling this can allow for injecting prototypes into the system dynamically while
+still allowing same prototype-keys to be overridden from settings (even though settings
+is usually loaded before dynamic loading).</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is called (without arguments) by <strong>evennia.__init__</strong> as Evennia initializes. It’s
+important to do this late so as to not interfere with evennia initialization. But it can
+also be used later to add more prototypes to the library on the fly. This is requried
+before a module-based prototype can be accessed by prototype-key.</p>
+</div>
 </dd></dl>
 
 <dl class="py class">
@@ -194,13 +226,13 @@ Note that no locks will be checked if**caller** is not passed.</p></li>
 
 <dl class="py function">
 <dt id="evennia.prototypes.prototypes.search_prototype">
-<code class="sig-prename descclassname">evennia.prototypes.prototypes.</code><code class="sig-name descname">search_prototype</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">key</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">tags</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">require_single</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">return_iterators</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/evennia/prototypes/prototypes.html#search_prototype"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#evennia.prototypes.prototypes.search_prototype" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">evennia.prototypes.prototypes.</code><code class="sig-name descname">search_prototype</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">key</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">tags</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">require_single</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">return_iterators</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">no_db</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/evennia/prototypes/prototypes.html#search_prototype"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#evennia.prototypes.prototypes.search_prototype" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find prototypes based on key and/or tags, or all prototypes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Keyword Arguments</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>key</strong> (<em>str</em>) – An exact or partial key to query for.</p></li>
-<li><p><strong>tags</strong> (<em>str</em><em> or </em><a class="reference internal" href="evennia.contrib.barter.html#evennia.contrib.barter.TradeHandler.list" title="evennia.contrib.barter.TradeHandler.list"><em>list</em></a>) – Tag key or keys to query for. These
+<li><p><strong>tags</strong> (<em>str</em><em> or </em><a class="reference internal" href="evennia.contrib.game_systems.barter.barter.html#evennia.contrib.game_systems.barter.barter.TradeHandler.list" title="evennia.contrib.game_systems.barter.barter.TradeHandler.list"><em>list</em></a>) – Tag key or keys to query for. These
 will always be applied with the ‘db_protototype’
 tag category.</p></li>
 <li><p><strong>require_single</strong> (<em>bool</em>) – If set, raise KeyError if the result
@@ -208,6 +240,9 @@ was not found or if there are multiple matches.</p></li>
 <li><p><strong>return_iterators</strong> (<em>bool</em>) – Optimized return for large numbers of db-prototypes.
 If set, separate returns of module based prototypes and paginate
 the db-prototype return.</p></li>
+<li><p><strong>no_db</strong> (<em>bool</em>) – Optimization. If set, skip querying for database-generated prototypes and only
+include module-based prototypes. This can lead to a dramatic speedup since
+module-prototypes are static and require no db-lookup.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -414,7 +449,7 @@ data type to insert into the prototype.</p>
 
 <dl class="py function">
 <dt id="evennia.prototypes.prototypes.init_spawn_value">
-<code class="sig-prename descclassname">evennia.prototypes.prototypes.</code><code class="sig-name descname">init_spawn_value</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em>, <em class="sig-param"><span class="n">validator</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">caller</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/evennia/prototypes/prototypes.html#init_spawn_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#evennia.prototypes.prototypes.init_spawn_value" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">evennia.prototypes.prototypes.</code><code class="sig-name descname">init_spawn_value</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em>, <em class="sig-param"><span class="n">validator</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">caller</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">prototype</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/evennia/prototypes/prototypes.html#init_spawn_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#evennia.prototypes.prototypes.init_spawn_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Analyze the prototype value and produce a value useful at the point of spawning.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -430,6 +465,7 @@ validator (callable, optional): If given, this will be called with the value to<
 <dt>caller (Object or Account): This is necessary for certain protfuncs that perform object</dt><dd><p>searches and have to check permissions.</p>
 </dd>
 </dl>
+<p>prototype (dict): Prototype this is to be used for. Necessary for certain protfuncs.</p>
 </p>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -450,7 +486,7 @@ validator (callable, optional): If given, this will be called with the value to<
 <dd><p>Always convert value(s) to Object, or None</p>
 </dd></dl>
 
-</div>
+</section>
 
 
             <div class="clearer"></div>
@@ -472,10 +508,16 @@ validator (callable, optional): If given, this will be called with the value to<
     </div>
 </div>
 <script>$('#searchbox').show(0);</script>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="evennia.prototypes.protfuncs.html"
+                        title="previous chapter">evennia.prototypes.protfuncs</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="evennia.prototypes.spawner.html"
+                        title="next chapter">evennia.prototypes.spawner</a></p>
   <div role="note" aria-label="source link">
     <!--h3>This Page</h3-->
     <ul class="this-page-menu">
-      <li><a href="../_sources/api/evennia.prototypes.prototypes.rst.txt"
+      <li><a href="../_sources/api/evennia.prototypes.prototypes.md.txt"
             rel="nofollow">Show Page Source</a></li>
     </ul>
    </div><h3>Links</h3>
@@ -483,16 +525,15 @@ validator (callable, optional): If given, this will be called with the value to<
   <li><a href="https://www.evennia.com">Home page</a> </li>
   <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
-  <li><a href="http://webchat.freenode.net/?channels=evennia&uio=MT1mYWxzZSY5PXRydWUmMTE9MTk1JjEyPXRydWUbb">IRC</a> - 
-    <a href="https://discord.gg/NecFePw">Discord</a> - 
-      <a href="https://groups.google.com/forum/#%21forum/evennia">Forums</a>
+  <li>
+    <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
+     <a href="https://github.com/evennia/evennia/discussions">Discussions</a> -
+      <a href="https://evennia.blogspot.com/">Blog</a>
   </li>
-  <li><a href="http://evennia.blogspot.com/">Evennia Dev blog</a> </li>
 </ul>
 <h3>Versions</h3>
 <ul>
   <li><a href="evennia.prototypes.prototypes.html">1.0-dev (develop branch)</a></li>
-  <li><a href="../../0.9.5/api/evennia.prototypes.prototypes.html">0.9.5 (v0.9.5 branch)</a></li>
 </ul>
 
         </div>
@@ -508,7 +549,17 @@ validator (callable, optional): If given, this will be called with the value to<
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="evennia.prototypes.spawner.html" title="evennia.prototypes.spawner"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="evennia.prototypes.protfuncs.html" title="evennia.prototypes.protfuncs"
+             >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">Evennia 1.0-dev</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../Evennia-API.html" >API Summary</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="evennia-api.html" >evennia</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="evennia.html" >evennia</a> &#187;</li>
+          <li class="nav-item nav-item-4"><a href="evennia.prototypes.html" >evennia.prototypes</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">evennia.prototypes.prototypes</a></li> 
       </ul>
         <div class="develop">develop branch</div>
