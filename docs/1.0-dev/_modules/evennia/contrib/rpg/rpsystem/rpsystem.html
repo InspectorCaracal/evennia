@@ -647,7 +647,7 @@
             <span class="p">}</span>
         <span class="c1"># map the language {##num} markers. This will convert the escaped sdesc markers on</span>
         <span class="c1"># the form {{#num}} to {#num} markers ready to sdesc-map in the next step.</span>
-        <span class="n">sendemote</span> <span class="o">=</span> <span class="n">emote</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">receiver_lang_mapping</span><span class="p">)</span>
+        <span class="n">sendemote</span> <span class="o">=</span> <span class="n">emote</span><span class="o">.</span><span class="n">format_map</span><span class="p">(</span><span class="n">receiver_lang_mapping</span><span class="p">)</span>
 
         <span class="c1"># map the ref keys to sdescs</span>
         <span class="n">receiver_sdesc_mapping</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
@@ -659,7 +659,11 @@
         <span class="p">)</span>
 
         <span class="c1"># do the template replacement of the sdesc/recog {#num} markers</span>
-        <span class="n">receiver</span><span class="o">.</span><span class="n">msg</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="p">(</span><span class="n">sendemote</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">receiver_sdesc_mapping</span><span class="p">),</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="n">msg_type</span><span class="p">}),</span> <span class="n">from_obj</span><span class="o">=</span><span class="n">sender</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+        <span class="n">receiver</span><span class="o">.</span><span class="n">msg</span><span class="p">(</span>
+            <span class="n">text</span><span class="o">=</span><span class="p">(</span><span class="n">sendemote</span><span class="o">.</span><span class="n">format_map</span><span class="p">(</span><span class="n">receiver_sdesc_mapping</span><span class="p">),</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="n">msg_type</span><span class="p">}),</span>
+            <span class="n">from_obj</span><span class="o">=</span><span class="n">sender</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span></div>
 
 
 <span class="c1"># ------------------------------------------------------------</span>
@@ -1097,7 +1101,7 @@
                 <span class="p">(</span><span class="n">ref</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">sdesc</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;sdesc&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="n">obj</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">ref</span><span class="p">,</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">mapping</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
             <span class="p">)</span>
-            <span class="n">pose</span> <span class="o">=</span> <span class="n">parsed</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">mapping</span><span class="p">)</span>
+            <span class="n">pose</span> <span class="o">=</span> <span class="n">parsed</span><span class="o">.</span><span class="n">format_map</span><span class="p">(</span><span class="n">mapping</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">target_name</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">pose</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">60</span><span class="p">:</span>
                 <span class="n">caller</span><span class="o">.</span><span class="n">msg</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">pose</span><span class="si">}</span><span class="s2">&#39; is too long.&quot;</span><span class="p">)</span>

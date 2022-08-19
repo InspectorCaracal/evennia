@@ -649,7 +649,10 @@ messages and/or overloaded hook behaviors.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Keyword Arguments</dt>
-<dd class="field-even"><p><strong>on to announce_move_to and announce_move_from hooks.</strong> (<em>Passed</em>) – </p>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>on to announce_move_to and announce_move_from hooks.</strong> (<em>Passed</em>) – </p></li>
+<li><p><strong>will set the &quot;exit_obj&quot; kwarg to themselves.</strong> (<em>Exits</em>) – </p></li>
+</ul>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p><p><em>result (bool)</em> –</p>
@@ -1102,7 +1105,7 @@ now in.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>source_location</strong> (<em>Object</em>) – Wwhere we came from. This may be <strong>None</strong>.</p></li>
+<li><p><strong>source_location</strong> (<em>Object</em>) – Where we came from. This may be <strong>None</strong>.</p></li>
 <li><p><strong>move_type</strong> (<em>str</em>) – The type of move. “give”, “traverse”, etc.
 This is an arbitrary string provided to obj.move_to().
 Useful for altering messages or altering logic depending
@@ -1123,7 +1126,7 @@ now in.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>source_location</strong> (<em>Object</em>) – Wwhere we came from. This may be <strong>None</strong>.</p></li>
+<li><p><strong>source_location</strong> (<em>Object</em>) – Where we came from. This may be <strong>None</strong>.</p></li>
 <li><p><strong>move_type</strong> (<em>str</em>) – The type of move. “give”, “traverse”, etc.
 This is an arbitrary string provided to obj.move_to().
 Useful for altering messages or altering logic depending
