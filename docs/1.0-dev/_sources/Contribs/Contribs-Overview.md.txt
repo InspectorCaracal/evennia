@@ -363,6 +363,7 @@ contribs related to rooms, exits and map building._
 :maxdepth: 1
 
 Contrib-Extended-Room.md
+Contrib-Ingame-Map-Display.md
 Contrib-Mapbuilder.md
 Contrib-Simpledoor.md
 Contrib-Slow-Exit.md
@@ -381,6 +382,19 @@ in the room (without having to create a new in-game object for each). The room i
 supported by new `look` and `desc` commands.
 
 [Read the documentation](./Contrib-Extended-Room.md) - [Browse the Code](evennia.contrib.grid.extended_room)
+
+
+
+### Contrib: `ingame_map_display`
+
+_Contribution - helpme 2022_
+
+This adds an ascii `map` to a given room which can be viewed with the `map` command.
+You can easily alter it to add special characters, room colors etc. The map shown is
+dynamically generated on use, and supports all compass directions and up/down. Other
+directions are ignored.
+
+[Read the documentation](./Contrib-Ingame-Map-Display.md) - [Browse the Code](evennia.contrib.grid.ingame_map_display)
 
 
 
@@ -549,6 +563,7 @@ tutorials are found here. Also the home of the Tutorial World demo adventure._
 
 Contrib-Batchprocessor.md
 Contrib-Bodyfunctions.md
+Contrib-Evadventure.md
 Contrib-Mirror.md
 Contrib-Red-Button.md
 Contrib-Talking-Npc.md
@@ -576,6 +591,20 @@ Example script for testing. This adds a simple timer that has your
 character make small verbal observations at irregular intervals.
 
 [Read the documentation](./Contrib-Bodyfunctions.md) - [Browse the Code](evennia.contrib.tutorials.bodyfunctions)
+
+
+
+### Contrib: `evadventure`
+
+_Contrib by Griatch 2022_
+
+A complete example MUD using Evennia. This is the final result of what is
+implemented if you follow the Getting-Started tutorial. It's recommended
+that you follow the tutorial step by step and write your own code. But if
+you prefer you can also pick apart or use this as a starting point for your
+own game.
+
+[Read the documentation](./Contrib-Evadventure.md) - [Browse the Code](evennia.contrib.tutorials.evadventure)
 
 
 

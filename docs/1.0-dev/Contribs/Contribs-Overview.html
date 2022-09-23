@@ -318,6 +318,7 @@ contribs related to rooms, exits and map building.</em></p>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="Contrib-Extended-Room.html">Extended Room</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Contrib-Ingame-Map-Display.html">Basic Map</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Contrib-Mapbuilder.html">Map Builder</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Contrib-Simpledoor.html">SimpleDoor</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Contrib-Slow-Exit.html">Slow Exit</a></li>
@@ -333,6 +334,15 @@ with time-of-day and/or season. It also adds ‘details’ for the player to loo
 in the room (without having to create a new in-game object for each). The room is
 supported by new <code class="docutils literal notranslate"><span class="pre">look</span></code> and <code class="docutils literal notranslate"><span class="pre">desc</span></code> commands.</p>
 <p><a class="reference internal" href="Contrib-Extended-Room.html"><span class="doc std std-doc">Read the documentation</span></a> - <a class="reference internal" href="../api/evennia.contrib.grid.extended_room.html#evennia-contrib-grid-extended-room"><span class="std std-ref">Browse the Code</span></a></p>
+</section>
+<section id="contrib-ingame-map-display">
+<h3>Contrib: <code class="docutils literal notranslate"><span class="pre">ingame_map_display</span></code><a class="headerlink" href="#contrib-ingame-map-display" title="Permalink to this headline">¶</a></h3>
+<p><em>Contribution - helpme 2022</em></p>
+<p>This adds an ascii <code class="docutils literal notranslate"><span class="pre">map</span></code> to a given room which can be viewed with the <code class="docutils literal notranslate"><span class="pre">map</span></code> command.
+You can easily alter it to add special characters, room colors etc. The map shown is
+dynamically generated on use, and supports all compass directions and up/down. Other
+directions are ignored.</p>
+<p><a class="reference internal" href="Contrib-Ingame-Map-Display.html"><span class="doc std std-doc">Read the documentation</span></a> - <span class="xref myst">Browse the Code</span></p>
 </section>
 <section id="contrib-mapbuilder">
 <h3>Contrib: <code class="docutils literal notranslate"><span class="pre">mapbuilder</span></code><a class="headerlink" href="#contrib-mapbuilder" title="Permalink to this headline">¶</a></h3>
@@ -450,6 +460,7 @@ tutorials are found here. Also the home of the Tutorial World demo adventure.</e
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="Contrib-Batchprocessor.html">Batch processor examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Contrib-Bodyfunctions.html">Script example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Contrib-Evadventure.html">EvAdventure</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Contrib-Mirror.html">TutorialMirror</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Contrib-Red-Button.html">Red Button example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Contrib-Talking-Npc.html">Talkative NPC example</a></li>
@@ -470,6 +481,16 @@ control and then ‘applied’ to the game to create content.</p>
 <p>Example script for testing. This adds a simple timer that has your
 character make small verbal observations at irregular intervals.</p>
 <p><a class="reference internal" href="Contrib-Bodyfunctions.html"><span class="doc std std-doc">Read the documentation</span></a> - <a class="reference internal" href="../api/evennia.contrib.tutorials.bodyfunctions.html#evennia-contrib-tutorials-bodyfunctions"><span class="std std-ref">Browse the Code</span></a></p>
+</section>
+<section id="contrib-evadventure">
+<h3>Contrib: <code class="docutils literal notranslate"><span class="pre">evadventure</span></code><a class="headerlink" href="#contrib-evadventure" title="Permalink to this headline">¶</a></h3>
+<p><em>Contrib by Griatch 2022</em></p>
+<p>A complete example MUD using Evennia. This is the final result of what is
+implemented if you follow the Getting-Started tutorial. It’s recommended
+that you follow the tutorial step by step and write your own code. But if
+you prefer you can also pick apart or use this as a starting point for your
+own game.</p>
+<p><a class="reference internal" href="Contrib-Evadventure.html"><span class="doc std std-doc">Read the documentation</span></a> - <a class="reference internal" href="../api/evennia.contrib.tutorials.evadventure.html#evennia-contrib-tutorials-evadventure"><span class="std std-ref">Browse the Code</span></a></p>
 </section>
 <section id="contrib-mirror">
 <h3>Contrib: <code class="docutils literal notranslate"><span class="pre">mirror</span></code><a class="headerlink" href="#contrib-mirror" title="Permalink to this headline">¶</a></h3>
@@ -544,7 +565,7 @@ to any callable of your choice.</p>
 names can be generated either as first (personal) names, family (last) names, or
 full names (first, optional middles, and last). The name data is from <a class="reference external" href="https://www.behindthename.com/">Behind the Name</a>
 and used under the <a class="reference external" href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0 license</a>.</p>
-<p><a class="reference internal" href="Contrib-Name-Generator.html"><span class="doc std std-doc">Read the documentation</span></a> - <span class="xref myst">Browse the Code</span></p>
+<p><a class="reference internal" href="Contrib-Name-Generator.html"><span class="doc std std-doc">Read the documentation</span></a> - <a class="reference internal" href="../api/evennia.contrib.utils.name_generator.html#evennia-contrib-utils-name-generator"><span class="std std-ref">Browse the Code</span></a></p>
 </section>
 <section id="contrib-random-string-generator">
 <h3>Contrib: <code class="docutils literal notranslate"><span class="pre">random_string_generator</span></code><a class="headerlink" href="#contrib-random-string-generator" title="Permalink to this headline">¶</a></h3>
@@ -625,6 +646,7 @@ will be overwritten.</small></p>
 </li>
 <li><a class="reference internal" href="#grid">grid</a><ul>
 <li><a class="reference internal" href="#contrib-extended-room">Contrib: <code class="docutils literal notranslate"><span class="pre">extended_room</span></code></a></li>
+<li><a class="reference internal" href="#contrib-ingame-map-display">Contrib: <code class="docutils literal notranslate"><span class="pre">ingame_map_display</span></code></a></li>
 <li><a class="reference internal" href="#contrib-mapbuilder">Contrib: <code class="docutils literal notranslate"><span class="pre">mapbuilder</span></code></a></li>
 <li><a class="reference internal" href="#contrib-simpledoor">Contrib: <code class="docutils literal notranslate"><span class="pre">simpledoor</span></code></a></li>
 <li><a class="reference internal" href="#contrib-slow-exit">Contrib: <code class="docutils literal notranslate"><span class="pre">slow_exit</span></code></a></li>
@@ -643,6 +665,7 @@ will be overwritten.</small></p>
 <li><a class="reference internal" href="#tutorials">tutorials</a><ul>
 <li><a class="reference internal" href="#contrib-batchprocessor">Contrib: <code class="docutils literal notranslate"><span class="pre">batchprocessor</span></code></a></li>
 <li><a class="reference internal" href="#contrib-bodyfunctions">Contrib: <code class="docutils literal notranslate"><span class="pre">bodyfunctions</span></code></a></li>
+<li><a class="reference internal" href="#contrib-evadventure">Contrib: <code class="docutils literal notranslate"><span class="pre">evadventure</span></code></a></li>
 <li><a class="reference internal" href="#contrib-mirror">Contrib: <code class="docutils literal notranslate"><span class="pre">mirror</span></code></a></li>
 <li><a class="reference internal" href="#contrib-red-button">Contrib: <code class="docutils literal notranslate"><span class="pre">red_button</span></code></a></li>
 <li><a class="reference internal" href="#contrib-talking-npc">Contrib: <code class="docutils literal notranslate"><span class="pre">talking_npc</span></code></a></li>
