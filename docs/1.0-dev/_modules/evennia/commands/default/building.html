@@ -65,6 +65,9 @@
 <h3>Versions</h3>
 <ul>
   <li><a href="building.html">1.0-dev (develop branch)</a></li>
+ <ul>
+  <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
+
 </ul>
 
         </div>
@@ -3429,21 +3432,29 @@
         <span class="s2">&quot;pause&quot;</span><span class="p">:</span> <span class="s2">&quot;|Paused|n&quot;</span><span class="p">,</span>
         <span class="s2">&quot;delete&quot;</span><span class="p">:</span> <span class="s2">&quot;|rDeleted|n&quot;</span><span class="p">,</span>
     <span class="p">}</span>
+    <span class="c1"># never show these script types</span>
+    <span class="n">hide_script_paths</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;evennia.prototypes.prototypes.DbPrototype&quot;</span><span class="p">,)</span>
 
     <span class="k">def</span> <span class="nf">_search_script</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
         <span class="c1"># test first if this is a script match</span>
-        <span class="n">scripts</span> <span class="o">=</span> <span class="n">ScriptDB</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_all_scripts</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">args</span><span class="p">)</span>
+        <span class="n">scripts</span> <span class="o">=</span> <span class="n">ScriptDB</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_all_scripts</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">args</span><span class="p">)</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span>
+            <span class="n">db_typeclass_path__in</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hide_script_paths</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="n">scripts</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">scripts</span>
         <span class="c1"># try typeclass path</span>
-        <span class="n">scripts</span> <span class="o">=</span> <span class="n">ScriptDB</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">db_typeclass_path__iendswith</span><span class="o">=</span><span class="n">args</span><span class="p">)</span>
+        <span class="n">scripts</span> <span class="o">=</span> <span class="n">ScriptDB</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">db_typeclass_path__iendswith</span><span class="o">=</span><span class="n">args</span><span class="p">)</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span>
+            <span class="n">db_typeclass_path__in</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hide_script_paths</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="n">scripts</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">scripts</span>
         <span class="k">if</span> <span class="s2">&quot;-&quot;</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
             <span class="c1"># may be a dbref-range</span>
             <span class="n">val1</span><span class="p">,</span> <span class="n">val2</span> <span class="o">=</span> <span class="p">(</span><span class="n">dbref</span><span class="p">(</span><span class="n">part</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">args</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
             <span class="k">if</span> <span class="n">val1</span> <span class="ow">and</span> <span class="n">val2</span><span class="p">:</span>
-                <span class="n">scripts</span> <span class="o">=</span> <span class="n">ScriptDB</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">id__in</span><span class="o">=</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">val1</span><span class="p">,</span> <span class="n">val2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)))</span>
+                <span class="n">scripts</span> <span class="o">=</span> <span class="n">ScriptDB</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">id__in</span><span class="o">=</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">val1</span><span class="p">,</span> <span class="n">val2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)))</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span>
+                    <span class="n">db_typeclass_path__in</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hide_script_paths</span>
+                <span class="p">)</span>
                 <span class="k">if</span> <span class="n">scripts</span><span class="p">:</span>
                     <span class="k">return</span> <span class="n">scripts</span>
 
@@ -3454,7 +3465,7 @@
 
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">:</span>
             <span class="c1"># show all scripts</span>
-            <span class="n">scripts</span> <span class="o">=</span> <span class="n">ScriptDB</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+            <span class="n">scripts</span> <span class="o">=</span> <span class="n">ScriptDB</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">db_typeclass_path__in</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hide_script_paths</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">scripts</span><span class="p">:</span>
                 <span class="n">caller</span><span class="o">.</span><span class="n">msg</span><span class="p">(</span><span class="s2">&quot;No scripts found.&quot;</span><span class="p">)</span>
                 <span class="k">return</span>
@@ -3492,7 +3503,9 @@
                         <span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="c1"># just show all scripts on object</span>
-                    <span class="n">scripts</span> <span class="o">=</span> <span class="n">ScriptDB</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">db_obj</span><span class="o">=</span><span class="n">obj</span><span class="p">)</span>
+                    <span class="n">scripts</span> <span class="o">=</span> <span class="n">ScriptDB</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">db_obj</span><span class="o">=</span><span class="n">obj</span><span class="p">)</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span>
+                        <span class="n">db_typeclass_path__in</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hide_script_paths</span>
+                    <span class="p">)</span>
                     <span class="k">if</span> <span class="n">scripts</span><span class="p">:</span>
                         <span class="n">ScriptEvMore</span><span class="p">(</span><span class="n">caller</span><span class="p">,</span> <span class="n">scripts</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">),</span> <span class="n">session</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
@@ -3524,7 +3537,9 @@
             <span class="c1"># modification switches - must operate on existing scripts</span>
 
             <span class="k">if</span> <span class="ow">not</span> <span class="n">scripts</span><span class="p">:</span>
-                <span class="n">scripts</span> <span class="o">=</span> <span class="n">ScriptDB</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">db_obj</span><span class="o">=</span><span class="n">obj</span><span class="p">)</span>
+                <span class="n">scripts</span> <span class="o">=</span> <span class="n">ScriptDB</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">db_obj</span><span class="o">=</span><span class="n">obj</span><span class="p">)</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span>
+                    <span class="n">db_typeclass_path__in</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hide_script_paths</span>
+                <span class="p">)</span>
 
             <span class="k">if</span> <span class="n">scripts</span><span class="o">.</span><span class="n">count</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="n">ret</span> <span class="o">=</span> <span class="k">yield</span> <span class="p">(</span>
@@ -4489,7 +4504,7 @@
         <div class="develop">develop branch</div>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, The Evennia developer community.
+        &#169; Copyright 2022, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

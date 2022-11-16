@@ -65,6 +65,9 @@
 <h3>Versions</h3>
 <ul>
   <li><a href="portalsessionhandler.html">1.0-dev (develop branch)</a></li>
+ <ul>
+  <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
+
 </ul>
 
         </div>
@@ -81,13 +84,15 @@
 
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">deque</span><span class="p">,</span> <span class="n">namedtuple</span>
-<span class="kn">from</span> <span class="nn">twisted.internet</span> <span class="kn">import</span> <span class="n">reactor</span>
+
 <span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">django.utils.translation</span> <span class="kn">import</span> <span class="n">gettext</span> <span class="k">as</span> <span class="n">_</span>
+<span class="kn">from</span> <span class="nn">twisted.internet</span> <span class="kn">import</span> <span class="n">reactor</span>
+
+<span class="kn">from</span> <span class="nn">evennia.server.portal.amp</span> <span class="kn">import</span> <span class="n">PCONN</span><span class="p">,</span> <span class="n">PCONNSYNC</span><span class="p">,</span> <span class="n">PDISCONN</span><span class="p">,</span> <span class="n">PDISCONNALL</span>
 <span class="kn">from</span> <span class="nn">evennia.server.sessionhandler</span> <span class="kn">import</span> <span class="n">SessionHandler</span>
-<span class="kn">from</span> <span class="nn">evennia.server.portal.amp</span> <span class="kn">import</span> <span class="n">PCONN</span><span class="p">,</span> <span class="n">PDISCONN</span><span class="p">,</span> <span class="n">PCONNSYNC</span><span class="p">,</span> <span class="n">PDISCONNALL</span>
 <span class="kn">from</span> <span class="nn">evennia.utils.logger</span> <span class="kn">import</span> <span class="n">log_trace</span>
 <span class="kn">from</span> <span class="nn">evennia.utils.utils</span> <span class="kn">import</span> <span class="n">class_from_module</span>
-<span class="kn">from</span> <span class="nn">django.utils.translation</span> <span class="kn">import</span> <span class="n">gettext</span> <span class="k">as</span> <span class="n">_</span>
 
 <span class="c1"># module import</span>
 <span class="n">_MOD_IMPORT</span> <span class="o">=</span> <span class="kc">None</span>
@@ -588,7 +593,7 @@
         <div class="develop">develop branch</div>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, The Evennia developer community.
+        &#169; Copyright 2022, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

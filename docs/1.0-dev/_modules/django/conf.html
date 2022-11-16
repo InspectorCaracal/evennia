@@ -64,6 +64,9 @@
 <h3>Versions</h3>
 <ul>
   <li><a href="conf.html">1.0-dev (develop branch)</a></li>
+ <ul>
+  <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
+
 </ul>
 
         </div>
@@ -106,6 +109,11 @@
     <span class="s2">&quot;The USE_L10N setting is deprecated. Starting with Django 5.0, localized &quot;</span>
     <span class="s2">&quot;formatting of data will always be enabled. For example Django will &quot;</span>
     <span class="s2">&quot;display numbers and dates using the format of the current locale.&quot;</span>
+<span class="p">)</span>
+
+<span class="n">CSRF_COOKIE_MASKED_DEPRECATED_MSG</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">&quot;The CSRF_COOKIE_MASKED transitional setting is deprecated. Support for &quot;</span>
+    <span class="s2">&quot;it will be removed in Django 5.0.&quot;</span>
 <span class="p">)</span>
 
 
@@ -157,9 +165,10 @@
 
     <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the value of a setting and cache it in self.__dict__.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wrapped</span> <span class="ow">is</span> <span class="n">empty</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">_wrapped</span> <span class="o">:=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wrapped</span><span class="p">)</span> <span class="ow">is</span> <span class="n">empty</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_setup</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-        <span class="n">val</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_wrapped</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+            <span class="n">_wrapped</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wrapped</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">_wrapped</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 
         <span class="c1"># Special case some settings which require further modification.</span>
         <span class="c1"># This is done here for performance reasons so the modified value is cached.</span>
@@ -226,8 +235,9 @@
     <span class="k">def</span> <span class="nf">USE_L10N</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">stack</span> <span class="o">=</span> <span class="n">traceback</span><span class="o">.</span><span class="n">extract_stack</span><span class="p">()</span>
         <span class="c1"># Show a warning if the setting is used outside of Django.</span>
-        <span class="c1"># Stack index: -1 this line, -2 the caller.</span>
-        <span class="n">filename</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+        <span class="c1"># Stack index: -1 this line, -2 the LazyObject __getattribute__(),</span>
+        <span class="c1"># -3 the caller.</span>
+        <span class="n">filename</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">filename</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">django</span><span class="o">.</span><span class="vm">__file__</span><span class="p">)):</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
                 <span class="n">USE_L10N_DEPRECATED_MSG</span><span class="p">,</span>
@@ -261,6 +271,7 @@
             <span class="s2">&quot;INSTALLED_APPS&quot;</span><span class="p">,</span>
             <span class="s2">&quot;TEMPLATE_DIRS&quot;</span><span class="p">,</span>
             <span class="s2">&quot;LOCALE_PATHS&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;SECRET_KEY_FALLBACKS&quot;</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_explicit_settings</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">setting</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">mod</span><span class="p">):</span>
@@ -286,6 +297,9 @@
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_overridden</span><span class="p">(</span><span class="s2">&quot;USE_DEPRECATED_PYTZ&quot;</span><span class="p">):</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">USE_DEPRECATED_PYTZ_DEPRECATED_MSG</span><span class="p">,</span> <span class="n">RemovedInDjango50Warning</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_overridden</span><span class="p">(</span><span class="s2">&quot;CSRF_COOKIE_MASKED&quot;</span><span class="p">):</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">CSRF_COOKIE_MASKED_DEPRECATED_MSG</span><span class="p">,</span> <span class="n">RemovedInDjango50Warning</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="s2">&quot;tzset&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">TIME_ZONE</span><span class="p">:</span>
             <span class="c1"># When we can, attempt to validate the timezone. If we can&#39;t find</span>
@@ -336,6 +350,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_deleted</span><span class="o">.</span><span class="n">discard</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;USE_L10N&quot;</span><span class="p">:</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">USE_L10N_DEPRECATED_MSG</span><span class="p">,</span> <span class="n">RemovedInDjango50Warning</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;CSRF_COOKIE_MASKED&quot;</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">CSRF_COOKIE_MASKED_DEPRECATED_MSG</span><span class="p">,</span> <span class="n">RemovedInDjango50Warning</span><span class="p">)</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;USE_DEPRECATED_PYTZ&quot;</span><span class="p">:</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">USE_DEPRECATED_PYTZ_DEPRECATED_MSG</span><span class="p">,</span> <span class="n">RemovedInDjango50Warning</span><span class="p">)</span>
@@ -390,7 +406,7 @@
         <div class="develop">develop branch</div>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, The Evennia developer community.
+        &#169; Copyright 2022, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

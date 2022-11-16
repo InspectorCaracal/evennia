@@ -65,6 +65,9 @@
 <h3>Versions</h3>
 <ul>
   <li><a href="containers.html">1.0-dev (develop branch)</a></li>
+ <ul>
+  <li><a href="../0.9.5/index.html">0.9.5 (v0.9.5 branch)</a></li>
+
 </ul>
 
         </div>
@@ -300,6 +303,13 @@
         <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_scripts</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">res</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">loaded_data</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">typeclass_storage</span><span class="p">:</span>
+                    <span class="c1"># this means we are trying to load in a loop</span>
+                    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Trying to access `GLOBAL_SCRIPTS.</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">` before scripts have finished &quot;</span>
+                        <span class="s2">&quot;initializing. This can happen if accessing GLOBAL_SCRIPTS from the same &quot;</span>
+                        <span class="s2">&quot;module the script is defined in.&quot;</span>
+                    <span class="p">)</span>
                 <span class="c1"># recreate if we have the info</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_script</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="ow">or</span> <span class="n">default</span>
             <span class="k">return</span> <span class="n">default</span>
@@ -349,7 +359,7 @@
         <div class="develop">develop branch</div>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2020, The Evennia developer community.
+        &#169; Copyright 2022, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>
