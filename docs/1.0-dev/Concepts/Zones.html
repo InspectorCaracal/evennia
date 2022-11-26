@@ -17,8 +17,8 @@
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Internationalization" href="Internationalization.html" />
-    <link rel="prev" title="New Models" href="New-Models.html" /> 
+    <link rel="next" title="Coding and development help" href="../Coding/Coding-Overview.html" />
+    <link rel="prev" title="New Models" href="Models.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,10 +30,10 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="Internationalization.html" title="Internationalization"
+          <a href="../Coding/Coding-Overview.html" title="Coding and development help"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="New-Models.html" title="New Models"
+          <a href="Models.html" title="New Models"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">Evennia 1.0-dev</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="Concepts-Overview.html" accesskey="U">Core Concepts</a> &#187;</li>
@@ -70,11 +70,11 @@
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="New-Models.html"
+  <p class="topless"><a href="Models.html"
                         title="previous chapter">New Models</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="Internationalization.html"
-                        title="next chapter">Internationalization</a></p>
+  <p class="topless"><a href="../Coding/Coding-Overview.html"
+                        title="next chapter">Coding and development help</a></p>
   <div role="note" aria-label="source link">
     <!--h3>This Page</h3-->
     <ul class="this-page-menu">
@@ -107,6 +107,7 @@
             
   <section class="tex2jax_ignore mathjax_ignore" id="zones">
 <h1>Zones<a class="headerlink" href="#zones" title="Permalink to this headline">¶</a></h1>
+<p>Evennia recommends using <a class="reference internal" href="../Components/Tags.html"><span class="doc std std-doc">Tags</span></a> to create zones and other groupings.</p>
 <p>Say you create a room named <em>Meadow</em> in your nice big forest MUD.  That’s all nice and dandy, but
 what if you, in the other end of that forest want another <em>Meadow</em>? As a game creator, this can
 cause all sorts of confusion. For example, teleporting to <em>Meadow</em> will now give you a warning that
@@ -119,21 +120,16 @@ disturbance echoes through all magical-forest rooms. It would then be convenient
 simply find all rooms that are “magical” so you could send messages to them.</p>
 <section id="zones-in-evennia">
 <h2>Zones in Evennia<a class="headerlink" href="#zones-in-evennia" title="Permalink to this headline">¶</a></h2>
-<p><em>Zones</em> try to separate rooms by global location. In our example we would separate the forest into
-two parts - the magical and the non-magical part. Each have a <em>Meadow</em> and rooms belonging to each
-part should be easy to retrieve.</p>
+<p><em>Zones</em> try to separate rooms by global location. In our example we would separate the forest into two parts - the magical and the non-magical part. Each have a <em>Meadow</em> and rooms belonging to each part should be easy to retrieve.</p>
 <p>Many MUD codebases hardcode zones as part of the engine and database.  Evennia does no such
-distinction due to the fact that rooms themselves are meant to be customized to any level anyway.
-Below is a suggestion for how to implement zones in Evennia.</p>
-<p>All objects in Evennia can hold any number of <a class="reference internal" href="../Components/Tags.html"><span class="doc std std-doc">Tags</span></a>. Tags are short labels that you attach to
-objects. They make it very easy to retrieve groups of objects. An object can have any number of
-different tags. So let’s attach the relevant tag to our forest:</p>
+distinction.</p>
+<p>All objects in Evennia can hold any number of <a class="reference internal" href="../Components/Tags.html"><span class="doc std std-doc">Tags</span></a>. Tags are short labels that you attach to objects. They make it very easy to retrieve groups of objects. An object can have any number of different tags. So let’s attach the relevant tag to our forest:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>     <span class="n">forestobj</span><span class="o">.</span><span class="n">tags</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;magicalforest&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="s2">&quot;zone&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>You could add this manually, or automatically during creation somehow (you’d need to modify your
-&#64;dig command for this, most likely). You can also use the default <code class="docutils literal notranslate"><span class="pre">&#64;tag</span></code> command during building:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span> @tag forestobj = magicalforest : zone
+<code class="docutils literal notranslate"><span class="pre">dig</span></code> command for this, most likely). You can also use the default <code class="docutils literal notranslate"><span class="pre">tag</span></code> command during building:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span> tag forestobj = magicalforest : zone
 </pre></div>
 </div>
 <p>Henceforth you can then easily retrieve only objects with a given tag:</p>
@@ -144,12 +140,8 @@ different tags. So let’s attach the relevant tag to our forest:</p>
 </section>
 <section id="using-typeclasses-and-inheritance-for-zoning">
 <h2>Using typeclasses and inheritance for zoning<a class="headerlink" href="#using-typeclasses-and-inheritance-for-zoning" title="Permalink to this headline">¶</a></h2>
-<p>The tagging or aliasing systems above don’t instill any sort of functional difference between a
-magical forest room and a normal one - they are just arbitrary ways to mark objects for quick
-retrieval later. Any functional differences must be expressed using <a class="reference internal" href="../Components/Typeclasses.html"><span class="doc std std-doc">Typeclasses</span></a>.</p>
-<p>Of course, an alternative way to implement zones themselves is to have all rooms/objects in a zone
-inherit from a given typeclass parent - and then limit your searches to objects inheriting from that
-given parent. The effect would be similar but you’d need to expand the search functionality to
+<p>The tagging or aliasing systems above don’t instill any sort of functional difference between a magical forest room and a normal one - they are just arbitrary ways to mark objects for quick retrieval later. Any functional differences must be expressed using <a class="reference internal" href="../Components/Typeclasses.html"><span class="doc std std-doc">Typeclasses</span></a>.</p>
+<p>Of course, an alternative way to implement zones themselves is to have all rooms/objects in a zone inherit from a given typeclass parent - and then limit your searches to objects inheriting from that given parent. The effect would be similar but you’d need to expand the search functionality to
 properly search the inheritance tree.</p>
 </section>
 </section>
@@ -170,10 +162,10 @@ properly search the inheritance tree.</p>
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="Internationalization.html" title="Internationalization"
+          <a href="../Coding/Coding-Overview.html" title="Coding and development help"
              >next</a> |</li>
         <li class="right" >
-          <a href="New-Models.html" title="New Models"
+          <a href="Models.html" title="New Models"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">Evennia 1.0-dev</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="Concepts-Overview.html" >Core Concepts</a> &#187;</li>
