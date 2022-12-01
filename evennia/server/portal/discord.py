@@ -80,9 +80,10 @@ class DiscordWebsocketServerFactory(WebSocketClientFactory, protocol.Reconnectin
     maxDelay = 60
     gateway = None
     resume_url = None
+    do_retry = True
 
     def __init__(self, sessionhandler, *args, **kwargs):
-        self.uid = kwargs.pop("uid")
+        self.uid = kwargs.get("uid")
         self.sessionhandler = sessionhandler
         self.port = None
         self.bot = None
@@ -186,7 +187,7 @@ class DiscordWebsocketServerFactory(WebSocketClientFactory, protocol.Reconnectin
             reason (str): The reason for the failure.
 
         """
-        if self.do_retry and not self.bot:
+        if self.do_retry and self.bot:
             self.retry(connector)
 
     def reconnect(self):
@@ -195,8 +196,13 @@ class DiscordWebsocketServerFactory(WebSocketClientFactory, protocol.Reconnectin
         de-registering the session and then reattaching a new one.
 
         """
+        # set the retry flag to False so it doesn't attempt an automatic retry
+        # and duplicate the connection
+        self.do_retry = False
+        # disconnect everything
         self.bot.transport.loseConnection()
         self.sessionhandler.server_disconnect(self.bot)
+        # set up the reconnection
         if self.resume_url:
             self.url = self.resume_url
         elif self.gateway:
@@ -215,12 +221,14 @@ class DiscordWebsocketServerFactory(WebSocketClientFactory, protocol.Reconnectin
             # get the gateway URL from Discord
             self.get_gateway_url()
         else:
+            # set the retry flag so we maintain this connection
+            self.do_retry = True
             connectWS(self)
 
 
 class DiscordClient(WebSocketClientProtocol, _BASE_SESSION_CLASS):
     """
-    Implements the grapevine client
+    Implements the Discord client
     """
 
     nextHeartbeatCall = None
@@ -269,7 +277,7 @@ class DiscordClient(WebSocketClientProtocol, _BASE_SESSION_CLASS):
         if seqid := data.get("s"):
             self.last_sequence = seqid
 
-        # not sure if that error json format is for websockets
+        # not sure if that error json format is for websockets, so
         # check for it just in case
         if "errors" in data:
             self.handle_error(data)
