@@ -540,7 +540,10 @@
             <span class="p">)</span>
 
             <span class="n">sessions</span> <span class="o">=</span> <span class="n">looker</span><span class="o">.</span><span class="n">sessions</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-            <span class="n">client_width</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">sessions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_client_size</span><span class="p">()</span> <span class="k">if</span> <span class="n">sessions</span> <span class="k">else</span> <span class="n">CLIENT_DEFAULT_WIDTH</span>
+            <span class="k">if</span> <span class="n">sessions</span><span class="p">:</span>
+                <span class="n">client_width</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">sessions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_client_size</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">client_width</span> <span class="o">=</span> <span class="n">CLIENT_DEFAULT_WIDTH</span>
 
             <span class="n">map_width</span> <span class="o">=</span> <span class="n">xymap</span><span class="o">.</span><span class="n">max_x</span>
 
