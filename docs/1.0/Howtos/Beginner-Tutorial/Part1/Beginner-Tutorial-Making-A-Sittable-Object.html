@@ -64,7 +64,7 @@
 <h3><a href="../../../index.html">Table of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">13. Building a chair you can sit on</a><ul>
-<li><a class="reference internal" href="#make-us-not-able-to-move-while-resting">13.1. Make us not able to move while resting</a></li>
+<li><a class="reference internal" href="#make-us-not-able-to-move-while-sitting">13.1. Make us not able to move while sitting</a></li>
 <li><a class="reference internal" href="#making-the-chair-itself">13.2. Making the Chair itself</a><ul>
 <li><a class="reference internal" href="#sitting-on-or-in">13.2.1. Sitting on or in?</a></li>
 <li><a class="reference internal" href="#extra-credits">13.2.2. Extra credits</a></li>
@@ -128,8 +128,8 @@ the current chair in an attribute <code class="docutils literal notranslate"><sp
 <li><p>A character should be able to stand up and move away from the chair.</p></li>
 <li><p>When you sit down you should not be able to walk to another room without first standing up.</p></li>
 </ul>
-<section id="make-us-not-able-to-move-while-resting">
-<h2><span class="section-number">13.1. </span>Make us not able to move while resting<a class="headerlink" href="#make-us-not-able-to-move-while-resting" title="Permalink to this headline">¶</a></h2>
+<section id="make-us-not-able-to-move-while-sitting">
+<h2><span class="section-number">13.1. </span>Make us not able to move while sitting<a class="headerlink" href="#make-us-not-able-to-move-while-sitting" title="Permalink to this headline">¶</a></h2>
 <p>When you are sitting in a chair you can’t just walk off without first standing up.
 This requires a change to our Character typeclass. Open <code class="docutils literal notranslate"><span class="pre">mygame/typeclasses/characters.py</span></code>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># in mygame/typeclasses/characters.py</span>
@@ -139,12 +139,12 @@ This requires a change to our Character typeclass. Open <code class="docutils li
 <span class="k">class</span> <span class="nc">Character</span><span class="p">(</span><span class="n">DefaultCharacter</span><span class="p">):</span>
     <span class="c1"># ...</span>
 
-    <span class="k">def</span> <span class="nf">at_pre_move</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">destination</span><span class="p">):</span>
-       <span class="sd">&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">at_pre_move</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">       </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">       Called by self.move_to when trying to move somewhere. If this returns</span>
 <span class="sd">       False, the move is immediately cancelled.</span>
 <span class="sd">       &quot;&quot;&quot;</span>
-       <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">is_resting</span><span class="p">:</span>
+       <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">is_sitting</span><span class="p">:</span>
            <span class="bp">self</span><span class="o">.</span><span class="n">msg</span><span class="p">(</span><span class="s2">&quot;You need to stand up first.&quot;</span><span class="p">)</span>
            <span class="k">return</span> <span class="kc">False</span>
        <span class="k">return</span> <span class="kc">True</span>
@@ -189,7 +189,7 @@ will call <code class="docutils literal notranslate"><span class="pre">character
 <span class="k">class</span> <span class="nc">Sittable</span><span class="p">(</span><span class="n">Object</span><span class="p">):</span>
 
 <span class="hll">    <span class="k">def</span> <span class="nf">do_sit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sitter</span><span class="p">):</span>
-</span>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Called when trying to sit on/in this object.</span>
 
 <span class="sd">        Args:</span>
@@ -204,7 +204,7 @@ will call <code class="docutils literal notranslate"><span class="pre">character
                 <span class="n">sitter</span><span class="o">.</span><span class="n">msg</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;You can&#39;t sit on </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="si">}</span><span class="s2"> &quot;</span>
                         <span class="sa">f</span><span class="s2">&quot;- </span><span class="si">{</span><span class="n">current</span><span class="o">.</span><span class="n">key</span><span class="si">}</span><span class="s2"> is already sitting there!&quot;</span><span class="p">)</span>
             <span class="k">return</span>
-<span class="hll">        <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">sitting</span> <span class="o">=</span> <span class="n">sitter</span>
+<span class="hll">        <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">sitter</span> <span class="o">=</span> <span class="n">sitter</span>
 </span><span class="hll">        <span class="n">sitter</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">is_sitting</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span>
 </span><span class="hll">        <span class="n">sitter</span><span class="o">.</span><span class="n">msg</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;You sit on </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </span></pre></div></td></tr></table></div>
@@ -239,7 +239,7 @@ will call <code class="docutils literal notranslate"><span class="pre">character
 <span class="normal">17</span></pre></div></td><td class="code"><div><pre><span></span><span class="c1"># add this right after the `do_sit method` in the same class </span>
 
     <span class="k">def</span> <span class="nf">do_stand</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stander</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Called when trying to stand from this object.</span>
 
 <span class="sd">        Args:</span>
@@ -323,7 +323,7 @@ will call <code class="docutils literal notranslate"><span class="pre">character
 <span class="k">class</span> <span class="nc">Sittable</span><span class="p">(</span><span class="n">DefaultObject</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="nf">do_sit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sitter</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Called when trying to sit on/in this object.</span>
 
 <span class="sd">        Args:</span>
@@ -340,12 +340,12 @@ will call <code class="docutils literal notranslate"><span class="pre">character
 <span class="hll">                    <span class="sa">f</span><span class="s2">&quot;You can&#39;t sit </span><span class="si">{</span><span class="n">adjective</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="si">}</span><span class="s2"> &quot;</span>
 </span>                    <span class="sa">f</span><span class="s2">&quot;- </span><span class="si">{</span><span class="n">current</span><span class="o">.</span><span class="n">key</span><span class="si">}</span><span class="s2"> is already sitting there!&quot;</span><span class="p">)</span>
             <span class="k">return</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">sitting</span> <span class="o">=</span> <span class="n">sitter</span>
-        <span class="n">sitter</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">is_sitting</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">sitter</span> <span class="o">=</span> <span class="n">sitter</span>
+        <span class="n">sitter</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">is_sitting</span> <span class="o">=</span> <span class="bp">self</span>
         <span class="n">sitter</span><span class="o">.</span><span class="n">msg</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;You sit </span><span class="si">{</span><span class="n">adjective</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">do_stand</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stander</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Called when trying to stand from this object.</span>
 
 <span class="sd">        Args:</span>
@@ -459,7 +459,7 @@ As you sit down in armchair, life feels easier.
 <span class="kn">from</span> <span class="nn">evennia</span> <span class="kn">import</span> <span class="n">Command</span><span class="p">,</span> <span class="n">CmdSet</span>
 
 <span class="k">class</span> <span class="nc">CmdSit</span><span class="p">(</span><span class="n">Command</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Sit down.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;sit&quot;</span>
@@ -467,7 +467,7 @@ As you sit down in armchair, life feels easier.
 <span class="hll">        <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">do_sit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">caller</span><span class="p">)</span>
 </span>
 <span class="k">class</span> <span class="nc">CmdStand</span><span class="p">(</span><span class="n">Command</span><span class="p">):</span>
-     <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">     </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">     Stand up.</span>
 <span class="sd">     &quot;&quot;&quot;</span>
      <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;stand&quot;</span>
@@ -505,11 +505,11 @@ As you sit down in armchair, life feels easier.
 <span class="hll"><span class="kn">from</span> <span class="nn">commands.sittables</span> <span class="kn">import</span> <span class="n">CmdSetSit</span> 
 </span>
 <span class="k">class</span> <span class="nc">Sittable</span><span class="p">(</span><span class="n">DefaultObject</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    (docstring)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 <span class="hll">    <span class="k">def</span> <span class="nf">at_object_creation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span class="hll">        <span class="bp">self</span><span class="o">.</span><span class="n">cmdset</span><span class="o">.</span><span class="n">add_default</span><span class="p">(</span><span class="n">CmdSetSit</span><span class="p">)</span><span class="n">A</span>
+</span><span class="hll">        <span class="bp">self</span><span class="o">.</span><span class="n">cmdset</span><span class="o">.</span><span class="n">add_default</span><span class="p">(</span><span class="n">CmdSetSit</span><span class="p">)</span>
 </span>    <span class="c1"># ... </span>
 </pre></div></td></tr></table></div>
 </div>
@@ -564,7 +564,7 @@ of <code class="docutils literal notranslate"><span class="pre">mygame/commands/
 <span class="c1"># ...</span>
 
 <span class="k">class</span> <span class="nc">CmdNoSitStand</span><span class="p">(</span><span class="n">Command</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Sit down or Stand up</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;sit&quot;</span>
@@ -588,7 +588,7 @@ of <code class="docutils literal notranslate"><span class="pre">mygame/commands/
 <span class="kn">from</span> <span class="nn">commands</span> <span class="kn">import</span> <span class="n">sittables</span>
 
 <span class="k">class</span> <span class="nc">CharacterCmdSet</span><span class="p">(</span><span class="n">CmdSet</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    (docstring)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">at_cmdset_creation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -648,7 +648,7 @@ More than one match for &#39;stand&#39; (please narrow target):
 <span class="c1"># ...</span>
 
 <span class="k">class</span> <span class="nc">CmdStand</span><span class="p">(</span><span class="n">Command</span><span class="p">):</span>
-     <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">     </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">     Stand up.</span>
 <span class="sd">     &quot;&quot;&quot;</span>
      <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;stand&quot;</span>
@@ -672,7 +672,7 @@ What will be checked is the <code class="docutils literal notranslate"><span cla
 <span class="c1"># ...</span>
 
 <span class="k">def</span> <span class="nf">sitsonthis</span><span class="p">(</span><span class="n">accessing_obj</span><span class="p">,</span> <span class="n">accessed_obj</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    True if accessing_obj is sitting on/in the accessed_obj.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">accessed_obj</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">sitting</span> <span class="o">==</span> <span class="n">accessing_obj</span>
@@ -775,7 +775,7 @@ You stand up from chair.
 <span class="c1"># new from here</span>
 
 <span class="k">class</span> <span class="nc">CmdSit2</span><span class="p">(</span><span class="n">Command</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Sit down.</span>
 
 <span class="sd">    Usage:</span>
@@ -836,7 +836,7 @@ You stand up from chair.
 <span class="normal">21</span></pre></div></td><td class="code"><div><pre><span></span><span class="c1"># end of mygame/commands/sittables.py</span>
 
 <span class="k">class</span> <span class="nc">CmdStand2</span><span class="p">(</span><span class="n">Command</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Stand up.</span>
 
 <span class="sd">    Usage:</span>
@@ -867,7 +867,7 @@ You stand up from chair.
 <span class="kn">from</span> <span class="nn">commands</span> <span class="kn">import</span> <span class="n">sittables</span>
 
 <span class="k">class</span> <span class="nc">CharacterCmdSet</span><span class="p">(</span><span class="n">CmdSet</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    (docstring)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">at_cmdset_creation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>

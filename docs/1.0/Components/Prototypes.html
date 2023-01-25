@@ -123,9 +123,9 @@
             
   <section class="tex2jax_ignore mathjax_ignore" id="spawner-and-prototypes">
 <h1>Spawner and Prototypes<a class="headerlink" href="#spawner-and-prototypes" title="Permalink to this headline">¶</a></h1>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>&gt; spawn goblin
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>&gt;<span class="w"> </span>spawn<span class="w"> </span>goblin
 
-Spawned Goblin Grunt<span class="o">(</span><span class="c1">#45)</span>
+Spawned<span class="w"> </span>Goblin<span class="w"> </span>Grunt<span class="o">(</span><span class="c1">#45)</span>
 </pre></div>
 </div>
 <p>The <em>spawner</em> is a system for defining and creating individual objects from a base template called a <em>prototype</em>. It is only designed for use with in-game <a class="reference internal" href="Objects.html"><span class="doc std std-doc">Objects</span></a>, not any other type of entity.</p>
@@ -235,7 +235,7 @@ may use the prototype to create new objects.</p></li>
 <p>Here is how a protfunc is defined (same as other funcparser functions).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># this is a silly example, you can just color the text red with |r directly!</span>
 <span class="k">def</span> <span class="nf">red</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-   <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">   </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">   Usage: $red(&lt;text&gt;)</span>
 <span class="sd">   Returns the same text you entered, but red.</span>
 <span class="sd">   &quot;&quot;&quot;</span>
@@ -384,7 +384,7 @@ matching list of created objects. Example:</p>
 <blockquote>
 <div><p>Hint: Same as when using <code class="docutils literal notranslate"><span class="pre">spawn</span></code>, when spawning from a one-time prototype dict like this, you can skip otherwise required keys, like <code class="docutils literal notranslate"><span class="pre">prototype_key</span></code> or <code class="docutils literal notranslate"><span class="pre">typeclass</span></code>/<code class="docutils literal notranslate"><span class="pre">prototype_parent</span></code>. Defaults will be used.</p>
 </div></blockquote>
-<p>Note that no <code class="docutils literal notranslate"><span class="pre">location</span></code> will be set automatically when using <code class="docutils literal notranslate"><span class="pre">evennia.prototypes.spawner.spawn()</span></code>, you have to specify <code class="docutils literal notranslate"><span class="pre">location</span></code> explicitly in the prototype dict.  If the prototypes you supply are using <code class="docutils literal notranslate"><span class="pre">prototype_parent</span></code> keywords, the spawner will read prototypes from modules in <code class="docutils literal notranslate"><span class="pre">settings.PROTOTYPE_MODULES</span></code> as well as those saved to the database to determine the body of available parents. The <code class="docutils literal notranslate"><span class="pre">spawn</span></code> command takes many optional keywords, you can find its definition <a class="reference external" href="https://github.com/evennia/evennia/blob/master/evennia.prototypes.spawner#spawn">in the api docs</a>.</p>
+<p>Note that no <code class="docutils literal notranslate"><span class="pre">location</span></code> will be set automatically when using <code class="docutils literal notranslate"><span class="pre">evennia.prototypes.spawner.spawn()</span></code>, you have to specify <code class="docutils literal notranslate"><span class="pre">location</span></code> explicitly in the prototype dict.  If the prototypes you supply are using <code class="docutils literal notranslate"><span class="pre">prototype_parent</span></code> keywords, the spawner will read prototypes from modules in <code class="docutils literal notranslate"><span class="pre">settings.PROTOTYPE_MODULES</span></code> as well as those saved to the database to determine the body of available parents. The <code class="docutils literal notranslate"><span class="pre">spawn</span></code> command takes many optional keywords, you can find its definition <a class="reference external" href="https://github.com/evennia/evennia/blob/main/evennia.prototypes.spawner#spawn">in the api docs</a>.</p>
 </section>
 </section>
 </section>
