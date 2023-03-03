@@ -52,8 +52,9 @@
 </div>
 <script>$('#searchbox').show(0);</script><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -278,7 +279,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">mapdata</span> <span class="ow">in</span> <span class="n">mapdatas</span><span class="p">:</span>
             <span class="n">zcoord</span> <span class="o">=</span> <span class="n">mapdata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;zcoord&quot;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">zcoord</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">zcoord</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;XYZGrid.add_map data must contain &#39;zcoord&#39;.&quot;</span><span class="p">)</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">map_data</span><span class="p">[</span><span class="n">zcoord</span><span class="p">]</span> <span class="o">=</span> <span class="n">mapdata</span></div>
@@ -372,8 +373,8 @@
         <span class="n">xyzgrid</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">xyzgrid</span>
     <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">xyzgrid</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="p">(</span>
-            <span class="s2">&quot;Warning: More than one XYZGrid instances were found. This is an error and &quot;</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="s2">&quot;Warning: More than one XYZGrid instance were found. This is an error and &quot;</span>
             <span class="s2">&quot;only the first one will be used. Delete the other one(s) manually.&quot;</span>
         <span class="p">)</span>
     <span class="n">xyzgrid</span> <span class="o">=</span> <span class="n">xyzgrid</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -381,7 +382,7 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">xyzgrid</span><span class="o">.</span><span class="n">ndb</span><span class="o">.</span><span class="n">loaded</span><span class="p">:</span>
             <span class="n">xyzgrid</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
-        <span class="k">raise</span>
+        <span class="c1"># raise   # debug</span>
         <span class="k">if</span> <span class="n">print_errors</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -410,7 +411,7 @@
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

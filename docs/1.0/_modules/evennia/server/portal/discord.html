@@ -52,8 +52,9 @@
 </div>
 <script>$('#searchbox').show(0);</script><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -400,6 +401,7 @@
 <span class="sd">            reason (str or None): Close reason as sent by the WebSocket peer.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sessionhandler</span><span class="o">.</span><span class="n">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">nextHeartbeatCall</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">nextHeartbeatCall</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">nextHeartbeatCall</span> <span class="o">=</span> <span class="kc">None</span>
@@ -501,7 +503,6 @@
 <span class="sd">            reason (str or None): Motivation for the disconnection.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">sessionhandler</span><span class="o">.</span><span class="n">disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sendClose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">CLOSE_STATUS_CODE_NORMAL</span><span class="p">,</span> <span class="n">reason</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DiscordClient.identify"><a class="viewcode-back" href="../../../../api/evennia.server.portal.discord.html#evennia.server.portal.discord.DiscordClient.identify">[docs]</a>    <span class="k">def</span> <span class="nf">identify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -653,7 +654,7 @@
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

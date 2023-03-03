@@ -62,7 +62,8 @@
 <h3><a href="../index.html">Table of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Changelog</a><ul>
-<li><a class="reference internal" href="#main">Main</a></li>
+<li><a class="reference internal" href="#evennia-1-2-1">Evennia 1.2.1</a></li>
+<li><a class="reference internal" href="#evennia-1-2-0">Evennia 1.2.0</a></li>
 <li><a class="reference internal" href="#evennia-1-1-1">Evennia 1.1.1</a></li>
 <li><a class="reference internal" href="#evennia-1-1-0">Evennia 1.1.0</a></li>
 <li><a class="reference internal" href="#evennia-1-0-2">Evennia 1.0.2</a></li>
@@ -142,8 +143,9 @@
     </ul>
    </div><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -166,20 +168,61 @@
             
   <section class="tex2jax_ignore mathjax_ignore" id="changelog">
 <h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">¶</a></h1>
-<section id="main">
-<h2>Main<a class="headerlink" href="#main" title="Permalink to this headline">¶</a></h2>
+<section id="evennia-1-2-1">
+<h2>Evennia 1.2.1<a class="headerlink" href="#evennia-1-2-1" title="Permalink to this headline">¶</a></h2>
+<p>Feb 26, 2023</p>
 <ul class="simple">
-<li><p>Bug fix: $an() inlinefunc didn’t understand to use ‘an’ words starting with a
+<li><p>Bug fix: Make sure command parser gives precedence to longer cmd-aliases. So
+if sending <code class="docutils literal notranslate"><span class="pre">smile</span> <span class="pre">at</span></code> and the cmd <code class="docutils literal notranslate"><span class="pre">smile</span></code> has alias <code class="docutils literal notranslate"><span class="pre">smile</span> <span class="pre">at</span></code>, the match is
+ordered so the result is never interpreted as <code class="docutils literal notranslate"><span class="pre">smile</span></code> with an argument <code class="docutils literal notranslate"><span class="pre">at</span></code>.</p></li>
+<li><p>Bug fix: || (escaped color tags) were parsed too early in help entries,
+leading to colors when wanting a | separator</p></li>
+<li><p>Bug fix: Make sure spawned objects get <code class="docutils literal notranslate"><span class="pre">typeclass_path</span></code> pointing to the true
+location rather than alias (in line with <code class="docutils literal notranslate"><span class="pre">create_object</span></code>).</p></li>
+<li><p>Bug fix: Building Menu contrib menu no using Replace over Union mergetype to
+avoid clashing with in-game commands while building</p></li>
+<li><p>Feature: RPSystem contrib <code class="docutils literal notranslate"><span class="pre">sdesc</span></code> command can now view/delete your sdesc.</p></li>
+<li><p>Bug fix: Change so <code class="docutils literal notranslate"><span class="pre">script</span> <span class="pre">obj</span> <span class="pre">=</span> <span class="pre">[scriptname|id]</span></code> is required to manipulate
+scripts on objects; <code class="docutils literal notranslate"><span class="pre">script</span> <span class="pre">scriptname|id</span></code> only works on global scripts.</p></li>
+<li><p>Doc: Add warning about <code class="docutils literal notranslate"><span class="pre">Django-wiki</span></code> (in wiki tutorial) only supporting
+Django &lt;4.0.</p></li>
+<li><p>Doc: Expanded <code class="docutils literal notranslate"><span class="pre">XYZGrid</span></code> docstring to clarify <code class="docutils literal notranslate"><span class="pre">MapLink</span></code> class will not itself
+spawn anything, children must define their prototypes explicitly.</p></li>
+<li><p>Doc: Explained why <code class="docutils literal notranslate"><span class="pre">AttributeProperty.at_get/set</span></code> will not be called if
+accessing the Attribute from the <code class="docutils literal notranslate"><span class="pre">AttributeHandler</span></code> (bypassing the property)</p></li>
+<li><p>Bug fix: Evtable options showed spurious empty lines if set without desc</p></li>
+<li><p>Usage fix: The <code class="docutils literal notranslate"><span class="pre">teleport:</span></code> and <code class="docutils literal notranslate"><span class="pre">teleport_here:</span></code> locks where checked in
+<code class="docutils literal notranslate"><span class="pre">CmdTeleport</span></code>, but not actually set on any entities. These locks are now
+set with defaults on all objects,characters,rooms and exits.</p></li>
+</ul>
+</section>
+<section id="evennia-1-2-0">
+<h2>Evennia 1.2.0<a class="headerlink" href="#evennia-1-2-0" title="Permalink to this headline">¶</a></h2>
+<p>Feb 25, 2023</p>
+<ul class="simple">
+<li><p>Bug fix: <code class="docutils literal notranslate"><span class="pre">TagHandler.get</span></code> did not consistently cast to string (aMiss-aWry)</p></li>
+<li><p>Bug fix: Channels hard to manage if given in different case (aMiss-aWry)</p></li>
+<li><p>Feature: <code class="docutils literal notranslate"><span class="pre">logger.delete_log</span></code> function for deleting custom logs from inside the
+server (aMiss-aWry)</p></li>
+<li><p>Doc: Nginx setup (InspectorCaracal)</p></li>
+<li><p>Feature: Add <code class="docutils literal notranslate"><span class="pre">fly/dive</span></code> commands to <code class="docutils literal notranslate"><span class="pre">XYZGrid</span></code> contrib to showcase treating its
+Z-axis as a full 3D grid. Also fixed minor bug in <code class="docutils literal notranslate"><span class="pre">XYZGrid</span></code> contrib when using
+a Z axis named using an integer rather than a string.</p></li>
+<li><p>Bug fix: <code class="docutils literal notranslate"><span class="pre">$an()</span></code> inlinefunc didn’t understand to use ‘an’ words starting with a
 capital vowel</p></li>
+<li><p>Bug fix: Another case of the ‘duplicate Discord bot connections’ bug
+(InspectorCaracal)</p></li>
+<li><p>Fix: Make XYZGrid contrib’s MapParserErrors more succinct</p></li>
 </ul>
 </section>
 <section id="evennia-1-1-1">
 <h2>Evennia 1.1.1<a class="headerlink" href="#evennia-1-1-1" title="Permalink to this headline">¶</a></h2>
+<p>Jan 15, 2023</p>
 <ul class="simple">
 <li><p>Bug fix: Better handler malformed alias-regex given to nickhandler. A
 regex-relevant character in a channel alias could cause server to not restart.</p></li>
-<li><p>Add <code class="docutils literal notranslate"><span class="pre">attr</span></code> keyword to <code class="docutils literal notranslate"><span class="pre">create_channel</span></code>. This allows setting attributes on
-channels at creation, also from <code class="docutils literal notranslate"><span class="pre">DEFAULT_CHANNELS</span></code> definitions.</p></li>
+<li><p>Feature: Add <code class="docutils literal notranslate"><span class="pre">attr</span></code> keyword to <code class="docutils literal notranslate"><span class="pre">create_channel</span></code>. This allows setting
+attributes on channels at creation, also from <code class="docutils literal notranslate"><span class="pre">DEFAULT_CHANNELS</span></code> definitions.</p></li>
 </ul>
 </section>
 <section id="evennia-1-1-0">
@@ -1140,7 +1183,7 @@ and have no changelogs.</p>
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

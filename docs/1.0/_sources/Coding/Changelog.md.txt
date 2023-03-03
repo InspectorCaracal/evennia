@@ -1,16 +1,58 @@
 # Changelog
 
-## Main
+## Evennia 1.2.1
 
-- Bug fix: $an() inlinefunc didn't understand to use 'an' words starting with a
+Feb 26, 2023
+
+- Bug fix: Make sure command parser gives precedence to longer cmd-aliases. So
+  if sending `smile at` and the cmd `smile` has alias `smile at`, the match is
+  ordered so the result is never interpreted as `smile` with an argument `at`.
+- Bug fix: || (escaped color tags) were parsed too early in help entries,
+  leading to colors when wanting a | separator
+- Bug fix: Make sure spawned objects get `typeclass_path` pointing to the true
+  location rather than alias (in line with `create_object`).
+- Bug fix: Building Menu contrib menu no using Replace over Union mergetype to
+  avoid clashing with in-game commands while building
+- Feature: RPSystem contrib `sdesc` command can now view/delete your sdesc.
+- Bug fix: Change so `script obj = [scriptname|id]` is required to manipulate
+  scripts on objects; `script scriptname|id` only works on global scripts.
+- Doc: Add warning about `Django-wiki` (in wiki tutorial) only supporting
+  Django <4.0.
+- Doc: Expanded `XYZGrid` docstring to clarify `MapLink` class will not itself
+  spawn anything, children must define their prototypes explicitly.
+- Doc: Explained why `AttributeProperty.at_get/set` will not be called if
+  accessing the Attribute from the `AttributeHandler` (bypassing the property)
+- Bug fix: Evtable options showed spurious empty lines if set without desc
+- Usage fix: The `teleport:` and `teleport_here:` locks where checked in
+  `CmdTeleport`, but not actually set on any entities. These locks are now
+  set with defaults on all objects,characters,rooms and exits.
+
+## Evennia 1.2.0
+
+Feb 25, 2023
+
+- Bug fix: `TagHandler.get` did not consistently cast to string (aMiss-aWry)
+- Bug fix: Channels hard to manage if given in different case (aMiss-aWry)
+- Feature: `logger.delete_log` function for deleting custom logs from inside the
+  server (aMiss-aWry)
+- Doc: Nginx setup (InspectorCaracal)
+- Feature: Add `fly/dive` commands to `XYZGrid` contrib to showcase treating its
+  Z-axis as a full 3D grid. Also fixed minor bug in `XYZGrid` contrib when using
+  a Z axis named using an integer rather than a string.
+- Bug fix: `$an()` inlinefunc didn't understand to use 'an' words starting with a
   capital vowel
+- Bug fix: Another case of the 'duplicate Discord bot connections' bug
+  (InspectorCaracal)
+- Fix: Make XYZGrid contrib's MapParserErrors more succinct
 
 ## Evennia 1.1.1
 
+Jan 15, 2023
+
 - Bug fix: Better handler malformed alias-regex given to nickhandler. A
   regex-relevant character in a channel alias could cause server to not restart.
-- Add `attr` keyword to `create_channel`. This allows setting attributes on
-  channels at creation, also from `DEFAULT_CHANNELS` definitions.
+- Feature: Add `attr` keyword to `create_channel`. This allows setting
+  attributes on channels at creation, also from `DEFAULT_CHANNELS` definitions.
 
 ## Evennia 1.1.0
 Jan 7, 2023

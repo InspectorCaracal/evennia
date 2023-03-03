@@ -52,8 +52,9 @@
 </div>
 <script>$('#searchbox').show(0);</script><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -203,7 +204,6 @@
 <span class="kn">from</span> <span class="nn">textwrap</span> <span class="kn">import</span> <span class="n">dedent</span>
 
 <span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
-
 <span class="kn">from</span> <span class="nn">evennia</span> <span class="kn">import</span> <span class="n">CmdSet</span><span class="p">,</span> <span class="n">Command</span>
 <span class="kn">from</span> <span class="nn">evennia.commands</span> <span class="kn">import</span> <span class="n">cmdhandler</span>
 <span class="kn">from</span> <span class="nn">evennia.utils.ansi</span> <span class="kn">import</span> <span class="n">strip_ansi</span>
@@ -476,6 +476,7 @@
 
     <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;building_menu&quot;</span>
     <span class="n">priority</span> <span class="o">=</span> <span class="mi">5</span>
+    <span class="n">mergetype</span> <span class="o">=</span> <span class="s2">&quot;Replace&quot;</span>
 
 <div class="viewcode-block" id="BuildingMenuCmdSet.at_cmdset_creation"><a class="viewcode-back" href="../../../../../api/evennia.contrib.base_systems.building_menu.building_menu.html#evennia.contrib.base_systems.building_menu.building_menu.BuildingMenuCmdSet.at_cmdset_creation">[docs]</a>    <span class="k">def</span> <span class="nf">at_cmdset_creation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Populates the cmdset with commands.&quot;&quot;&quot;</span>
@@ -1370,7 +1371,7 @@
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

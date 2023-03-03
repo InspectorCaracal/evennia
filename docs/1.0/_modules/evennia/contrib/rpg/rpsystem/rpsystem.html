@@ -52,8 +52,9 @@
 </div>
 <script>$('#searchbox').show(0);</script><h3>Links</h3>
 <ul>
-  <li><a href="https://www.evennia.com">Home page</a> </li>
-  <li><a href="https://github.com/evennia/evennia">Evennia Github</a> </li>
+  <li><a href="https://www.evennia.com/docs/latest/index.html">Documentation Top</a> </li>
+  <li><a href="https://www.evennia.com">Evennia Home</a> </li>
+  <li><a href="https://github.com/evennia/evennia">Github</a> </li>
   <li><a href="http://games.evennia.com">Game Index</a> </li>
   <li>
     <a href="https://discord.gg/AJJpcRUhtF">Discord</a> -
@@ -231,18 +232,12 @@
 
 <span class="kn">import</span> <span class="nn">inflect</span>
 <span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
-
 <span class="kn">from</span> <span class="nn">evennia.commands.cmdset</span> <span class="kn">import</span> <span class="n">CmdSet</span>
 <span class="kn">from</span> <span class="nn">evennia.commands.command</span> <span class="kn">import</span> <span class="n">Command</span>
 <span class="kn">from</span> <span class="nn">evennia.objects.models</span> <span class="kn">import</span> <span class="n">ObjectDB</span>
 <span class="kn">from</span> <span class="nn">evennia.objects.objects</span> <span class="kn">import</span> <span class="n">DefaultCharacter</span><span class="p">,</span> <span class="n">DefaultObject</span>
 <span class="kn">from</span> <span class="nn">evennia.utils</span> <span class="kn">import</span> <span class="n">ansi</span><span class="p">,</span> <span class="n">logger</span>
-<span class="kn">from</span> <span class="nn">evennia.utils.utils</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">iter_to_str</span><span class="p">,</span>
-    <span class="n">lazy_property</span><span class="p">,</span>
-    <span class="n">make_iter</span><span class="p">,</span>
-    <span class="n">variable_from_module</span><span class="p">,</span>
-<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">evennia.utils.utils</span> <span class="kn">import</span> <span class="n">iter_to_str</span><span class="p">,</span> <span class="n">lazy_property</span><span class="p">,</span> <span class="n">make_iter</span><span class="p">,</span> <span class="n">variable_from_module</span>
 
 <span class="n">_INFLECT</span> <span class="o">=</span> <span class="n">inflect</span><span class="o">.</span><span class="n">engine</span><span class="p">()</span>
 
@@ -280,7 +275,8 @@
 <span class="c1"># separate multimatches from one another and word is the first word in the</span>
 <span class="c1"># marker. So entering &quot;/tall man&quot; will return groups (&quot;&quot;, &quot;tall&quot;)</span>
 <span class="c1"># and &quot;/2-tall man&quot; will return groups (&quot;2&quot;, &quot;tall&quot;).</span>
-<span class="n">_RE_OBJ_REF_START</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">rf</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_PREFIX</span><span class="si">}</span><span class="s2">(?:([0-9]+)</span><span class="si">{</span><span class="n">_NUM_SEP</span><span class="si">}</span><span class="s2">)*(\w+)&quot;</span><span class="p">,</span> <span class="n">_RE_FLAGS</span><span class="p">)</span>
+<span class="c1"># the negative lookbehind for [:/] is to avoid http:// urls being detected as a /sdesc</span>
+<span class="n">_RE_OBJ_REF_START</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">rf</span><span class="s2">&quot;(?&lt;![:/])</span><span class="si">{</span><span class="n">_PREFIX</span><span class="si">}</span><span class="s2">(?:([0-9]+)</span><span class="si">{</span><span class="n">_NUM_SEP</span><span class="si">}</span><span class="s2">)*(\w+)&quot;</span><span class="p">,</span> <span class="n">_RE_FLAGS</span><span class="p">)</span>
 
 <span class="n">_RE_LEFT_BRACKETS</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\{+&quot;</span><span class="p">,</span> <span class="n">_RE_FLAGS</span><span class="p">)</span>
 <span class="n">_RE_RIGHT_BRACKETS</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\}+&quot;</span><span class="p">,</span> <span class="n">_RE_FLAGS</span><span class="p">)</span>
@@ -807,6 +803,13 @@
 
         <span class="k">return</span> <span class="n">sdesc</span></div>
 
+<div class="viewcode-block" id="SdescHandler.clear"><a class="viewcode-back" href="../../../../../api/evennia.contrib.rpg.rpsystem.rpsystem.html#evennia.contrib.rpg.rpsystem.rpsystem.SdescHandler.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Clear sdesc.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;_sdesc&quot;</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="SdescHandler.get"><a class="viewcode-back" href="../../../../../api/evennia.contrib.rpg.rpsystem.rpsystem.html#evennia.contrib.rpg.rpsystem.rpsystem.SdescHandler.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Simple getter. The sdesc should never be allowed to</span>
@@ -1041,6 +1044,8 @@
 
 <span class="sd">    Usage:</span>
 <span class="sd">      sdesc &lt;short description&gt;</span>
+<span class="sd">      sdesc         - view current sdesc</span>
+<span class="sd">      sdesc clear   - remove sdesc</span>
 
 <span class="sd">    Assigns a short description to yourself.</span>
 
@@ -1053,8 +1058,18 @@
         <span class="s2">&quot;Assign the sdesc&quot;</span>
         <span class="n">caller</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">caller</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">:</span>
-            <span class="n">caller</span><span class="o">.</span><span class="n">msg</span><span class="p">(</span><span class="s2">&quot;Usage: sdesc &lt;sdesc-text&gt;&quot;</span><span class="p">)</span>
-            <span class="k">return</span>
+            <span class="n">sdesc</span> <span class="o">=</span> <span class="n">caller</span><span class="o">.</span><span class="n">sdesc</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">sdesc</span><span class="p">:</span>
+                <span class="n">caller</span><span class="o">.</span><span class="n">msg</span><span class="p">(</span><span class="s2">&quot;You have no short description set.&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">caller</span><span class="o">.</span><span class="n">msg</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Your short description is &quot;</span><span class="si">{</span><span class="n">sdesc</span><span class="si">}</span><span class="s1">&quot;.&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">==</span> <span class="s2">&quot;clear&quot;</span><span class="p">:</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="k">yield</span> <span class="s2">&quot;Do you want to clear your sdesc? [Y]/n?&quot;</span>
+            <span class="k">if</span> <span class="n">ret</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;n&quot;</span><span class="p">,</span> <span class="s2">&quot;no&quot;</span><span class="p">):</span>
+                <span class="n">caller</span><span class="o">.</span><span class="n">msg</span><span class="p">(</span><span class="s2">&quot;Aborted.&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">caller</span><span class="o">.</span><span class="n">sdesc</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+                <span class="n">caller</span><span class="o">.</span><span class="n">msg</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Cleared sdesc, using name &quot;</span><span class="si">{</span><span class="n">caller</span><span class="o">.</span><span class="n">key</span><span class="si">}</span><span class="s1">&quot;.&#39;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># strip non-alfanum chars from end of sdesc</span>
             <span class="n">sdesc</span> <span class="o">=</span> <span class="n">_RE_CHAREND</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">)</span>
@@ -1902,7 +1917,7 @@
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2022, The Evennia developer community.
+        &#169; Copyright 2023, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>
