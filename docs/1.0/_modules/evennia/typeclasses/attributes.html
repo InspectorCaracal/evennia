@@ -287,7 +287,7 @@
 <span class="sd">        Tries returning a new instance of default if callable.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__default</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__default</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__default</span><span class="p">()</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__default</span>
@@ -1468,11 +1468,12 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">clear_attributes</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">accessing_obj</span><span class="p">,</span> <span class="n">default_access</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="AttributeHandler.all"><a class="viewcode-back" href="../../../api/evennia.typeclasses.attributes.html#evennia.typeclasses.attributes.AttributeHandler.all">[docs]</a>    <span class="k">def</span> <span class="nf">all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">accessing_obj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">default_access</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="AttributeHandler.all"><a class="viewcode-back" href="../../../api/evennia.typeclasses.attributes.html#evennia.typeclasses.attributes.AttributeHandler.all">[docs]</a>    <span class="k">def</span> <span class="nf">all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">accessing_obj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">default_access</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return all Attribute objects on this object, regardless of category.</span>
 
 <span class="sd">        Args:</span>
+<span class="sd">            category (str, optional): A given category to limit results to.</span>
 <span class="sd">            accessing_obj (object, optional): Check the `attrread`</span>
 <span class="sd">                lock on each attribute before returning them. If not</span>
 <span class="sd">                given, this check is skipped.</span>
@@ -1486,6 +1487,8 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">attrs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">get_all_attributes</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">category</span><span class="p">:</span>
+            <span class="n">attrs</span> <span class="o">=</span> <span class="p">[</span><span class="n">attr</span> <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">attrs</span> <span class="k">if</span> <span class="n">attr</span><span class="o">.</span><span class="n">category</span> <span class="o">==</span> <span class="n">category</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="n">accessing_obj</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[</span>
