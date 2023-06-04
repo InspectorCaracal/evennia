@@ -485,7 +485,7 @@ look of these clothes are appended to the character’s description when worn.</
 </section>
 <section id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference internal" href="Contrib-Containers.html"><span class="doc std std-doc">Read the documentation</span></a> - <span class="xref myst">Browse the Code</span></p>
+<p><a class="reference internal" href="Contrib-Containers.html"><span class="doc std std-doc">Read the documentation</span></a> - <a class="reference internal" href="../api/evennia.contrib.game_systems.containers.html#evennia-contrib-game-systems-containers"><span class="std std-ref">Browse the Code</span></a></p>
 <section id="cooldowns">
 <h3><code class="docutils literal notranslate"><span class="pre">cooldowns</span></code><a class="headerlink" href="#cooldowns" title="Permalink to this headline">¶</a></h3>
 <p><em>Contribution by owllex, 2021</em></p>
@@ -575,11 +575,15 @@ to rooms, exits and map building.</em></p>
 </div>
 <section id="extended-room">
 <h3><code class="docutils literal notranslate"><span class="pre">extended_room</span></code><a class="headerlink" href="#extended-room" title="Permalink to this headline">¶</a></h3>
-<p><em>Contribution - Griatch 2012, vincent-lg 2019</em></p>
-<p>This extends the normal <code class="docutils literal notranslate"><span class="pre">Room</span></code> typeclass to allow its description to change
-with time-of-day and/or season. It also adds ‘details’ for the player to look at
-in the room (without having to create a new in-game object for each). The room is
-supported by new <code class="docutils literal notranslate"><span class="pre">look</span></code> and <code class="docutils literal notranslate"><span class="pre">desc</span></code> commands.</p>
+<p><em>Contribution - Griatch 2012, vincent-lg 2019, Griatch 2023</em></p>
+<p>This extends the normal <code class="docutils literal notranslate"><span class="pre">Room</span></code> typeclass to allow its description to change with
+time-of-day and/or season as well as any other state (like flooded or dark).
+Embedding <code class="docutils literal notranslate"><span class="pre">$state(burning,</span> <span class="pre">This</span> <span class="pre">place</span> <span class="pre">is</span> <span class="pre">on</span> <span class="pre">fire!)</span></code> in the description will
+allow for changing the description based on room state. The room also supports
+<code class="docutils literal notranslate"><span class="pre">details</span></code> for the player to look at in the room (without having to create a new
+in-game object for each), as well as support for random echoes. The room
+comes with a set of alternate commands for <code class="docutils literal notranslate"><span class="pre">look</span></code> and <code class="docutils literal notranslate"><span class="pre">&#64;desc</span></code>, as well as new
+commands <code class="docutils literal notranslate"><span class="pre">detail</span></code>, <code class="docutils literal notranslate"><span class="pre">roomstate</span></code> and <code class="docutils literal notranslate"><span class="pre">time</span></code>.</p>
 <p><a class="reference internal" href="Contrib-Extended-Room.html"><span class="doc std std-doc">Read the documentation</span></a> - <a class="reference internal" href="../api/evennia.contrib.grid.extended_room.html#evennia-contrib-grid-extended-room"><span class="std std-ref">Browse the Code</span></a></p>
 </section>
 <section id="ingame-map-display">
@@ -743,12 +747,11 @@ character make small verbal observations at irregular intervals.</p>
 </section>
 <section id="evadventure">
 <h3><code class="docutils literal notranslate"><span class="pre">evadventure</span></code><a class="headerlink" href="#evadventure" title="Permalink to this headline">¶</a></h3>
-<p><em>Contrib by Griatch 2022</em></p>
+<p><em>Contrib by Griatch 2023-</em></p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>NOTE - this tutorial is WIP and NOT complete! It was put on hold to focus on
-releasing Evennia 1.0. You will still learn things from it, but don’t expect
-perfection.</p>
+<p>NOTE - this tutorial is WIP and NOT complete yet! You will still learn
+things from it, but don’t expect perfection.</p>
 </div>
 <p><a class="reference internal" href="Contrib-Evadventure.html"><span class="doc std std-doc">Read the documentation</span></a> - <a class="reference internal" href="../api/evennia.contrib.tutorials.evadventure.html#evennia-contrib-tutorials-evadventure"><span class="std std-ref">Browse the Code</span></a></p>
 </section>
