@@ -302,13 +302,13 @@
 </li>
         <li><a href="api/evennia.server.portal.naws.html#evennia.server.portal.naws.Naws.__init__">(evennia.server.portal.naws.Naws method)</a>
 </li>
-        <li><a href="api/evennia.server.portal.portal.html#evennia.server.portal.portal.Portal.__init__">(evennia.server.portal.portal.Portal method)</a>
-</li>
         <li><a href="api/evennia.server.portal.portalsessionhandler.html#evennia.server.portal.portalsessionhandler.PortalSessionHandler.__init__">(evennia.server.portal.portalsessionhandler.PortalSessionHandler method)</a>
 </li>
         <li><a href="api/evennia.server.portal.rss.html#evennia.server.portal.rss.RSSBotFactory.__init__">(evennia.server.portal.rss.RSSBotFactory method)</a>
 </li>
         <li><a href="api/evennia.server.portal.rss.html#evennia.server.portal.rss.RSSReader.__init__">(evennia.server.portal.rss.RSSReader method)</a>
+</li>
+        <li><a href="api/evennia.server.portal.service.html#evennia.server.portal.service.EvenniaPortalService.__init__">(evennia.server.portal.service.EvenniaPortalService method)</a>
 </li>
         <li><a href="api/evennia.server.portal.ssh.html#evennia.server.portal.ssh.AccountDBPasswordChecker.__init__">(evennia.server.portal.ssh.AccountDBPasswordChecker method)</a>
 </li>
@@ -336,9 +336,9 @@
 </li>
         <li><a href="api/evennia.server.profiling.dummyrunner.html#evennia.server.profiling.dummyrunner.DummyFactory.__init__">(evennia.server.profiling.dummyrunner.DummyFactory method)</a>
 </li>
-        <li><a href="api/evennia.server.server.html#evennia.server.server.Evennia.__init__">(evennia.server.server.Evennia method)</a>
-</li>
         <li><a href="api/evennia.server.serversession.html#evennia.server.serversession.ServerSession.__init__">(evennia.server.serversession.ServerSession method)</a>
+</li>
+        <li><a href="api/evennia.server.service.html#evennia.server.service.EvenniaServerService.__init__">(evennia.server.service.EvenniaServerService method)</a>
 </li>
         <li><a href="api/evennia.server.sessionhandler.html#evennia.server.sessionhandler.ServerSessionHandler.__init__">(evennia.server.sessionhandler.ServerSessionHandler method)</a>
 </li>
@@ -1577,20 +1577,18 @@
 </li>
       <li><a href="api/evennia.web.api.root.html#evennia.web.api.root.APIRootRouter.APIRootView">APIRootView (evennia.web.api.root.APIRootRouter attribute)</a>
 </li>
-      <li><a href="api/evennia.web.utils.adminsite.html#evennia.web.utils.adminsite.EvenniaAdminSite.app_order">app_order (evennia.web.utils.adminsite.EvenniaAdminSite attribute)</a>
-</li>
       <li><a href="api/evennia.objects.objects.html#evennia.objects.objects.DefaultObject.appearance_template">appearance_template (evennia.objects.objects.DefaultObject attribute)</a>
 </li>
       <li><a href="api/evennia.locks.lockhandler.html#evennia.locks.lockhandler.LockHandler.append">append() (evennia.locks.lockhandler.LockHandler method)</a>
 </li>
       <li><a href="api/evennia.server.portal.telnet.html#evennia.server.portal.telnet.TelnetProtocol.applicationDataReceived">applicationDataReceived() (evennia.server.portal.telnet.TelnetProtocol method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/evennia.contrib.tutorials.evadventure.chargen.html#evennia.contrib.tutorials.evadventure.chargen.TemporaryCharacterSheet.apply">apply() (evennia.contrib.tutorials.evadventure.chargen.TemporaryCharacterSheet method)</a>
 </li>
       <li><a href="api/evennia.contrib.game_systems.turnbattle.tb_basic.html#evennia.contrib.game_systems.turnbattle.tb_basic.BasicCombatRules.apply_damage">apply_damage() (evennia.contrib.game_systems.turnbattle.tb_basic.BasicCombatRules method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/evennia.contrib.game_systems.turnbattle.tb_items.html#evennia.contrib.game_systems.turnbattle.tb_items.TBItemsCharacter.apply_turn_conditions">apply_turn_conditions() (evennia.contrib.game_systems.turnbattle.tb_items.TBItemsCharacter method)</a>
 </li>
       <li><a href="api/evennia.contrib.game_systems.turnbattle.tb_range.html#evennia.contrib.game_systems.turnbattle.tb_range.RangedCombatRules.approach">approach() (evennia.contrib.game_systems.turnbattle.tb_range.RangedCombatRules method)</a>
@@ -2363,6 +2361,8 @@
 </li>
       <li><a href="api/evennia.contrib.full_systems.evscaperoom.objects.html#evennia.contrib.full_systems.evscaperoom.objects.BasePositionable.at_position">at_position() (evennia.contrib.full_systems.evscaperoom.objects.BasePositionable method)</a>
 </li>
+      <li><a href="api/evennia.accounts.accounts.html#evennia.accounts.accounts.DefaultAccount.at_post_add_character">at_post_add_character() (evennia.accounts.accounts.DefaultAccount method)</a>
+</li>
       <li><a href="api/evennia.accounts.accounts.html#evennia.accounts.accounts.DefaultAccount.at_post_channel_msg">at_post_channel_msg() (evennia.accounts.accounts.DefaultAccount method)</a>
 </li>
       <li><a href="api/evennia.contrib.rpg.buffs.buff.html#evennia.contrib.rpg.buffs.buff.BaseBuff.at_post_check">at_post_check() (evennia.contrib.rpg.buffs.buff.BaseBuff method)</a>
@@ -2377,6 +2377,8 @@
         <li><a href="api/evennia.commands.default.muxcommand.html#evennia.commands.default.muxcommand.MuxCommand.at_post_cmd">(evennia.commands.default.muxcommand.MuxCommand method)</a>
 </li>
       </ul></li>
+      <li><a href="api/evennia.accounts.accounts.html#evennia.accounts.accounts.DefaultAccount.at_post_create_character">at_post_create_character() (evennia.accounts.accounts.DefaultAccount method)</a>
+</li>
       <li><a href="api/evennia.accounts.accounts.html#evennia.accounts.accounts.DefaultAccount.at_post_disconnect">at_post_disconnect() (evennia.accounts.accounts.DefaultAccount method)</a>
 
       <ul>
@@ -2399,7 +2401,7 @@
 </li>
       <li><a href="api/evennia.contrib.grid.wilderness.wilderness.html#evennia.contrib.grid.wilderness.wilderness.WildernessScript.at_post_object_leave">at_post_object_leave() (evennia.contrib.grid.wilderness.wilderness.WildernessScript method)</a>
 </li>
-      <li><a href="api/evennia.server.server.html#evennia.server.server.Evennia.at_post_portal_sync">at_post_portal_sync() (evennia.server.server.Evennia method)</a>
+      <li><a href="api/evennia.server.service.html#evennia.server.service.EvenniaServerService.at_post_portal_sync">at_post_portal_sync() (evennia.server.service.EvenniaServerService method)</a>
 </li>
       <li><a href="api/evennia.contrib.base_systems.components.holder.html#evennia.contrib.base_systems.components.holder.ComponentHolderMixin.at_post_puppet">at_post_puppet() (evennia.contrib.base_systems.components.holder.ComponentHolderMixin method)</a>
 
@@ -2409,6 +2411,8 @@
         <li><a href="api/evennia.objects.objects.html#evennia.objects.objects.DefaultObject.at_post_puppet">(evennia.objects.objects.DefaultObject method)</a>
 </li>
       </ul></li>
+      <li><a href="api/evennia.accounts.accounts.html#evennia.accounts.accounts.DefaultAccount.at_post_remove_character">at_post_remove_character() (evennia.accounts.accounts.DefaultAccount method)</a>
+</li>
       <li><a href="api/evennia.contrib.tutorials.tutorial_world.objects.html#evennia.contrib.tutorials.tutorial_world.objects.CrumblingWall.at_post_traverse">at_post_traverse() (evennia.contrib.tutorials.tutorial_world.objects.CrumblingWall method)</a>
 
       <ul>
@@ -2619,13 +2623,13 @@
 </li>
       <li><a href="api/evennia.utils.utils.html#evennia.utils.utils.at_search_result">at_search_result() (in module evennia.utils.utils)</a>
 </li>
-      <li><a href="api/evennia.server.server.html#evennia.server.server.Evennia.at_server_cold_start">at_server_cold_start() (evennia.server.server.Evennia method)</a>
+      <li><a href="api/evennia.server.service.html#evennia.server.service.EvenniaServerService.at_server_cold_start">at_server_cold_start() (evennia.server.service.EvenniaServerService method)</a>
 </li>
-      <li><a href="api/evennia.server.server.html#evennia.server.server.Evennia.at_server_cold_stop">at_server_cold_stop() (evennia.server.server.Evennia method)</a>
+      <li><a href="api/evennia.server.service.html#evennia.server.service.EvenniaServerService.at_server_cold_stop">at_server_cold_stop() (evennia.server.service.EvenniaServerService method)</a>
 </li>
       <li><a href="api/evennia.server.portal.portalsessionhandler.html#evennia.server.portal.portalsessionhandler.PortalSessionHandler.at_server_connection">at_server_connection() (evennia.server.portal.portalsessionhandler.PortalSessionHandler method)</a>
 </li>
-      <li><a href="api/evennia.server.server.html#evennia.server.server.Evennia.at_server_init">at_server_init() (evennia.server.server.Evennia method)</a>
+      <li><a href="api/evennia.server.service.html#evennia.server.service.EvenniaServerService.at_server_init">at_server_init() (evennia.server.service.EvenniaServerService method)</a>
 </li>
       <li><a href="api/evennia.accounts.accounts.html#evennia.accounts.accounts.DefaultAccount.at_server_reload">at_server_reload() (evennia.accounts.accounts.DefaultAccount method)</a>
 
@@ -2635,9 +2639,9 @@
         <li><a href="api/evennia.scripts.scripts.html#evennia.scripts.scripts.DefaultScript.at_server_reload">(evennia.scripts.scripts.DefaultScript method)</a>
 </li>
       </ul></li>
-      <li><a href="api/evennia.server.server.html#evennia.server.server.Evennia.at_server_reload_start">at_server_reload_start() (evennia.server.server.Evennia method)</a>
+      <li><a href="api/evennia.server.service.html#evennia.server.service.EvenniaServerService.at_server_reload_start">at_server_reload_start() (evennia.server.service.EvenniaServerService method)</a>
 </li>
-      <li><a href="api/evennia.server.server.html#evennia.server.server.Evennia.at_server_reload_stop">at_server_reload_stop() (evennia.server.server.Evennia method)</a>
+      <li><a href="api/evennia.server.service.html#evennia.server.service.EvenniaServerService.at_server_reload_stop">at_server_reload_stop() (evennia.server.service.EvenniaServerService method)</a>
 </li>
       <li><a href="api/evennia.accounts.accounts.html#evennia.accounts.accounts.DefaultAccount.at_server_shutdown">at_server_shutdown() (evennia.accounts.accounts.DefaultAccount method)</a>
 
@@ -2660,10 +2664,10 @@
 </li>
         <li><a href="api/evennia.scripts.scripts.html#evennia.scripts.scripts.DefaultScript.at_server_start">(evennia.scripts.scripts.DefaultScript method)</a>
 </li>
-        <li><a href="api/evennia.server.server.html#evennia.server.server.Evennia.at_server_start">(evennia.server.server.Evennia method)</a>
+        <li><a href="api/evennia.server.service.html#evennia.server.service.EvenniaServerService.at_server_start">(evennia.server.service.EvenniaServerService method)</a>
 </li>
       </ul></li>
-      <li><a href="api/evennia.server.server.html#evennia.server.server.Evennia.at_server_stop">at_server_stop() (evennia.server.server.Evennia method)</a>
+      <li><a href="api/evennia.server.service.html#evennia.server.service.EvenniaServerService.at_server_stop">at_server_stop() (evennia.server.service.EvenniaServerService method)</a>
 </li>
       <li><a href="api/evennia.typeclasses.attributes.html#evennia.typeclasses.attributes.AttributeProperty.at_set">at_set() (evennia.typeclasses.attributes.AttributeProperty method)</a>
 </li>
@@ -3417,7 +3421,7 @@
         <li><a href="api/evennia.web.website.views.characters.html#evennia.web.website.views.characters.CharacterPuppetView">(class in evennia.web.website.views.characters)</a>
 </li>
       </ul></li>
-      <li><a href="api/evennia.accounts.accounts.html#evennia.accounts.accounts.DefaultAccount.characters">characters() (evennia.accounts.accounts.DefaultAccount property)</a>
+      <li><a href="api/evennia.accounts.accounts.html#evennia.accounts.accounts.DefaultAccount.characters">characters (evennia.accounts.accounts.DefaultAccount attribute)</a>
 </li>
       <li><a href="api/evennia.web.website.forms.html#evennia.web.website.forms.CharacterUpdateForm">CharacterUpdateForm (class in evennia.web.website.forms)</a>
 </li>
@@ -3459,6 +3463,8 @@
       </ul></li>
       <li><a href="api/evennia.commands.default.building.html#evennia.commands.default.building.CmdSetAttribute.check_attr">check_attr() (evennia.commands.default.building.CmdSetAttribute method)</a>
 </li>
+      <li><a href="api/evennia.accounts.accounts.html#evennia.accounts.accounts.DefaultAccount.check_available_slots">check_available_slots() (evennia.accounts.accounts.DefaultAccount method)</a>
+</li>
       <li><a href="api/evennia.contrib.full_systems.evscaperoom.objects.html#evennia.contrib.full_systems.evscaperoom.objects.EvscaperoomObject.check_character_flag">check_character_flag() (evennia.contrib.full_systems.evscaperoom.objects.EvscaperoomObject method)</a>
 </li>
       <li><a href="api/evennia.server.evennia_launcher.html#evennia.server.evennia_launcher.check_database">check_database() (in module evennia.server.evennia_launcher)</a>
@@ -3478,6 +3484,8 @@
       <li><a href="api/evennia.commands.default.building.html#evennia.commands.default.building.CmdCpAttr.check_has_attr">check_has_attr() (evennia.commands.default.building.CmdCpAttr method)</a>
 </li>
       <li><a href="api/evennia.contrib.tutorials.tutorial_world.rooms.html#evennia.contrib.tutorials.tutorial_world.rooms.DarkRoom.check_light_state">check_light_state() (evennia.contrib.tutorials.tutorial_world.rooms.DarkRoom method)</a>
+</li>
+      <li><a href="api/evennia.server.portal.service.html#evennia.server.portal.service.EvenniaPortalService.check_lockdown">check_lockdown() (evennia.server.portal.service.EvenniaPortalService method)</a>
 </li>
       <li><a href="api/evennia.web.api.permissions.html#evennia.web.api.permissions.EvenniaPermission.check_locks">check_locks() (evennia.web.api.permissions.EvenniaPermission static method)</a>
 </li>
@@ -4005,10 +4013,10 @@
 </li>
       <li><a href="api/evennia.contrib.tutorials.red_button.red_button.html#evennia.contrib.tutorials.red_button.red_button.CmdNudge">CmdNudge (class in evennia.contrib.tutorials.red_button.red_button)</a>
 </li>
-      <li><a href="api/evennia.commands.default.comms.html#evennia.commands.default.comms.CmdObjectChannel">CmdObjectChannel (class in evennia.commands.default.comms)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/evennia.commands.default.comms.html#evennia.commands.default.comms.CmdObjectChannel">CmdObjectChannel (class in evennia.commands.default.comms)</a>
+</li>
       <li><a href="api/evennia.commands.default.building.html#evennia.commands.default.building.CmdObjects">CmdObjects (class in evennia.commands.default.building)</a>
 </li>
       <li><a href="api/evennia.contrib.game_systems.barter.barter.html#evennia.contrib.game_systems.barter.barter.CmdOffer">CmdOffer (class in evennia.contrib.game_systems.barter.barter)</a>
@@ -4765,7 +4773,7 @@
 </li>
       <li><a href="api/evennia.utils.test_resources.html#evennia.utils.test_resources.EvenniaTestMixin.create_chars">create_chars() (evennia.utils.test_resources.EvenniaTestMixin method)</a>
 </li>
-      <li><a href="api/evennia.server.server.html#evennia.server.server.Evennia.create_default_channels">create_default_channels() (evennia.server.server.Evennia method)</a>
+      <li><a href="api/evennia.server.service.html#evennia.server.service.EvenniaServerService.create_default_channels">create_default_channels() (evennia.server.service.EvenniaServerService method)</a>
 </li>
       <li><a href="api/evennia.scripts.taskhandler.html#evennia.scripts.taskhandler.TaskHandler.create_delays">create_delays() (evennia.scripts.taskhandler.TaskHandler method)</a>
 </li>
@@ -5323,6 +5331,8 @@
         <li><a href="api/evennia.server.inputfuncs.html#evennia.server.inputfuncs.default">(in module evennia.server.inputfuncs)</a>
 </li>
       </ul></li>
+      <li><a href="api/evennia.accounts.accounts.html#evennia.accounts.accounts.DefaultAccount.default_character_typeclass">default_character_typeclass (evennia.accounts.accounts.DefaultAccount attribute)</a>
+</li>
       <li><a href="api/evennia.commands.default.building.html#evennia.commands.default.building.CmdDestroy.default_confirm">default_confirm (evennia.commands.default.building.CmdDestroy attribute)</a>
 
       <ul>
@@ -5348,6 +5358,8 @@
       <li><a href="api/evennia.web.utils.adminsite.html#evennia.web.utils.adminsite.EvenniaAdminApp.default_site">default_site (evennia.web.utils.adminsite.EvenniaAdminApp attribute)</a>
 </li>
       <li><a href="api/evennia.contrib.base_systems.components.tests.html#evennia.contrib.base_systems.components.tests.ComponentTestB.default_tag">default_tag (evennia.contrib.base_systems.components.tests.ComponentTestB attribute)</a>
+</li>
+      <li><a href="api/evennia.commands.default.building.html#evennia.commands.default.building.ObjManipCommand.default_typeclasses">default_typeclasses (evennia.commands.default.building.ObjManipCommand attribute)</a>
 </li>
       <li><a href="api/evennia.contrib.grid.xyzgrid.xymap_legend.html#evennia.contrib.grid.xyzgrid.xymap_legend.MapLink.default_weight">default_weight (evennia.contrib.grid.xyzgrid.xymap_legend.MapLink attribute)</a>
 </li>
@@ -5395,10 +5407,10 @@
 </li>
       <li><a href="api/evennia.objects.objects.html#evennia.objects.objects.DefaultRoom.MultipleObjectsReturned">DefaultRoom.MultipleObjectsReturned</a>
 </li>
-      <li><a href="api/evennia.scripts.scripts.html#evennia.scripts.scripts.DefaultScript">DefaultScript (class in evennia.scripts.scripts)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/evennia.scripts.scripts.html#evennia.scripts.scripts.DefaultScript">DefaultScript (class in evennia.scripts.scripts)</a>
+</li>
       <li><a href="api/evennia.scripts.scripts.html#evennia.scripts.scripts.DefaultScript.DoesNotExist">DefaultScript.DoesNotExist</a>
 </li>
       <li><a href="api/evennia.scripts.scripts.html#evennia.scripts.scripts.DefaultScript.MultipleObjectsReturned">DefaultScript.MultipleObjectsReturned</a>
@@ -6252,8 +6264,6 @@
         <li><a href="api/evennia.html#module-evennia">module</a>
 </li>
       </ul></li>
-      <li><a href="api/evennia.server.server.html#evennia.server.server.Evennia">Evennia (class in evennia.server.server)</a>
-</li>
       <li>
     evennia.accounts
 
@@ -7521,8 +7531,6 @@
         <li><a href="api/evennia.contrib.tutorials.evadventure.dungeon.html#module-evennia.contrib.tutorials.evadventure.dungeon">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     evennia.contrib.tutorials.evadventure.enums
 
@@ -7537,6 +7545,8 @@
         <li><a href="api/evennia.contrib.tutorials.evadventure.equipment.html#module-evennia.contrib.tutorials.evadventure.equipment">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     evennia.contrib.tutorials.evadventure.npcs
 
@@ -8259,6 +8269,13 @@
 </li>
       </ul></li>
       <li>
+    evennia.server.portal.service
+
+      <ul>
+        <li><a href="api/evennia.server.portal.service.html#module-evennia.server.portal.service">module</a>
+</li>
+      </ul></li>
+      <li>
     evennia.server.portal.ssh
 
       <ul>
@@ -8396,6 +8413,13 @@
 
       <ul>
         <li><a href="api/evennia.server.serversession.html#module-evennia.server.serversession">module</a>
+</li>
+      </ul></li>
+      <li>
+    evennia.server.service
+
+      <ul>
+        <li><a href="api/evennia.server.service.html#module-evennia.server.service">module</a>
 </li>
       </ul></li>
       <li>
@@ -9048,7 +9072,11 @@
 </li>
       <li><a href="api/evennia.web.api.permissions.html#evennia.web.api.permissions.EvenniaPermission">EvenniaPermission (class in evennia.web.api.permissions)</a>
 </li>
+      <li><a href="api/evennia.server.portal.service.html#evennia.server.portal.service.EvenniaPortalService">EvenniaPortalService (class in evennia.server.portal.service)</a>
+</li>
       <li><a href="api/evennia.server.webserver.html#evennia.server.webserver.EvenniaReverseProxyResource">EvenniaReverseProxyResource (class in evennia.server.webserver)</a>
+</li>
+      <li><a href="api/evennia.server.service.html#evennia.server.service.EvenniaServerService">EvenniaServerService (class in evennia.server.service)</a>
 </li>
       <li><a href="api/evennia.utils.test_resources.html#evennia.utils.test_resources.EvenniaTest">EvenniaTest (class in evennia.utils.test_resources)</a>
 </li>
@@ -10188,6 +10216,10 @@
 </li>
       <li><a href="api/evennia.utils.funcparser.html#evennia.utils.funcparser.funcparser_callable_you_capitalize">funcparser_callable_you_capitalize() (in module evennia.utils.funcparser)</a>
 </li>
+      <li><a href="api/evennia.utils.funcparser.html#evennia.utils.funcparser.funcparser_callable_your">funcparser_callable_your() (in module evennia.utils.funcparser)</a>
+</li>
+      <li><a href="api/evennia.utils.funcparser.html#evennia.utils.funcparser.funcparser_callable_your_capitalize">funcparser_callable_your_capitalize() (in module evennia.utils.funcparser)</a>
+</li>
       <li><a href="api/evennia.server.portal.amp.html#evennia.server.portal.amp.FunctionCall">FunctionCall (class in evennia.server.portal.amp)</a>
 </li>
       <li><a href="api/evennia.utils.optionclasses.html#evennia.utils.optionclasses.Future">Future (class in evennia.utils.optionclasses)</a>
@@ -10380,6 +10412,8 @@
 </li>
       <li><a href="api/evennia.web.api.serializers.html#evennia.web.api.serializers.TypeclassSerializerMixin.get_attributes">get_attributes() (evennia.web.api.serializers.TypeclassSerializerMixin static method)</a>
 </li>
+      <li><a href="api/evennia.accounts.accounts.html#evennia.accounts.accounts.DefaultAccount.get_available_character_slots">get_available_character_slots() (evennia.accounts.accounts.DefaultAccount method)</a>
+</li>
       <li><a href="api/evennia.contrib.tutorials.evadventure.objects.html#evennia.contrib.tutorials.evadventure.objects.get_bare_hands">get_bare_hands() (in module evennia.contrib.tutorials.evadventure.objects)</a>
 </li>
       <li><a href="api/evennia.contrib.utils.git_integration.git_integration.html#evennia.contrib.utils.git_integration.git_integration.GitCommand.get_branches">get_branches() (evennia.contrib.utils.git_integration.git_integration.GitCommand method)</a>
@@ -10423,6 +10457,8 @@
       <li><a href="api/evennia.server.serversession.html#evennia.server.serversession.ServerSession.get_character">get_character() (evennia.server.serversession.ServerSession method)</a>
 </li>
       <li><a href="api/evennia.contrib.tutorials.evadventure.characters.html#evennia.contrib.tutorials.evadventure.characters.get_character_sheet">get_character_sheet() (in module evennia.contrib.tutorials.evadventure.characters)</a>
+</li>
+      <li><a href="api/evennia.accounts.accounts.html#evennia.accounts.accounts.DefaultAccount.get_character_slots">get_character_slots() (evennia.accounts.accounts.DefaultAccount method)</a>
 </li>
       <li><a href="api/evennia.server.inputfuncs.html#evennia.server.inputfuncs.get_client_options">get_client_options() (in module evennia.server.inputfuncs)</a>
 </li>
@@ -10698,10 +10734,10 @@
         <li><a href="api/evennia.typeclasses.managers.html#evennia.typeclasses.managers.TypedObjectManager.get_id">(evennia.typeclasses.managers.TypedObjectManager method)</a>
 </li>
       </ul></li>
-      <li><a href="api/evennia.server.portal.portal.html#evennia.server.portal.portal.Portal.get_info_dict">get_info_dict() (evennia.server.portal.portal.Portal method)</a>
+      <li><a href="api/evennia.server.portal.service.html#evennia.server.portal.service.EvenniaPortalService.get_info_dict">get_info_dict() (evennia.server.portal.service.EvenniaPortalService method)</a>
 
       <ul>
-        <li><a href="api/evennia.server.server.html#evennia.server.server.Evennia.get_info_dict">(evennia.server.server.Evennia method)</a>
+        <li><a href="api/evennia.server.service.html#evennia.server.service.EvenniaServerService.get_info_dict">(evennia.server.service.EvenniaServerService method)</a>
 </li>
       </ul></li>
       <li><a href="api/evennia.web.website.views.objects.html#evennia.web.website.views.objects.ObjectUpdateView.get_initial">get_initial() (evennia.web.website.views.objects.ObjectUpdateView method)</a>
@@ -10810,6 +10846,8 @@
         <li><a href="api/evennia.web.website.views.objects.html#evennia.web.website.views.objects.ObjectDetailView.get_object">(evennia.web.website.views.objects.ObjectDetailView method)</a>
 </li>
       </ul></li>
+      <li><a href="api/evennia.commands.default.building.html#evennia.commands.default.building.ObjManipCommand.get_object_typeclass">get_object_typeclass() (evennia.commands.default.building.ObjManipCommand method)</a>
+</li>
       <li><a href="api/evennia.objects.manager.html#evennia.objects.manager.ObjectDBManager.get_object_with_account">get_object_with_account() (evennia.objects.manager.ObjectDBManager method)</a>
 </li>
       <li><a href="api/evennia.contrib.grid.wilderness.wilderness.html#evennia.contrib.grid.wilderness.wilderness.WildernessScript.get_objs_at_coordinates">get_objs_at_coordinates() (evennia.contrib.grid.wilderness.wilderness.WildernessScript method)</a>
@@ -14646,6 +14684,16 @@
 </li>
       <li><a href="api/evennia.comms.comms.html#evennia.comms.comms.DefaultChannel.message_transform">message_transform() (evennia.comms.comms.DefaultChannel method)</a>
 </li>
+      <li><a href="api/evennia.commands.default.building.html#evennia.commands.default.building.CmdDig.method_type">method_type (evennia.commands.default.building.CmdDig attribute)</a>
+
+      <ul>
+        <li><a href="api/evennia.commands.default.building.html#evennia.commands.default.building.CmdOpen.method_type">(evennia.commands.default.building.CmdOpen attribute)</a>
+</li>
+        <li><a href="api/evennia.commands.default.building.html#evennia.commands.default.building.CmdSetObjAlias.method_type">(evennia.commands.default.building.CmdSetObjAlias attribute)</a>
+</li>
+        <li><a href="api/evennia.commands.default.building.html#evennia.commands.default.building.CmdTunnel.method_type">(evennia.commands.default.building.CmdTunnel attribute)</a>
+</li>
+      </ul></li>
       <li><a href="api/evennia.contrib.rpg.traits.traits.html#evennia.contrib.rpg.traits.traits.CounterTrait.min">min() (evennia.contrib.rpg.traits.traits.CounterTrait property)</a>
 
       <ul>
@@ -15392,6 +15440,8 @@
 </li>
         <li><a href="api/evennia.server.portal.rss.html#module-evennia.server.portal.rss">evennia.server.portal.rss</a>
 </li>
+        <li><a href="api/evennia.server.portal.service.html#module-evennia.server.portal.service">evennia.server.portal.service</a>
+</li>
         <li><a href="api/evennia.server.portal.ssh.html#module-evennia.server.portal.ssh">evennia.server.portal.ssh</a>
 </li>
         <li><a href="api/evennia.server.portal.ssl.html#module-evennia.server.portal.ssl">evennia.server.portal.ssl</a>
@@ -15431,6 +15481,8 @@
         <li><a href="api/evennia.server.server.html#module-evennia.server.server">evennia.server.server</a>
 </li>
         <li><a href="api/evennia.server.serversession.html#module-evennia.server.serversession">evennia.server.serversession</a>
+</li>
+        <li><a href="api/evennia.server.service.html#module-evennia.server.service">evennia.server.service</a>
 </li>
         <li><a href="api/evennia.server.session.html#module-evennia.server.session">evennia.server.session</a>
 </li>
@@ -15955,12 +16007,8 @@
 </li>
       <li><a href="api/evennia.contrib.full_systems.evscaperoom.objects.html#evennia.contrib.full_systems.evscaperoom.objects.Combinable.new_create_dict">new_create_dict (evennia.contrib.full_systems.evscaperoom.objects.Combinable attribute)</a>
 </li>
-      <li><a href="api/evennia.commands.default.building.html#evennia.commands.default.building.CmdCreate.new_obj_lockstring">new_obj_lockstring (evennia.commands.default.building.CmdCreate attribute)</a>
-
-      <ul>
-        <li><a href="api/evennia.commands.default.building.html#evennia.commands.default.building.CmdOpen.new_obj_lockstring">(evennia.commands.default.building.CmdOpen attribute)</a>
+      <li><a href="api/evennia.commands.default.building.html#evennia.commands.default.building.CmdOpen.new_obj_lockstring">new_obj_lockstring (evennia.commands.default.building.CmdOpen attribute)</a>
 </li>
-      </ul></li>
       <li><a href="api/evennia.contrib.tutorials.evadventure.dungeon.html#evennia.contrib.tutorials.evadventure.dungeon.EvAdventureDungeonOrchestrator.new_room">new_room() (evennia.contrib.tutorials.evadventure.dungeon.EvAdventureDungeonOrchestrator method)</a>
 </li>
       <li><a href="api/evennia.commands.default.building.html#evennia.commands.default.building.CmdDig.new_room_lockstring">new_room_lockstring (evennia.commands.default.building.CmdDig attribute)</a>
@@ -16025,10 +16073,10 @@
       </ul></li>
       <li><a href="api/evennia.server.portal.telnet_oob.html#evennia.server.portal.telnet_oob.TelnetOOB.no_gmcp">no_gmcp() (evennia.server.portal.telnet_oob.TelnetOOB method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/evennia.server.portal.mccp.html#evennia.server.portal.mccp.Mccp.no_mccp">no_mccp() (evennia.server.portal.mccp.Mccp method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/evennia.server.portal.telnet_oob.html#evennia.server.portal.telnet_oob.TelnetOOB.no_msdp">no_msdp() (evennia.server.portal.telnet_oob.TelnetOOB method)</a>
 </li>
       <li><a href="api/evennia.server.portal.mssp.html#evennia.server.portal.mssp.Mssp.no_mssp">no_mssp() (evennia.server.portal.mssp.Mssp method)</a>
@@ -17323,13 +17371,13 @@
 </li>
       <li><a href="api/evennia.server.portal.irc.html#evennia.server.portal.irc.IRCBot.pong">pong() (evennia.server.portal.irc.IRCBot method)</a>
 </li>
-      <li><a href="api/evennia.server.portal.portal.html#evennia.server.portal.portal.Portal">Portal (class in evennia.server.portal.portal)</a>
-</li>
       <li><a href="api/evennia.server.sessionhandler.html#evennia.server.sessionhandler.ServerSessionHandler.portal_connect">portal_connect() (evennia.server.sessionhandler.ServerSessionHandler method)</a>
 </li>
       <li><a href="api/evennia.server.sessionhandler.html#evennia.server.sessionhandler.ServerSessionHandler.portal_disconnect">portal_disconnect() (evennia.server.sessionhandler.ServerSessionHandler method)</a>
 </li>
       <li><a href="api/evennia.server.sessionhandler.html#evennia.server.sessionhandler.ServerSessionHandler.portal_disconnect_all">portal_disconnect_all() (evennia.server.sessionhandler.ServerSessionHandler method)</a>
+</li>
+      <li><a href="api/evennia.server.portal.service.html#evennia.server.portal.service.EvenniaPortalService.portal_maintenance">portal_maintenance() (evennia.server.portal.service.EvenniaPortalService method)</a>
 </li>
       <li><a href="api/evennia.server.portal.amp_server.html#evennia.server.portal.amp_server.AMPServerProtocol.portal_receive_adminserver2portal">portal_receive_adminserver2portal() (evennia.server.portal.amp_server.AMPServerProtocol method)</a>
 </li>
@@ -17461,7 +17509,15 @@
       </ul></li>
       <li><a href="api/evennia.server.webserver.html#evennia.server.webserver.PrivateStaticRoot">PrivateStaticRoot (class in evennia.server.webserver)</a>
 </li>
+      <li><a href="api/evennia.server.portal.service.html#evennia.server.portal.service.EvenniaPortalService.privilegedStartService">privilegedStartService() (evennia.server.portal.service.EvenniaPortalService method)</a>
+
+      <ul>
+        <li><a href="api/evennia.server.service.html#evennia.server.service.EvenniaServerService.privilegedStartService">(evennia.server.service.EvenniaServerService method)</a>
+</li>
+      </ul></li>
       <li><a href="api/evennia.server.portal.irc.html#evennia.server.portal.irc.IRCBot.privmsg">privmsg() (evennia.server.portal.irc.IRCBot method)</a>
+</li>
+      <li><a href="api/evennia.server.service.html#evennia.server.service.EvenniaServerService.process_idle_timeouts">process_idle_timeouts() (evennia.server.service.EvenniaServerService method)</a>
 </li>
       <li><a href="api/evennia.contrib.rpg.rpsystem.rpsystem.html#evennia.contrib.rpg.rpsystem.rpsystem.ContribRPCharacter.process_language">process_language() (evennia.contrib.rpg.rpsystem.rpsystem.ContribRPCharacter method)</a>
 </li>
@@ -17849,10 +17905,34 @@
       </ul></li>
       <li><a href="api/evennia.contrib.tutorials.evadventure.objects.html#evennia.contrib.tutorials.evadventure.objects.EvAdventureRunestone.refresh">refresh() (evennia.contrib.tutorials.evadventure.objects.EvAdventureRunestone method)</a>
 </li>
+      <li><a href="api/evennia.server.portal.service.html#evennia.server.portal.service.EvenniaPortalService.register_amp">register_amp() (evennia.server.portal.service.EvenniaPortalService method)</a>
+
+      <ul>
+        <li><a href="api/evennia.server.service.html#evennia.server.service.EvenniaServerService.register_amp">(evennia.server.service.EvenniaServerService method)</a>
+</li>
+      </ul></li>
       <li><a href="api/evennia.contrib.base_systems.ingame_python.utils.html#evennia.contrib.base_systems.ingame_python.utils.register_events">register_events() (in module evennia.contrib.base_systems.ingame_python.utils)</a>
 </li>
       <li><a href="api/evennia.contrib.tutorials.evadventure.dungeon.html#evennia.contrib.tutorials.evadventure.dungeon.EvAdventureDungeonOrchestrator.register_exit_traversed">register_exit_traversed() (evennia.contrib.tutorials.evadventure.dungeon.EvAdventureDungeonOrchestrator method)</a>
 </li>
+      <li><a href="api/evennia.server.portal.service.html#evennia.server.portal.service.EvenniaPortalService.register_plugins">register_plugins() (evennia.server.portal.service.EvenniaPortalService method)</a>
+
+      <ul>
+        <li><a href="api/evennia.server.service.html#evennia.server.service.EvenniaServerService.register_plugins">(evennia.server.service.EvenniaServerService method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/evennia.server.portal.service.html#evennia.server.portal.service.EvenniaPortalService.register_ssh">register_ssh() (evennia.server.portal.service.EvenniaPortalService method)</a>
+</li>
+      <li><a href="api/evennia.server.portal.service.html#evennia.server.portal.service.EvenniaPortalService.register_ssl">register_ssl() (evennia.server.portal.service.EvenniaPortalService method)</a>
+</li>
+      <li><a href="api/evennia.server.portal.service.html#evennia.server.portal.service.EvenniaPortalService.register_telnet">register_telnet() (evennia.server.portal.service.EvenniaPortalService method)</a>
+</li>
+      <li><a href="api/evennia.server.portal.service.html#evennia.server.portal.service.EvenniaPortalService.register_webserver">register_webserver() (evennia.server.portal.service.EvenniaPortalService method)</a>
+
+      <ul>
+        <li><a href="api/evennia.server.service.html#evennia.server.service.EvenniaServerService.register_webserver">(evennia.server.service.EvenniaServerService method)</a>
+</li>
+      </ul></li>
       <li><a href="api/evennia.web.website.tests.html#evennia.web.website.tests.RegisterTest">RegisterTest (class in evennia.web.website.tests)</a>
 </li>
       <li><a href="api/evennia.utils.idmapper.tests.html#evennia.utils.idmapper.tests.RegularArticle">RegularArticle (class in evennia.utils.idmapper.tests)</a>
@@ -18045,6 +18125,8 @@
         <li><a href="api/evennia.utils.utils.html#evennia.utils.utils.repeat">(in module evennia.utils.utils)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/evennia.contrib.grid.extended_room.extended_room.html#evennia.contrib.grid.extended_room.extended_room.ExtendedRoom.repeat_broadcast_message_to_room">repeat_broadcast_message_to_room() (evennia.contrib.grid.extended_room.extended_room.ExtendedRoom method)</a>
 </li>
       <li><a href="api/evennia.scripts.models.html#evennia.scripts.models.ScriptDB.repeats">repeats() (evennia.scripts.models.ScriptDB property)</a>
@@ -18057,8 +18139,6 @@
         <li><a href="api/evennia.utils.ansi.html#evennia.utils.ansi.ANSIString.replace">(evennia.utils.ansi.ANSIString method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/evennia.utils.evtable.html#evennia.utils.evtable.EvCell.replace_data">replace_data() (evennia.utils.evtable.EvCell method)</a>
 </li>
       <li><a href="api/evennia.contrib.grid.extended_room.extended_room.html#evennia.contrib.grid.extended_room.extended_room.ExtendedRoom.replace_legacy_time_of_day_markup">replace_legacy_time_of_day_markup() (evennia.contrib.grid.extended_room.extended_room.ExtendedRoom method)</a>
@@ -18425,9 +18505,9 @@
 </li>
       <li><a href="api/evennia.utils.utils.html#evennia.utils.utils.run_in_main_thread">run_in_main_thread() (in module evennia.utils.utils)</a>
 </li>
-      <li><a href="api/evennia.server.server.html#evennia.server.server.Evennia.run_init_hooks">run_init_hooks() (evennia.server.server.Evennia method)</a>
+      <li><a href="api/evennia.server.service.html#evennia.server.service.EvenniaServerService.run_init_hooks">run_init_hooks() (evennia.server.service.EvenniaServerService method)</a>
 </li>
-      <li><a href="api/evennia.server.server.html#evennia.server.server.Evennia.run_initial_setup">run_initial_setup() (evennia.server.server.Evennia method)</a>
+      <li><a href="api/evennia.server.service.html#evennia.server.service.EvenniaServerService.run_initial_setup">run_initial_setup() (evennia.server.service.EvenniaServerService method)</a>
 </li>
       <li><a href="api/evennia.server.evennia_launcher.html#evennia.server.evennia_launcher.run_menu">run_menu() (in module evennia.server.evennia_launcher)</a>
 </li>
@@ -19455,6 +19535,8 @@
 </li>
       <li><a href="api/evennia.server.portal.portalsessionhandler.html#evennia.server.portal.portalsessionhandler.PortalSessionHandler.server_logged_in">server_logged_in() (evennia.server.portal.portalsessionhandler.PortalSessionHandler method)</a>
 </li>
+      <li><a href="api/evennia.server.service.html#evennia.server.service.EvenniaServerService.server_maintenance">server_maintenance() (evennia.server.service.EvenniaServerService method)</a>
+</li>
       <li><a href="api/evennia.server.amp_client.html#evennia.server.amp_client.AMPServerClientProtocol.server_receive_adminportal2server">server_receive_adminportal2server() (evennia.server.amp_client.AMPServerClientProtocol method)</a>
 </li>
       <li><a href="api/evennia.server.amp_client.html#evennia.server.amp_client.AMPServerClientProtocol.server_receive_msgportal2server">server_receive_msgportal2server() (evennia.server.amp_client.AMPServerClientProtocol method)</a>
@@ -19785,10 +19867,10 @@
 </li>
       <li><a href="api/evennia.server.evennia_launcher.html#evennia.server.evennia_launcher.show_version_info">show_version_info() (in module evennia.server.evennia_launcher)</a>
 </li>
-      <li><a href="api/evennia.server.portal.portal.html#evennia.server.portal.portal.Portal.shutdown">shutdown() (evennia.server.portal.portal.Portal method)</a>
+      <li><a href="api/evennia.server.portal.service.html#evennia.server.portal.service.EvenniaPortalService.shutdown">shutdown() (evennia.server.portal.service.EvenniaPortalService method)</a>
 
       <ul>
-        <li><a href="api/evennia.server.server.html#evennia.server.server.Evennia.shutdown">(evennia.server.server.Evennia method)</a>
+        <li><a href="api/evennia.server.service.html#evennia.server.service.EvenniaServerService.shutdown">(evennia.server.service.EvenniaServerService method)</a>
 </li>
       </ul></li>
       <li><a href="api/evennia.contrib.base_systems.components.holder.html#evennia.contrib.base_systems.components.holder.ComponentHolderMixin.signals">signals() (evennia.contrib.base_systems.components.holder.ComponentHolderMixin property)</a>
@@ -19923,7 +20005,7 @@
 </li>
       <li><a href="api/evennia.commands.default.building.html#evennia.commands.default.building.CmdSetAttribute.split_nested_attr">split_nested_attr() (evennia.commands.default.building.CmdSetAttribute method)</a>
 </li>
-      <li><a href="api/evennia.server.server.html#evennia.server.server.Evennia.sqlite3_prep">sqlite3_prep() (evennia.server.server.Evennia method)</a>
+      <li><a href="api/evennia.server.service.html#evennia.server.service.EvenniaServerService.sqlite3_prep">sqlite3_prep() (evennia.server.service.EvenniaServerService method)</a>
 </li>
       <li><a href="api/evennia.server.portal.ssh.html#evennia.server.portal.ssh.SshProtocol">SshProtocol (class in evennia.server.portal.ssh)</a>
 </li>
@@ -21038,6 +21120,8 @@
       <li><a href="api/evennia.contrib.tutorials.tutorial_world.tests.html#evennia.contrib.tutorials.tutorial_world.tests.TestTutorialWorldObjects.test_climbable">test_climbable() (evennia.contrib.tutorials.tutorial_world.tests.TestTutorialWorldObjects method)</a>
 </li>
       <li><a href="api/evennia.contrib.base_systems.mux_comms_cmds.tests.html#evennia.contrib.base_systems.mux_comms_cmds.tests.TestLegacyMuxComms.test_clock">test_clock() (evennia.contrib.base_systems.mux_comms_cmds.tests.TestLegacyMuxComms method)</a>
+</li>
+      <li><a href="api/evennia.contrib.game_systems.clothing.tests.html#evennia.contrib.game_systems.clothing.tests.TestClothingCmd.test_clothing_limits">test_clothing_limits() (evennia.contrib.game_systems.clothing.tests.TestClothingCmd method)</a>
 </li>
       <li><a href="api/evennia.contrib.game_systems.clothing.tests.html#evennia.contrib.game_systems.clothing.tests.TestClothingCmd.test_clothingcommands">test_clothingcommands() (evennia.contrib.game_systems.clothing.tests.TestClothingCmd method)</a>
 </li>
@@ -23859,7 +23943,7 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/evennia.server.server.html#evennia.server.server.Evennia.update_defaults">update_defaults() (evennia.server.server.Evennia method)</a>
+      <li><a href="api/evennia.server.service.html#evennia.server.service.EvenniaServerService.update_defaults">update_defaults() (evennia.server.service.EvenniaServerService method)</a>
 </li>
       <li><a href="api/evennia.server.serversession.html#evennia.server.serversession.ServerSession.update_flags">update_flags() (evennia.server.serversession.ServerSession method)</a>
 </li>
@@ -24272,8 +24356,6 @@
       <li><a href="api/evennia.web.website.tests.html#evennia.web.website.tests.WebclientTest">WebclientTest (class in evennia.web.website.tests)</a>
 </li>
       <li><a href="api/evennia.server.webserver.html#evennia.server.webserver.Website">Website (class in evennia.server.webserver)</a>
-</li>
-      <li><a href="api/evennia.server.portal.portal.html#evennia.server.portal.portal.Websocket">Websocket (class in evennia.server.portal.portal)</a>
 </li>
       <li><a href="api/evennia.server.portal.discord.html#evennia.server.portal.discord.DiscordWebsocketServerFactory.websocket_init">websocket_init() (evennia.server.portal.discord.DiscordWebsocketServerFactory method)</a>
 </li>

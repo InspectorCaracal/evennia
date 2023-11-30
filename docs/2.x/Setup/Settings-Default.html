@@ -246,6 +246,7 @@ to change into <code class="docutils literal notranslate"><span class="pre">myga
 <span class="c1"># operating between two processes on the same machine. You usually don&#39;t need to</span>
 <span class="c1"># change this unless you cannot use the default AMP port/host for</span>
 <span class="c1"># whatever reason.</span>
+<span class="n">AMP_ENABLED</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="n">AMP_HOST</span> <span class="o">=</span> <span class="s2">&quot;localhost&quot;</span>
 <span class="n">AMP_PORT</span> <span class="o">=</span> <span class="mi">4006</span>
 <span class="n">AMP_INTERFACE</span> <span class="o">=</span> <span class="s2">&quot;127.0.0.1&quot;</span>
@@ -1152,6 +1153,24 @@ to change into <code class="docutils literal notranslate"><span class="pre">myga
     <span class="s2">&quot;evennia.web.utils.middleware.SharedLoginMiddleware&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 
+<span class="c1"># A list of Django apps (see INSTALLED_APPS) that will be listed first (if present)</span>
+<span class="c1"># in the Django web Admin page.</span>
+<span class="n">DJANGO_ADMIN_APP_ORDER</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;accounts&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;objects&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;scripts&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;comms&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;help&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;typeclasses&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;server&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;sites&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;flatpages&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;auth&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="c1"># The following apps will be excluded from the Django web Admin page.</span>
+<span class="n">DJANGO_ADMIN_APP_EXCLUDE</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+
 <span class="c1">######################################################################</span>
 <span class="c1"># Evennia components</span>
 <span class="c1">######################################################################</span>
@@ -1256,6 +1275,10 @@ to change into <code class="docutils literal notranslate"><span class="pre">myga
 <span class="c1"># together with your own variations. You should usually never have to touch</span>
 <span class="c1"># this, and if so, you really need to know what you are doing.</span>
 
+<span class="c1"># The primary Twisted Services used to start up Evennia.</span>
+<span class="n">EVENNIA_SERVER_SERVICE_CLASS</span> <span class="o">=</span> <span class="s2">&quot;evennia.server.service.EvenniaServerService&quot;</span>
+<span class="n">EVENNIA_PORTAL_SERVICE_CLASS</span> <span class="o">=</span> <span class="s2">&quot;evennia.server.portal.service.EvenniaPortalService&quot;</span>
+
 <span class="c1"># The Base Session Class is used as a parent class for all Protocols such as</span>
 <span class="c1"># Telnet and SSH.) Changing this could be really dangerous. It will cascade</span>
 <span class="c1"># to tons of classes. You generally shouldn&#39;t need to touch protocols.</span>
@@ -1323,7 +1346,7 @@ to change into <code class="docutils literal notranslate"><span class="pre">myga
 <span class="c1"># don&#39;t change this manually, it can be checked from code to know if</span>
 <span class="c1"># being run from a unit test (set by the evennia.utils.test_resources.BaseEvenniaTest</span>
 <span class="c1"># and BaseEvenniaTestCase unit testing parents)</span>
-<span class="n">_TEST_ENVIRONMENT</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">TEST_ENVIRONMENT</span> <span class="o">=</span> <span class="kc">False</span>
 
 <span class="c1">######################################################################</span>
 <span class="c1"># Django extensions</span>

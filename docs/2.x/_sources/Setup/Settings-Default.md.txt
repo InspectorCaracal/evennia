@@ -146,6 +146,7 @@ EVENNIA_ADMIN = True
 # operating between two processes on the same machine. You usually don't need to
 # change this unless you cannot use the default AMP port/host for
 # whatever reason.
+AMP_ENABLED = True
 AMP_HOST = "localhost"
 AMP_PORT = 4006
 AMP_INTERFACE = "127.0.0.1"
@@ -1052,6 +1053,24 @@ MIDDLEWARE = [
     "evennia.web.utils.middleware.SharedLoginMiddleware",
 ]
 
+# A list of Django apps (see INSTALLED_APPS) that will be listed first (if present)
+# in the Django web Admin page.
+DJANGO_ADMIN_APP_ORDER = [
+    "accounts",
+    "objects",
+    "scripts",
+    "comms",
+    "help",
+    "typeclasses",
+    "server",
+    "sites",
+    "flatpages",
+    "auth",
+]
+
+# The following apps will be excluded from the Django web Admin page.
+DJANGO_ADMIN_APP_EXCLUDE = list()
+
 ######################################################################
 # Evennia components
 ######################################################################
@@ -1156,6 +1175,10 @@ REST_API_ENABLED = False
 # together with your own variations. You should usually never have to touch
 # this, and if so, you really need to know what you are doing.
 
+# The primary Twisted Services used to start up Evennia.
+EVENNIA_SERVER_SERVICE_CLASS = "evennia.server.service.EvenniaServerService"
+EVENNIA_PORTAL_SERVICE_CLASS = "evennia.server.portal.service.EvenniaPortalService"
+
 # The Base Session Class is used as a parent class for all Protocols such as
 # Telnet and SSH.) Changing this could be really dangerous. It will cascade
 # to tons of classes. You generally shouldn't need to touch protocols.
@@ -1223,7 +1246,7 @@ AMP_CLIENT_PROTOCOL_CLASS = "evennia.server.amp_client.AMPServerClientProtocol"
 # don't change this manually, it can be checked from code to know if
 # being run from a unit test (set by the evennia.utils.test_resources.BaseEvenniaTest
 # and BaseEvenniaTestCase unit testing parents)
-_TEST_ENVIRONMENT = False
+TEST_ENVIRONMENT = False
 
 ######################################################################
 # Django extensions
