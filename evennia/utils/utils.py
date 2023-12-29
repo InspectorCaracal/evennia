@@ -169,12 +169,12 @@ def crop(text, width=None, suffix="[...]"):
 
     """
     width = width if width else settings.CLIENT_DEFAULT_WIDTH
-    ltext = len(text)
+    ltext = display_len(text)
     if ltext <= width:
         return text
     else:
-        lsuffix = len(suffix)
-        text = text[:width] if lsuffix >= width else "%s%s" % (text[: width - lsuffix], suffix)
+        lsuffix = display_len(suffix)
+        text = text[:width] if lsuffix >= width else text[: width - lsuffix] + suffix
         return to_str(text)
 
 
