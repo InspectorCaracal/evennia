@@ -1,9 +1,5 @@
 # Add a wiki on your website
 
-```{warning}
-As of 2023, The [django wiki](https://django-wiki.readthedocs.io/en/main/) only supports Django 4.0. Evennia requires Django 4.1+. While the django-wiki is still active and will hopefully be updated eventually, for now there is likely to be issues or trouble to install. This tutorial will probably not work out of the gate.
-```
-
 ```{note}
 Before doing this tutorial you will probably want to read the intro in [Basic Web tutorial](./Web-Changing-Webpage.md).  Reading the three first parts of the [Django tutorial](https://docs.djangoproject.com/en/4.1/intro/tutorial01/) might help as well.
 
@@ -128,7 +124,7 @@ A wiki is usually intended as a collaborative effort - but you probably still wa
 The two simplest ways to do this are to use Django-wiki's group-based permissions
 system - or, since this is an Evennia site, to define your own custom permission rules tied to Evennia's permissions system in your settings file.
 
-### Group permissions
+### Group-based permissions
 
 The wiki itself controls reading/editing permissions per article. The creator of an article will always have read/write permissions on that article. Additionally, the article will have Group-based permissions and general permissions. 
 
@@ -138,7 +134,7 @@ By default, Evennia's permission groups *won't* be recognized by the wiki, so yo
 
 Once you've added those groups, they'll be usable in your wiki right away!
 
-### Settings permissions
+### Settings-based permissions
 
 Django-wiki also allows you to bypass its article-based permissions with custom site-wide permissions rules in your settings file. If you don't want to use the Group system, or if you want a simple solution for connecting the Evennia permission levels to wiki access, this is the way to go.
 
@@ -151,15 +147,15 @@ Here's an example of a basic set-up that would go in your `settings.py` file:
 # Custom methods to link wiki permissions to game perms
 def is_superuser(article, user):
     """Return True if user is a superuser, False otherwise."""
-    return not user.is_anonymous() and user.is_superuser
+    return not user.is_anonymous and user.is_superuser
 
 def is_builder(article, user):
     """Return True if user is a builder, False otherwise."""
-    return not user.is_anonymous() and user.locks.check_lockstring(user, "perm(Builders)")
+    return not user.is_anonymous and user.locks.check_lockstring(user, "perm(Builders)")
 
 def is_player(article, user):
     """Return True if user is a builder, False otherwise."""
-    return not user.is_anonymous() and user.locks.check_lockstring(user, "perm(Players)")
+    return not user.is_anonymous and user.locks.check_lockstring(user, "perm(Players)")
 
 # Create new users
 WIKI_CAN_ADMIN = is_superuser
