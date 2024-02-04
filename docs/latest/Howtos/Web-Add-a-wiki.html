@@ -75,8 +75,8 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#defining-wiki-permissions">Defining wiki permissions</a><ul>
-<li><a class="reference internal" href="#group-based-permissions">Group-based permissions</a></li>
-<li><a class="reference internal" href="#settings-based-permissions">Settings-based permissions</a></li>
+<li><a class="reference internal" href="#group-permissions">Group permissions</a></li>
+<li><a class="reference internal" href="#settings-permissions">Settings permissions</a></li>
 </ul>
 </li>
 </ul>
@@ -130,6 +130,10 @@
             
   <section class="tex2jax_ignore mathjax_ignore" id="add-a-wiki-on-your-website">
 <h1>Add a wiki on your website<a class="headerlink" href="#add-a-wiki-on-your-website" title="Permalink to this headline">¶</a></h1>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>As of 2023, The <a class="reference external" href="https://django-wiki.readthedocs.io/en/main/">django wiki</a> only supports Django 4.0. Evennia requires Django 4.1+. While the django-wiki is still active and will hopefully be updated eventually, for now there is likely to be issues or trouble to install. This tutorial will probably not work out of the gate.</p>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Before doing this tutorial you will probably want to read the intro in <a class="reference internal" href="Web-Changing-Webpage.html"><span class="doc std std-doc">Basic Web tutorial</span></a>.  Reading the three first parts of the <a class="reference external" href="https://docs.djangoproject.com/en/4.1/intro/tutorial01/">Django tutorial</a> might help as well.</p>
@@ -190,9 +194,16 @@ the <a class="reference external" href="https://django-wiki.readthedocs.io/">Dja
     <span class="s1">&#39;wiki.plugins.macros.apps.MacrosConfig&#39;</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="c1"># Disable wiki handling of login/signup</span>
+<span class="c1"># Disable wiki handling of login/signup, so that it uses your Evennia login system instead</span>
 <span class="n">WIKI_ACCOUNT_HANDLING</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="n">WIKI_ACCOUNT_SIGNUP_ALLOWED</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="c1"># Enable wikilinks, e.g. [[Getting Started]]</span>
+<span class="n">WIKI_MARKDOWN_KWARGS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;extensions&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s1">&#39;wikilinks&#39;</span><span class="p">,</span>
+    <span class="p">]</span>
+<span class="p">}</span>
 
 <span class="c1">######################################################################</span>
 <span class="c1"># Settings given in secret_settings.py override those in this file.</span>
@@ -247,15 +258,15 @@ the <a class="reference external" href="https://django-wiki.readthedocs.io/">Dja
 <p>A wiki is usually intended as a collaborative effort - but you probably still want to set some rules about who is allowed to do what. Who can create new articles? Edit them? Delete them? Etc.</p>
 <p>The two simplest ways to do this are to use Django-wiki’s group-based permissions
 system - or, since this is an Evennia site, to define your own custom permission rules tied to Evennia’s permissions system in your settings file.</p>
-<section id="group-based-permissions">
-<h3>Group-based permissions<a class="headerlink" href="#group-based-permissions" title="Permalink to this headline">¶</a></h3>
+<section id="group-permissions">
+<h3>Group permissions<a class="headerlink" href="#group-permissions" title="Permalink to this headline">¶</a></h3>
 <p>The wiki itself controls reading/editing permissions per article. The creator of an article will always have read/write permissions on that article. Additionally, the article will have Group-based permissions and general permissions.</p>
 <p>By default, Evennia’s permission groups <em>won’t</em> be recognized by the wiki, so you’ll have to create your own. Go to the Groups page of your game’s Django admin panel  and add whichever permission groups you want for your wiki here.</p>
 <p><em><strong>Note:</strong></em> <em>If you want to connect those groups to your game’s permission levels, you’ll need to modify the game to apply both to accounts.</em></p>
 <p>Once you’ve added those groups, they’ll be usable in your wiki right away!</p>
 </section>
-<section id="settings-based-permissions">
-<h3>Settings-based permissions<a class="headerlink" href="#settings-based-permissions" title="Permalink to this headline">¶</a></h3>
+<section id="settings-permissions">
+<h3>Settings permissions<a class="headerlink" href="#settings-permissions" title="Permalink to this headline">¶</a></h3>
 <p>Django-wiki also allows you to bypass its article-based permissions with custom site-wide permissions rules in your settings file. If you don’t want to use the Group system, or if you want a simple solution for connecting the Evennia permission levels to wiki access, this is the way to go.</p>
 <p>Here’s an example of a basic set-up that would go in your <code class="docutils literal notranslate"><span class="pre">settings.py</span></code> file:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># In server/conf/settings.py</span>
@@ -268,11 +279,11 @@ system - or, since this is an Evennia site, to define your own custom permission
 
 <span class="k">def</span> <span class="nf">is_builder</span><span class="p">(</span><span class="n">article</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return True if user is a builder, False otherwise.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="ow">not</span> <span class="n">user</span><span class="o">.</span><span class="n">is_anonymous</span> <span class="ow">and</span> <span class="n">user</span><span class="o">.</span><span class="n">locks</span><span class="o">.</span><span class="n">check_lockstring</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="s2">&quot;perm(Builders)&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="ow">not</span> <span class="n">user</span><span class="o">.</span><span class="n">is_anonymous</span> <span class="ow">and</span> <span class="n">user</span><span class="o">.</span><span class="n">permissions</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="s2">&quot;Builder&quot;</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">is_player</span><span class="p">(</span><span class="n">article</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return True if user is a builder, False otherwise.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="ow">not</span> <span class="n">user</span><span class="o">.</span><span class="n">is_anonymous</span> <span class="ow">and</span> <span class="n">user</span><span class="o">.</span><span class="n">locks</span><span class="o">.</span><span class="n">check_lockstring</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="s2">&quot;perm(Players)&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="ow">not</span> <span class="n">user</span><span class="o">.</span><span class="n">is_anonymous</span> <span class="ow">and</span> <span class="n">user</span><span class="o">.</span><span class="n">permissions</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="s2">&quot;Player&quot;</span><span class="p">)</span>
 
 <span class="c1"># Create new users</span>
 <span class="n">WIKI_CAN_ADMIN</span> <span class="o">=</span> <span class="n">is_superuser</span>
