@@ -66,7 +66,8 @@
 <h3><a href="../index.html">Table of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Changelog</a><ul>
-<li><a class="reference internal" href="#main-branch">main branch</a></li>
+<li><a class="reference internal" href="#evennia-main-branch">Evennia Main branch</a></li>
+<li><a class="reference internal" href="#evennia-3-2-0">Evennia 3.2.0</a></li>
 <li><a class="reference internal" href="#evennia-3-1-1">Evennia 3.1.1</a></li>
 <li><a class="reference internal" href="#evennia-3-1-0">Evennia 3.1.0</a></li>
 <li><a class="reference internal" href="#evennia-3-0-0">Evennia 3.0.0</a></li>
@@ -190,16 +191,43 @@
             
   <section class="tex2jax_ignore mathjax_ignore" id="changelog">
 <h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">¶</a></h1>
-<section id="main-branch">
-<h2>main branch<a class="headerlink" href="#main-branch" title="Permalink to this headline">¶</a></h2>
+<section id="evennia-main-branch">
+<h2>Evennia Main branch<a class="headerlink" href="#evennia-main-branch" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>[Feature] Add <code class="docutils literal notranslate"><span class="pre">evennia.ON_DEMAND_HANDLER</span></code> for making it easier to implement
-timed element with the on-demand approach (Griatch)</p></li>
-<li><p>[Fix] Remove <code class="docutils literal notranslate"><span class="pre">AMP_ENABLED</span></code> setting since it services no real purpose and
-erroring out on setting it would make it even less useful (Griatch).</p></li>
-<li><p>[Fix] <code class="docutils literal notranslate"><span class="pre">services</span></code> command with no args would traceback (regression) (Griatch)</p></li>
+<li><p>Feature: Add <code class="docutils literal notranslate"><span class="pre">ON_DEMAND_HANDLER.set_dt(key,</span> <span class="pre">category,</span> <span class="pre">dt)</span></code> and
+<code class="docutils literal notranslate"><span class="pre">.set_stage(key,</span> <span class="pre">category,</span> <span class="pre">stage)</span></code> to allow manual tweaking of task timings,
+for example for a spell speeding a plant’s growth. (Griatch)</p></li>
+<li><p>Fix: Resolve a bug when loading on-demand-handler data from database.</p></li>
+</ul>
+</section>
+<section id="evennia-3-2-0">
+<h2>Evennia 3.2.0<a class="headerlink" href="#evennia-3-2-0" title="Permalink to this headline">¶</a></h2>
+<p>Feb 25, 2024</p>
+<ul class="simple">
+<li><p>Feature: Add <a class="reference external" href="https://www.evennia.com/docs/latest/Components/OnDemandHandler.html"><code class="docutils literal notranslate"><span class="pre">evennia.ON_DEMAND_HANDLER</span></code></a> for making it
+easier to implement changes that are calculated on-demand (Griatch)</p></li>
 <li><p><a class="reference external" href="https://github.com/evennia/evennia/pull/3412">Feature</a>: Make it possible to add custom webclient css in
 <code class="docutils literal notranslate"><span class="pre">webclient/css/custom.css</span></code>, same as for website (InspectorCaracal)</p></li>
+<li><p><a class="reference external" href="https://github.com/evennia/evennia/pull/3367">Feature</a>: <a class="reference external" href="https://www.evennia.com/docs/latest/Contribs/Contrib-Components.html">Component contrib</a> got better
+inheritance, slot names to choose attr storage, speedups and fixes (ChrisLR)</p></li>
+<li><p>Feature: Break up <code class="docutils literal notranslate"><span class="pre">DefaultObject.search</span></code> method into several helpers to make
+it easier to override (Griatch)</p></li>
+<li><p>Fix: Resolve multimatch error with rpsystem contrib (Griatch)</p></li>
+<li><p>Fix: Remove <code class="docutils literal notranslate"><span class="pre">AMP_ENABLED</span></code> setting since it services no real purpose and
+erroring out on setting it would make it even less useful (Griatch).</p></li>
+<li><p>Feature: Remove too-strict password restrictions for Evennia logins, using
+django defaults instead for passwords with more varied characters.</p></li>
+<li><p>Fix <code class="docutils literal notranslate"><span class="pre">services</span></code> command with no args would traceback (regression) (Griatch)</p></li>
+<li><p><a class="reference external" href="https://github.com/evennia/evennia/pull/3423">Fix</a>: Fix wilderness contrib error moving to an already existing
+wilderness room (InspectorCaracal)</p></li>
+<li><p><a class="reference external" href="https://github.com/evennia/evennia/pull/3425">Fix</a>: Don’t always include example the crafting recipe when
+using the crafting contrib (InspectorCaracal)</p></li>
+<li><p><a class="reference external" href="https://github.com/evennia/evennia/pull/3426">Fix</a>: Traceback banning a channel using with only one nick
+(InspectorCaracal)</p></li>
+<li><p><a class="reference external" href="https://github.com/evennia/evennia/pull/3434">Fix</a>: Adjust lunr search weights to void clashing of cmd-aliases over
+keys which caused some help entries to shadow others (InspectorCaracal)</p></li>
+<li><p>Fix: Make <code class="docutils literal notranslate"><span class="pre">menu/email_login</span></code> contribs honor <code class="docutils literal notranslate"><span class="pre">NEW_ACCOUNT_REGISTRATION_ENABLED</span></code>
+setting (Griatch)</p></li>
 <li><p>Doc fixes (InspectorCaracal, Griatch)</p></li>
 </ul>
 </section>
