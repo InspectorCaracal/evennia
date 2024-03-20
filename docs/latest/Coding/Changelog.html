@@ -66,7 +66,8 @@
 <h3><a href="../index.html">Table of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Changelog</a><ul>
-<li><a class="reference internal" href="#evennia-main-branch">Evennia Main branch</a></li>
+<li><a class="reference internal" href="#main-branch">Main branch</a></li>
+<li><a class="reference internal" href="#evennia-4-0-0">Evennia 4.0.0</a></li>
 <li><a class="reference internal" href="#evennia-3-2-0">Evennia 3.2.0</a></li>
 <li><a class="reference internal" href="#evennia-3-1-1">Evennia 3.1.1</a></li>
 <li><a class="reference internal" href="#evennia-3-1-0">Evennia 3.1.0</a></li>
@@ -173,13 +174,15 @@
   
     <li><a href="Changelog.html">latest (main branch)</a></li>
 
-    <li><a href="../../3.x/index.html">v3.0.0 branch (outdated)</a></li>
+    <li><a href="../4.x/index.html">v4.0.0 branch (outdated)</a></li>
   
-    <li><a href="../../2.x/index.html">v2.0.0 branch (outdated)</a></li>
+    <li><a href="../3.x/index.html">v3.0.0 branch (outdated)</a></li>
   
-    <li><a href="../../1.x/index.html">v1.0.0 branch (outdated)</a></li>
+    <li><a href="../2.x/index.html">v2.0.0 branch (outdated)</a></li>
   
-    <li><a href="../../0.x/index.html">v0.9.5 branch (outdated)</a></li>
+    <li><a href="../1.x/index.html">v1.0.0 branch (outdated)</a></li>
+  
+    <li><a href="../0.x/index.html">v0.9.5 branch (outdated)</a></li>
   
 
 </ul>
@@ -191,13 +194,54 @@
             
   <section class="tex2jax_ignore mathjax_ignore" id="changelog">
 <h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">¶</a></h1>
-<section id="evennia-main-branch">
-<h2>Evennia Main branch<a class="headerlink" href="#evennia-main-branch" title="Permalink to this headline">¶</a></h2>
+<section id="main-branch">
+<h2>Main branch<a class="headerlink" href="#main-branch" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
+<li><p>Doc fixes (Griatch)</p></li>
+</ul>
+</section>
+<section id="evennia-4-0-0">
+<h2>Evennia 4.0.0<a class="headerlink" href="#evennia-4-0-0" title="Permalink to this headline">¶</a></h2>
+<p>March 17, 2024</p>
+<ul class="simple">
+<li><p>Feature: Support Python 3.12 (Griatch). Currently supporting 3.10,3.11 and
+3.12. Note that 3.10 support will be removed in a future release.</p></li>
+<li><p>Feature: Update <code class="docutils literal notranslate"><span class="pre">evennia[extra]</span></code> scipy dependency to 1.12 to support latest
+Python. Note that this may change which (equivalent) path is being picked when
+following an xyzgrid contrib pathfinding.</p></li>
+<li><p>Feature: <em>Backwards incompatible</em>: <code class="docutils literal notranslate"><span class="pre">DefaultObject.get_numbered_name</span></code> now gets object’s
+name via <code class="docutils literal notranslate"><span class="pre">.get_display_name</span></code> for better compatibility with recog systems.</p></li>
+<li><p>Feature: <em>Backwards incompatible</em>: Removed the (#dbref) display from
+<code class="docutils literal notranslate"><span class="pre">DefaultObject.get_display_name</span></code>, instead using new <code class="docutils literal notranslate"><span class="pre">.get_extra_display_name_info</span></code>
+method for getting this info. The Object’s display template was extended for
+optionally adding this information. This makes showing extra object info to
+admins an explicit action and opens up <code class="docutils literal notranslate"><span class="pre">get_display_name</span></code> for general use.</p></li>
 <li><p>Feature: Add <code class="docutils literal notranslate"><span class="pre">ON_DEMAND_HANDLER.set_dt(key,</span> <span class="pre">category,</span> <span class="pre">dt)</span></code> and
 <code class="docutils literal notranslate"><span class="pre">.set_stage(key,</span> <span class="pre">category,</span> <span class="pre">stage)</span></code> to allow manual tweaking of task timings,
-for example for a spell speeding a plant’s growth. (Griatch)</p></li>
-<li><p>Fix: Resolve a bug when loading on-demand-handler data from database.</p></li>
+for example for a spell speeding a plant’s growth (Griatch)</p></li>
+<li><p>Feature: Add <code class="docutils literal notranslate"><span class="pre">ON_DEMAND_HANDLER.get_dt/stages(key,category,</span> <span class="pre">**kwargs)</span></code>, where
+the kwargs are passed into any stage-callable defined with the stages. (Griatch)</p></li>
+<li><p>Feature: Add <code class="docutils literal notranslate"><span class="pre">use_assertequal</span></code> kwarg to the <code class="docutils literal notranslate"><span class="pre">EvenniaCommandTestMixin</span></code> testing
+class; this uses django’s <code class="docutils literal notranslate"><span class="pre">assertEqual</span></code> over the default more lenient checker,
+which can be useful for testing table whitespace (Griatch)</p></li>
+<li><p>Feature: New <code class="docutils literal notranslate"><span class="pre">utils.group_objects_by_key_and_desc</span></code> for grouping a list of
+objects based on the visible key and desc. Useful for inventory listings (Griatch)</p></li>
+<li><p>Feature: Add <code class="docutils literal notranslate"><span class="pre">DefaultObject.get_numbered_name</span></code> <code class="docutils literal notranslate"><span class="pre">return_string</span></code> bool kwarg, for only
+returning singular/plural based on count instead of a tuple with both (Griatch)</p></li>
+<li><p><a class="reference external" href="https://github.com/evennia/evennia/issues/3443">Fix</a> Removed the <code class="docutils literal notranslate"><span class="pre">&#64;reboot</span></code> alias to <code class="docutils literal notranslate"><span class="pre">&#64;reset</span></code> to not mislead people
+into thinking you can do a portal+server reboot from in-game (you cannot) (Griatch)</p></li>
+<li><p>Fix: <code class="docutils literal notranslate"><span class="pre">DefaultObject.get_numbered_name</span></code> used <code class="docutils literal notranslate"><span class="pre">.name</span></code> instead of
+<code class="docutils literal notranslate"><span class="pre">.get_display_name</span></code> which broke recog systems. May lead to object’s #dbref
+will show for admins in some more places (Griatch)</p></li>
+<li><p><a class="reference external" href="https://github.com/evennia/evennia/pull/3420">Fix</a>: Refactor Clothing contrib’s inventory command align with
+Evennia core’s version (michaelfaith84, Griatch)</p></li>
+<li><p><a class="reference external" href="https://github.com/evennia/evennia/issues/3438">Fix</a>: Limiting search by tag didn’t take search-string into
+account (Griatch)</p></li>
+<li><p>[Fix][issue4311]: SSH connection caused a traceback in protocol (Griatch)</p></li>
+<li><p>Fix: Resolve a bug when loading on-demand-handler data from database (Griatch)</p></li>
+<li><p>Security: Potential O(n2) regex exploit in rpsystem regex (Griatch)</p></li>
+<li><p>Security: Fix potential redirect vulnerability in character page redirect (Griatch)</p></li>
+<li><p>Doc fixes (iLPdev, Griatch, CloudKeeper)</p></li>
 </ul>
 </section>
 <section id="evennia-3-2-0">
@@ -1463,7 +1507,7 @@ and have no changelogs.</p>
      
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2023, The Evennia developer community.
+        &#169; Copyright 2024, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>

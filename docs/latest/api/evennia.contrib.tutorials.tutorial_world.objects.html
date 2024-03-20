@@ -97,13 +97,15 @@
   
     <li><a href="evennia.contrib.tutorials.tutorial_world.objects.html">latest (main branch)</a></li>
 
-    <li><a href="../../3.x/index.html">v3.0.0 branch (outdated)</a></li>
+    <li><a href="../4.x/index.html">v4.0.0 branch (outdated)</a></li>
   
-    <li><a href="../../2.x/index.html">v2.0.0 branch (outdated)</a></li>
+    <li><a href="../3.x/index.html">v3.0.0 branch (outdated)</a></li>
   
-    <li><a href="../../1.x/index.html">v1.0.0 branch (outdated)</a></li>
+    <li><a href="../2.x/index.html">v2.0.0 branch (outdated)</a></li>
   
-    <li><a href="../../0.x/index.html">v0.9.5 branch (outdated)</a></li>
+    <li><a href="../1.x/index.html">v1.0.0 branch (outdated)</a></li>
+  
+    <li><a href="../0.x/index.html">v0.9.5 branch (outdated)</a></li>
   
 
 </ul>
@@ -568,7 +570,7 @@ shift green root up/down</p>
 
 <dl class="py attribute">
 <dt id="evennia.contrib.tutorials.tutorial_world.objects.CmdShiftRoot.aliases">
-<code class="sig-name descname">aliases</code><em class="property"> = ['move', 'shiftroot', 'push', 'pull']</em><a class="headerlink" href="#evennia.contrib.tutorials.tutorial_world.objects.CmdShiftRoot.aliases" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">aliases</code><em class="property"> = ['pull', 'move', 'shiftroot', 'push']</em><a class="headerlink" href="#evennia.contrib.tutorials.tutorial_world.objects.CmdShiftRoot.aliases" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -604,7 +606,7 @@ yellow/green - horizontal roots</p>
 
 <dl class="py attribute">
 <dt id="evennia.contrib.tutorials.tutorial_world.objects.CmdShiftRoot.search_index_entry">
-<code class="sig-name descname">search_index_entry</code><em class="property"> = {'aliases': 'move shiftroot push pull', 'category': 'tutorialworld', 'key': 'shift', 'no_prefix': ' move shiftroot push pull', 'tags': '', 'text': '\n    Shifts roots around.\n\n    Usage:\n      shift blue root left/right\n      shift red root left/right\n      shift yellow root up/down\n      shift green root up/down\n\n    '}</em><a class="headerlink" href="#evennia.contrib.tutorials.tutorial_world.objects.CmdShiftRoot.search_index_entry" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">search_index_entry</code><em class="property"> = {'aliases': 'pull move shiftroot push', 'category': 'tutorialworld', 'key': 'shift', 'no_prefix': ' pull move shiftroot push', 'tags': '', 'text': '\n    Shifts roots around.\n\n    Usage:\n      shift blue root left/right\n      shift red root left/right\n      shift yellow root up/down\n      shift green root up/down\n\n    '}</em><a class="headerlink" href="#evennia.contrib.tutorials.tutorial_world.objects.CmdShiftRoot.search_index_entry" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -791,7 +793,7 @@ parry - forgoes your attack but will make you harder to hit on next</p>
 
 <dl class="py attribute">
 <dt id="evennia.contrib.tutorials.tutorial_world.objects.CmdAttack.aliases">
-<code class="sig-name descname">aliases</code><em class="property"> = ['stab', 'thrust', 'parry', 'fight', 'defend', 'pierce', 'chop', 'bash', 'kill', 'hit', 'slash']</em><a class="headerlink" href="#evennia.contrib.tutorials.tutorial_world.objects.CmdAttack.aliases" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">aliases</code><em class="property"> = ['kill', 'thrust', 'stab', 'parry', 'fight', 'hit', 'chop', 'bash', 'pierce', 'slash', 'defend']</em><a class="headerlink" href="#evennia.contrib.tutorials.tutorial_world.objects.CmdAttack.aliases" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -817,7 +819,7 @@ parry - forgoes your attack but will make you harder to hit on next</p>
 
 <dl class="py attribute">
 <dt id="evennia.contrib.tutorials.tutorial_world.objects.CmdAttack.search_index_entry">
-<code class="sig-name descname">search_index_entry</code><em class="property"> = {'aliases': 'stab thrust parry fight defend pierce chop bash kill hit slash', 'category': 'tutorialworld', 'key': 'attack', 'no_prefix': ' stab thrust parry fight defend pierce chop bash kill hit slash', 'tags': '', 'text': '\n    Attack the enemy. Commands:\n\n      stab &lt;enemy&gt;\n      slash &lt;enemy&gt;\n      parry\n\n    stab - (thrust) makes a lot of damage but is harder to hit with.\n    slash - is easier to land, but does not make as much damage.\n    parry - forgoes your attack but will make you harder to hit on next\n            enemy attack.\n\n    '}</em><a class="headerlink" href="#evennia.contrib.tutorials.tutorial_world.objects.CmdAttack.search_index_entry" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">search_index_entry</code><em class="property"> = {'aliases': 'kill thrust stab parry fight hit chop bash pierce slash defend', 'category': 'tutorialworld', 'key': 'attack', 'no_prefix': ' kill thrust stab parry fight hit chop bash pierce slash defend', 'tags': '', 'text': '\n    Attack the enemy. Commands:\n\n      stab &lt;enemy&gt;\n      slash &lt;enemy&gt;\n      parry\n\n    stab - (thrust) makes a lot of damage but is harder to hit with.\n    slash - is easier to land, but does not make as much damage.\n    parry - forgoes your attack but will make you harder to hit on next\n            enemy attack.\n\n    '}</em><a class="headerlink" href="#evennia.contrib.tutorials.tutorial_world.objects.CmdAttack.search_index_entry" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -1058,7 +1060,7 @@ pulling weapons from it indefinitely.</p>
      
 
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2023, The Evennia developer community.
+        &#169; Copyright 2024, The Evennia developer community.
       Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
     </div>
   </body>
