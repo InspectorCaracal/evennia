@@ -131,6 +131,7 @@
 <span class="sd">survive a reload. See the `EvEditor` class for more details.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
+
 <span class="kn">import</span> <span class="nn">re</span>
 
 <span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
@@ -180,7 +181,7 @@
 
 <span class="sd"> :y  &lt;l&gt;        - yank (copy) line(s) &lt;l&gt; to the copy buffer</span>
 <span class="sd"> :x  &lt;l&gt;        - cut line(s) &lt;l&gt; and store it in the copy buffer</span>
-<span class="sd"> :p  &lt;l&gt;        - put (paste) previously copied line(s) directly after &lt;l&gt;</span>
+<span class="sd"> :p  &lt;l&gt;        - put (paste) previously copied line(s) directly before &lt;l&gt;</span>
 <span class="sd"> :i  &lt;l&gt; &lt;txt&gt;  - insert new text &lt;txt&gt; at line &lt;l&gt;. Old line will move down</span>
 <span class="sd"> :r  &lt;l&gt; &lt;txt&gt;  - replace line &lt;l&gt; with text &lt;txt&gt;</span>
 <span class="sd"> :I  &lt;l&gt; &lt;txt&gt;  - insert text at the beginning of line &lt;l&gt;</span>
@@ -397,12 +398,13 @@
         <span class="n">linerange</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">if</span> <span class="n">arglist</span> <span class="ow">and</span> <span class="n">arglist</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">part1</span><span class="p">,</span> <span class="n">part2</span> <span class="o">=</span> <span class="n">arglist</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">part1</span> <span class="ow">and</span> <span class="n">part1</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
-                <span class="n">lstart</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">part1</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nlines</span><span class="p">)</span>
-                <span class="n">linerange</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="k">if</span> <span class="n">part2</span> <span class="ow">and</span> <span class="n">part2</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
-                <span class="n">lend</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">lstart</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">part2</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span>
-                <span class="n">linerange</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">lstart</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">part1</span><span class="p">)),</span> <span class="n">nlines</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">utils</span><span class="o">.</span><span class="n">value_is_integer</span><span class="p">(</span><span class="n">part1</span><span class="p">)</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="n">lend</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="nb">min</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">lstart</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">part2</span><span class="p">)),</span> <span class="n">nlines</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">utils</span><span class="o">.</span><span class="n">value_is_integer</span><span class="p">(</span><span class="n">part2</span><span class="p">)</span>
+                <span class="k">else</span> <span class="n">nlines</span>
+            <span class="p">)</span>
+            <span class="n">linerange</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">elif</span> <span class="n">arglist</span> <span class="ow">and</span> <span class="n">arglist</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
             <span class="n">lstart</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">arglist</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span> <span class="n">nlines</span><span class="p">)</span>
             <span class="n">lend</span> <span class="o">=</span> <span class="n">lstart</span> <span class="o">+</span> <span class="mi">1</span>
@@ -506,7 +508,7 @@
 
                 <span class="bp">self</span><span class="o">.</span><span class="n">caller</span><span class="o">.</span><span class="n">msg</span><span class="p">(</span><span class="s2">&quot;|b</span><span class="si">%02i</span><span class="s2">|||n (|g</span><span class="si">%s</span><span class="s2">|n) </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">cline</span><span class="p">,</span> <span class="n">indent</span><span class="p">,</span> <span class="n">raw</span><span class="p">(</span><span class="n">line</span><span class="p">)))</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">caller</span><span class="o">.</span><span class="n">msg</span><span class="p">(</span><span class="s2">&quot;|b</span><span class="si">%02i</span><span class="s2">|||n </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">cline</span><span class="p">,</span> <span class="n">raw</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">)))</span></div></div>
+                <span class="bp">self</span><span class="o">.</span><span class="n">caller</span><span class="o">.</span><span class="n">msg</span><span class="p">(</span><span class="s2">&quot;|b</span><span class="si">%02i</span><span class="s2">|||n </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">cline</span><span class="p">,</span> <span class="n">raw</span><span class="p">(</span><span class="n">line</span><span class="p">)))</span></div></div>
 
 
 <div class="viewcode-block" id="CmdEditorGroup"><a class="viewcode-back" href="../../../api/evennia.utils.eveditor.html#evennia.utils.eveditor.CmdEditorGroup">[docs]</a><span class="k">class</span> <span class="nc">CmdEditorGroup</span><span class="p">(</span><span class="n">CmdEditorBase</span><span class="p">):</span>
@@ -563,7 +565,8 @@
 
         <span class="n">linebuffer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">linebuffer</span>
         <span class="n">lstart</span><span class="p">,</span> <span class="n">lend</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lstart</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lend</span>
-        <span class="n">cmd</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cmdstring</span>
+        <span class="c1"># preserve the cmdname including case (otherwise uu and UU would be the same)</span>
+        <span class="n">cmd</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">raw_string</span><span class="p">[:</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cmdstring</span><span class="p">)]</span>
         <span class="n">echo_mode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">editor</span><span class="o">.</span><span class="n">_echo_mode</span>
 
         <span class="k">if</span> <span class="n">cmd</span> <span class="o">==</span> <span class="s2">&quot;:&quot;</span><span class="p">:</span>

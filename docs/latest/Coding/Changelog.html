@@ -197,7 +197,50 @@
 <section id="main-branch">
 <h2>Main branch<a class="headerlink" href="#main-branch" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>Doc fixes (Griatch)</p></li>
+<li><p>[Deprecation]: <code class="docutils literal notranslate"><span class="pre">DefaultObject.get_visible_contents</span></code> - unused in core, will be
+removed. Use the new <code class="docutils literal notranslate"><span class="pre">.filter_visible</span></code> together with the <code class="docutils literal notranslate"><span class="pre">.get_display_*</span></code> methods instead…</p></li>
+<li><p>[Deprecation]: <code class="docutils literal notranslate"><span class="pre">DefaultObject.get_content_names</span></code> - unused in core, will be
+removed. Use the <code class="docutils literal notranslate"><span class="pre">DefaultObject.get_display_*</span></code> methods instead.</p></li>
+<li><p><a class="reference external" href="https://github.com/evennia/evennia/pull/3421">Feature</a>: New <code class="docutils literal notranslate"><span class="pre">utils.compress_whitespace</span></code> utility used with
+default object’s <code class="docutils literal notranslate"><span class="pre">.format_appearance</span></code> to make it easier to overload without
+adding line breaks in hook returns. (InspectorCaracal)</p></li>
+<li><p><a class="reference external" href="https://github.com/evennia/evennia/pull/3458">Feature</a>: New <code class="docutils literal notranslate"><span class="pre">sethelp/category</span></code> switch to change a help topic’s
+category after it was created (chiizujin)</p></li>
+<li><p><a class="reference external" href="https://github.com/evennia/evennia/pull/3467">Feature</a>: Add <code class="docutils literal notranslate"><span class="pre">alias/delete</span></code> switch for removing object aliases
+from in-game with default command (chiizujin)</p></li>
+<li><p><a class="reference external" href="https://github.com/evennia/evennia/issues/3450">Feature</a>: The default <code class="docutils literal notranslate"><span class="pre">page</span></code> command now tags its <code class="docutils literal notranslate"><span class="pre">Msg</span></code> objects
+with tag ‘page’ (category ‘comms’) and also checks the <code class="docutils literal notranslate"><span class="pre">Msg</span></code>’ ‘read’ lock.
+made backwards compatible for old pages (Griatch)</p></li>
+<li><p><a class="reference external" href="https://github.com/evennia/evennia/pull/3466">Feature</a>: Add optional <code class="docutils literal notranslate"><span class="pre">no_article</span></code> kwarg to
+<code class="docutils literal notranslate"><span class="pre">DefaultObject.get_numbered_name</span></code> for the system to skip adding automatic
+articles. (chiizujin)</p></li>
+<li><p>Feature: Clean up the default Command variable list shown when a command has
+no <code class="docutils literal notranslate"><span class="pre">func()</span></code> defined (Griatch)</p></li>
+<li><p><a class="reference external" href="https://github.com/evennia/evennia/issues/3461">Feature</a>: Add <code class="docutils literal notranslate"><span class="pre">DefaultObject.filter_display_visible</span></code> helper method
+to make it easier to customize object visibility rules. (Griatch)</p></li>
+<li><p><a class="reference external" href="https://github.com/evennia/evennia/pull/3446">Fix</a>: Use plural (‘no apples’) instead of singular (‘no apple’) in
+<code class="docutils literal notranslate"><span class="pre">get_numbered_name</span></code> for better grammatical form (InspectorCaracal)</p></li>
+<li><p><a class="reference external" href="https://github.com/evennia/evennia/pull/3453">Fix</a>: Object aliases not showing in search multi-match
+disambiguation display (chiizujin)</p></li>
+<li><p><a class="reference external" href="https://github.com/evennia/evennia/pull/3455">Fix</a>: <code class="docutils literal notranslate"><span class="pre">sethelp/edit</span> <span class="pre">&lt;topic&gt;</span></code> without a <code class="docutils literal notranslate"><span class="pre">=</span> <span class="pre">text</span></code> created a <code class="docutils literal notranslate"><span class="pre">None</span></code>
+entry that would lose the edit. (chiiziujin)</p></li>
+<li><p><a class="reference external" href="https://github.com/evennia/evennia/pull/3456">Fix</a>: <code class="docutils literal notranslate"><span class="pre">format_grid</span></code> utility used for <code class="docutils literal notranslate"><span class="pre">help</span></code> command caused commands
+to disappear for wider client widths (chiizujin)</p></li>
+<li><p><a class="reference external" href="https://github.com/evennia/evennia/pull/3457">Fix</a>: Help topic categories with different case would appear as
+duplicates (chiizujin)</p></li>
+<li><p><a class="reference external" href="https://github.com/evennia/evennia/pull/3454">Fix</a>: Traceback in crafting contrib’s <code class="docutils literal notranslate"><span class="pre">recipe.msg</span></code>
+(InspectorCaracal)</p></li>
+<li><p><a class="reference external" href="https://github.com/evennia/evennia/pull/3459">Fix</a>: EvEditor line-echo compacted whitespace erroneously (chiizujin)</p></li>
+<li><p><a class="reference external" href="https://github.com/evennia/evennia/pull/3463">Fix</a>: EvEditor :help described the :paste operation in the wrong
+way (chiizujin)</p></li>
+<li><p><a class="reference external" href="https://github.com/evennia/evennia/pull/3464">Fix</a>: EvEditor range:range specification didn’t return correct
+range (chiizujin)</p></li>
+<li><p><a class="reference external" href="https://github.com/evennia/evennia/issues/3462">Fix</a>: EvEditor :UU and :DD etc commands were not properly
+differentiating from their lower-case alternatives (Griatch)</p></li>
+<li><p><a class="reference external" href="https://github.com/evennia/evennia/issues/3460">Fix</a>: The <code class="docutils literal notranslate"><span class="pre">menu_login</span></code> contrib regression caused it to error out
+when creating a new character (Griatch)</p></li>
+<li><p>Doc: Added Beginner Tutorial lessons for AI, Quests and Procedural dungeon (Griatch)</p></li>
+<li><p>Doc fixes (Griatch, InspectorCaracal, homeofpoe)</p></li>
 </ul>
 </section>
 <section id="evennia-4-0-0">

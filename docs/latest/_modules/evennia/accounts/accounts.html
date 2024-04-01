@@ -102,6 +102,7 @@
 <span class="sd">instead for most things).</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
+
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">typing</span>
@@ -1426,7 +1427,8 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">searchdata</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="c1"># handle wrapping of common terms</span>
             <span class="k">if</span> <span class="n">searchdata</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;me&quot;</span><span class="p">,</span> <span class="s2">&quot;*me&quot;</span><span class="p">,</span> <span class="s2">&quot;self&quot;</span><span class="p">,</span> <span class="s2">&quot;*self&quot;</span><span class="p">):</span>
-                <span class="k">return</span> <span class="bp">self</span>
+                <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="p">]</span> <span class="k">if</span> <span class="n">quiet</span> <span class="k">else</span> <span class="bp">self</span>
+
         <span class="n">searchdata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nicks</span><span class="o">.</span><span class="n">nickreplace</span><span class="p">(</span>
             <span class="n">searchdata</span><span class="p">,</span> <span class="n">categories</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;account&quot;</span><span class="p">,),</span> <span class="n">include_account</span><span class="o">=</span><span class="kc">False</span>
         <span class="p">)</span>
