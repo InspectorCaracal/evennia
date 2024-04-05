@@ -2,6 +2,22 @@
 
 ## Main branch
 
+- [Fix][pull3438]: Error with 'you' mapping in third-person style of
+  `msg_contents` (InspectorCaracal)
+- [Fix][pull3472]: The new `filter_visible` didn't exclude oneself by default
+  (InspectorCaracal)
+- Fix: `find #dbref` results didn't include the results of
+  `.get_extra_display_name_info` (the #dbref display by default) (Griatch)
+- Fix: Add `DefaultAccount.get_extra_display_name_info` method for API
+  compliance with `DefaultObject` in commands. (Griatch)
+
+[pull3438]: https://github.com/evennia/evennia/pull/3446
+
+
+## Evennia 4.1.0
+
+April 1, 2024
+
 - [Deprecation]: `DefaultObject.get_visible_contents` - unused in core, will be
   removed. Use the new `.filter_visible` together with the `.get_display_*` methods instead..
 - [Deprecation]: `DefaultObject.get_content_names` - unused in core, will be
@@ -20,6 +36,8 @@
 - [Feature][pull3466]: Add optional `no_article` kwarg to
   `DefaultObject.get_numbered_name` for the system to skip adding automatic
   articles. (chiizujin)
+- [Feature][pull3433]: Add ability to default get/drop to affect stacks of
+  items, such as `get/drop 3 rock` by a custom class parent (InspectorCaracal)
 - Feature: Clean up the default Command variable list shown when a command has
   no `func()` defined (Griatch)
 - [Feature][issue3461]: Add `DefaultObject.filter_display_visible` helper method
@@ -45,7 +63,8 @@
   differentiating from their lower-case alternatives (Griatch)
 - [Fix][issue3460]: The `menu_login` contrib regression caused it to error out
   when creating a new character (Griatch)
-- Doc: Added Beginner Tutorial lessons for AI, Quests and Procedural dungeon (Griatch)
+- Doc: Added Beginner Tutorial lessons for [Monster and NPC AI][docAI],
+  [Quests][docQuests] and [Making a Procedural dungeon][docDungeon] (Griatch)
 - Doc fixes (Griatch, InspectorCaracal, homeofpoe)
 
 [pull3421]: https://github.com/evennia/evennia/pull/3421
@@ -61,10 +80,14 @@
 [pull3464]: https://github.com/evennia/evennia/pull/3464
 [pull3466]: https://github.com/evennia/evennia/pull/3466
 [pull3467]: https://github.com/evennia/evennia/pull/3467
+[pull3433]: https://github.com/evennia/evennia/pull/3433
 [issue3450]: https://github.com/evennia/evennia/issues/3450
 [issue3462]: https://github.com/evennia/evennia/issues/3462
 [issue3460]: https://github.com/evennia/evennia/issues/3460
 [issue3461]: https://github.com/evennia/evennia/issues/3461
+[docAI]: https://www.evennia.com/docs/latest/Howtos/Beginner-Tutorial/Part3/Beginner-Tutorial-AI.html
+[docQuests]: https://www.evennia.com/docs/latest/Howtos/Beginner-Tutorial/Part3/Beginner-Tutorial-Quests.html
+[docDungeon]: https://www.evennia.com/docs/latest/Howtos/Beginner-Tutorial/Part3/Beginner-Tutorial-Dungeon.html
 
 ## Evennia 4.0.0
 

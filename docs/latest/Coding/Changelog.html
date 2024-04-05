@@ -67,6 +67,7 @@
   <ul>
 <li><a class="reference internal" href="#">Changelog</a><ul>
 <li><a class="reference internal" href="#main-branch">Main branch</a></li>
+<li><a class="reference internal" href="#evennia-4-1-0">Evennia 4.1.0</a></li>
 <li><a class="reference internal" href="#evennia-4-0-0">Evennia 4.0.0</a></li>
 <li><a class="reference internal" href="#evennia-3-2-0">Evennia 3.2.0</a></li>
 <li><a class="reference internal" href="#evennia-3-1-1">Evennia 3.1.1</a></li>
@@ -197,6 +198,20 @@
 <section id="main-branch">
 <h2>Main branch<a class="headerlink" href="#main-branch" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
+<li><p><a class="reference external" href="https://github.com/evennia/evennia/pull/3446">Fix</a>: Error with ‘you’ mapping in third-person style of
+<code class="docutils literal notranslate"><span class="pre">msg_contents</span></code> (InspectorCaracal)</p></li>
+<li><p>[Fix][pull3472]: The new <code class="docutils literal notranslate"><span class="pre">filter_visible</span></code> didn’t exclude oneself by default
+(InspectorCaracal)</p></li>
+<li><p>Fix: <code class="docutils literal notranslate"><span class="pre">find</span> <span class="pre">#dbref</span></code> results didn’t include the results of
+<code class="docutils literal notranslate"><span class="pre">.get_extra_display_name_info</span></code> (the #dbref display by default) (Griatch)</p></li>
+<li><p>Fix: Add <code class="docutils literal notranslate"><span class="pre">DefaultAccount.get_extra_display_name_info</span></code> method for API
+compliance with <code class="docutils literal notranslate"><span class="pre">DefaultObject</span></code> in commands. (Griatch)</p></li>
+</ul>
+</section>
+<section id="evennia-4-1-0">
+<h2>Evennia 4.1.0<a class="headerlink" href="#evennia-4-1-0" title="Permalink to this headline">¶</a></h2>
+<p>April 1, 2024</p>
+<ul class="simple">
 <li><p>[Deprecation]: <code class="docutils literal notranslate"><span class="pre">DefaultObject.get_visible_contents</span></code> - unused in core, will be
 removed. Use the new <code class="docutils literal notranslate"><span class="pre">.filter_visible</span></code> together with the <code class="docutils literal notranslate"><span class="pre">.get_display_*</span></code> methods instead…</p></li>
 <li><p>[Deprecation]: <code class="docutils literal notranslate"><span class="pre">DefaultObject.get_content_names</span></code> - unused in core, will be
@@ -214,6 +229,8 @@ made backwards compatible for old pages (Griatch)</p></li>
 <li><p><a class="reference external" href="https://github.com/evennia/evennia/pull/3466">Feature</a>: Add optional <code class="docutils literal notranslate"><span class="pre">no_article</span></code> kwarg to
 <code class="docutils literal notranslate"><span class="pre">DefaultObject.get_numbered_name</span></code> for the system to skip adding automatic
 articles. (chiizujin)</p></li>
+<li><p><a class="reference external" href="https://github.com/evennia/evennia/pull/3433">Feature</a>: Add ability to default get/drop to affect stacks of
+items, such as <code class="docutils literal notranslate"><span class="pre">get/drop</span> <span class="pre">3</span> <span class="pre">rock</span></code> by a custom class parent (InspectorCaracal)</p></li>
 <li><p>Feature: Clean up the default Command variable list shown when a command has
 no <code class="docutils literal notranslate"><span class="pre">func()</span></code> defined (Griatch)</p></li>
 <li><p><a class="reference external" href="https://github.com/evennia/evennia/issues/3461">Feature</a>: Add <code class="docutils literal notranslate"><span class="pre">DefaultObject.filter_display_visible</span></code> helper method
@@ -239,7 +256,8 @@ range (chiizujin)</p></li>
 differentiating from their lower-case alternatives (Griatch)</p></li>
 <li><p><a class="reference external" href="https://github.com/evennia/evennia/issues/3460">Fix</a>: The <code class="docutils literal notranslate"><span class="pre">menu_login</span></code> contrib regression caused it to error out
 when creating a new character (Griatch)</p></li>
-<li><p>Doc: Added Beginner Tutorial lessons for AI, Quests and Procedural dungeon (Griatch)</p></li>
+<li><p>Doc: Added Beginner Tutorial lessons for <a class="reference external" href="https://www.evennia.com/docs/latest/Howtos/Beginner-Tutorial/Part3/Beginner-Tutorial-AI.html">Monster and NPC AI</a>,
+<a class="reference external" href="https://www.evennia.com/docs/latest/Howtos/Beginner-Tutorial/Part3/Beginner-Tutorial-Quests.html">Quests</a> and <a class="reference external" href="https://www.evennia.com/docs/latest/Howtos/Beginner-Tutorial/Part3/Beginner-Tutorial-Dungeon.html">Making a Procedural dungeon</a> (Griatch)</p></li>
 <li><p>Doc fixes (Griatch, InspectorCaracal, homeofpoe)</p></li>
 </ul>
 </section>
