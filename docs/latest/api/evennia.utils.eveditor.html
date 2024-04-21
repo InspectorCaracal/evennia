@@ -271,6 +271,12 @@ command was given specifically as “no” or “n”.</p>
 </ul>
 </dd></dl>
 
+<dl class="py method">
+<dt id="evennia.utils.eveditor.CmdEditorBase.insert_raw_string_into_buffer">
+<code class="sig-name descname">insert_raw_string_into_buffer</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/evennia/utils/eveditor.html#CmdEditorBase.insert_raw_string_into_buffer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#evennia.utils.eveditor.CmdEditorBase.insert_raw_string_into_buffer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert a line into the buffer. Used by both CmdLineInput and CmdEditorGroup.</p>
+</dd></dl>
+
 <dl class="py attribute">
 <dt id="evennia.utils.eveditor.CmdEditorBase.aliases">
 <code class="sig-name descname">aliases</code><em class="property"> = []</em><a class="headerlink" href="#evennia.utils.eveditor.CmdEditorBase.aliases" title="Permalink to this definition">¶</a></dt>
@@ -350,7 +356,7 @@ indentation.</p>
 
 <dl class="py attribute">
 <dt id="evennia.utils.eveditor.CmdEditorGroup.aliases">
-<code class="sig-name descname">aliases</code><em class="property"> = [':A', ':UU', ':x', ':wq', ':j', ':uu', ':u', ':w', ':fd', ':r', ':DD', ':!', ':dd', ':y', ':p', ':s', '::', ':q', ':I', ':=', ':::', ':S', ':f', ':echo', ':q!', ':fi', ':h', ':dw', ':', ':&lt;', ':&gt;', ':i']</em><a class="headerlink" href="#evennia.utils.eveditor.CmdEditorGroup.aliases" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">aliases</code><em class="property"> = [':&gt;', '::', ':r', ':dw', ':p', ':UU', ':&lt;', ':fd', ':echo', ':q!', ':s', ':dd', ':h', ':A', ':uu', ':q', ':=', ':I', ':f', ':fi', ':w', ':u', ':DD', ':S', ':', ':i', ':wq', ':y', ':::', ':x', ':!', ':j']</em><a class="headerlink" href="#evennia.utils.eveditor.CmdEditorGroup.aliases" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -378,7 +384,7 @@ efficient presentation.</p>
 
 <dl class="py attribute">
 <dt id="evennia.utils.eveditor.CmdEditorGroup.search_index_entry">
-<code class="sig-name descname">search_index_entry</code><em class="property"> = {'aliases': ':A :UU :x :wq :j :uu :u :w :fd :r :DD :! :dd :y :p :s :: :q :I := ::: :S :f :echo :q! :fi :h :dw : :&lt; :&gt; :i', 'category': 'general', 'key': ':editor_command_group', 'no_prefix': ' :A :UU :x :wq :j :uu :u :w :fd :r :DD :! :dd :y :p :s :: :q :I := ::: :S :f :echo :q! :fi :h :dw : :&lt; :&gt; :i', 'tags': '', 'text': '\n    Commands for the editor\n    '}</em><a class="headerlink" href="#evennia.utils.eveditor.CmdEditorGroup.search_index_entry" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">search_index_entry</code><em class="property"> = {'aliases': ':&gt; :: :r :dw :p :UU :&lt; :fd :echo :q! :s :dd :h :A :uu :q := :I :f :fi :w :u :DD :S : :i :wq :y ::: :x :! :j', 'category': 'general', 'key': ':editor_command_group', 'no_prefix': ' :&gt; :: :r :dw :p :UU :&lt; :fd :echo :q! :s :dd :h :A :uu :q := :I :f :fi :w :u :DD :S : :i :wq :y ::: :x :! :j', 'tags': '', 'text': '\n    Commands for the editor\n    '}</em><a class="headerlink" href="#evennia.utils.eveditor.CmdEditorGroup.search_index_entry" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>

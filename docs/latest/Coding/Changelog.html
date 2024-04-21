@@ -67,6 +67,7 @@
   <ul>
 <li><a class="reference internal" href="#">Changelog</a><ul>
 <li><a class="reference internal" href="#main-branch">Main branch</a></li>
+<li><a class="reference internal" href="#evennia-4-1-1">Evennia 4.1.1</a></li>
 <li><a class="reference internal" href="#evennia-4-1-0">Evennia 4.1.0</a></li>
 <li><a class="reference internal" href="#evennia-4-0-0">Evennia 4.0.0</a></li>
 <li><a class="reference internal" href="#evennia-3-2-0">Evennia 3.2.0</a></li>
@@ -198,6 +199,18 @@
 <section id="main-branch">
 <h2>Main branch<a class="headerlink" href="#main-branch" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
+<li><p><a class="reference external" href="https://github.com/evennia/evennia/pull/3470">Feature</a>: New <code class="docutils literal notranslate"><span class="pre">exit_order</span></code> kwarg to
+<code class="docutils literal notranslate"><span class="pre">DefaultObject.get_display_exits</span></code> to easier customize the order in which
+standard exits are displayed in a room (chiizujin)</p></li>
+<li><p><a class="reference external" href="https://github.com/evennia/evennia/pull/3495">Fix</a>: Fix rate in Trait contribs not updating after reload (jaborsh)</p></li>
+<li><p><a class="reference external" href="https://github.com/evennia/evennia/pull/3491">Fix</a>: Fix traceback in EvEditor when searching with malformed regex (chiizujin)</p></li>
+<li><p>[Docs]: Doc fixes (Griatch, chiizujin)</p></li>
+</ul>
+</section>
+<section id="evennia-4-1-1">
+<h2>Evennia 4.1.1<a class="headerlink" href="#evennia-4-1-1" title="Permalink to this headline">¶</a></h2>
+<p>April 6, 2024</p>
+<ul class="simple">
 <li><p><a class="reference external" href="https://github.com/evennia/evennia/pull/3446">Fix</a>: Error with ‘you’ mapping in third-person style of
 <code class="docutils literal notranslate"><span class="pre">msg_contents</span></code> (InspectorCaracal)</p></li>
 <li><p>[Fix][pull3472]: The new <code class="docutils literal notranslate"><span class="pre">filter_visible</span></code> didn’t exclude oneself by default
@@ -206,6 +219,18 @@
 <code class="docutils literal notranslate"><span class="pre">.get_extra_display_name_info</span></code> (the #dbref display by default) (Griatch)</p></li>
 <li><p>Fix: Add <code class="docutils literal notranslate"><span class="pre">DefaultAccount.get_extra_display_name_info</span></code> method for API
 compliance with <code class="docutils literal notranslate"><span class="pre">DefaultObject</span></code> in commands. (Griatch)</p></li>
+<li><p>Fix: Show <code class="docutils literal notranslate"><span class="pre">XYZRoom</span></code> subclass when repr() it. (Griatch)</p></li>
+<li><p><a class="reference external" href="https://github.com/evennia/evennia/pull/3485">Fix</a>: Typo in <code class="docutils literal notranslate"><span class="pre">sethome</span></code> message (chiizujin)</p></li>
+<li><p><a class="reference external" href="https://github.com/evennia/evennia/pull/3487">Fix</a>: Fix traceback when using <code class="docutils literal notranslate"><span class="pre">get</span></code>,<code class="docutils literal notranslate"><span class="pre">drop</span></code> and <code class="docutils literal notranslate"><span class="pre">give</span></code> with no
+arguments (InspectorCaracal)</p></li>
+<li><p><a class="reference external" href="https://github.com/evennia/evennia/issues/3476">Fix</a>: Don’t ignore EvEditor commands with wrong capitalization (Griatch)</p></li>
+<li><p><a class="reference external" href="https://github.com/evennia/evennia/issues/3477">Fix</a>: The <code class="docutils literal notranslate"><span class="pre">at_server_reload_start()</span></code> hook was not firing on
+a reload (regression).</p></li>
+<li><p><a class="reference external" href="https://github.com/evennia/evennia/issues/3488">Fix</a>: <code class="docutils literal notranslate"><span class="pre">AttributeProperty(&lt;default&gt;,</span> <span class="pre">autocreate=False)</span></code>, where
+<code class="docutils literal notranslate"><span class="pre">&lt;default&gt;</span></code> was mutable would not update/save properly in-place (Griatch)</p></li>
+<li><p>[Docs] Added new <a class="reference external" href="https://www.evennia.com/docs/latest/Concepts/Server-Lifecycle.html">Server-Lifecycle</a> page to describe
+the hooks called on server start/stop/reload (Griatch)</p></li>
+<li><p>[Docs] Doc typo fixes (Griatch, chiizujin)</p></li>
 </ul>
 </section>
 <section id="evennia-4-1-0">
