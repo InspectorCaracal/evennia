@@ -270,26 +270,30 @@
 
 <div class="viewcode-block" id="ObjManipCommand.get_object_typeclass"><a class="viewcode-back" href="../../../../api/evennia.commands.default.building.html#evennia.commands.default.building.ObjManipCommand.get_object_typeclass">[docs]</a>    <span class="k">def</span> <span class="nf">get_object_typeclass</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span> <span class="n">typeclass</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;cmd_create&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;Builder&quot;</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;Typeclass&quot;</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        This hook is called by build commands to determine which typeclass to use for a specific purpose. For instance,</span>
-<span class="sd">        when using dig, the system can use this to autodetect which kind of Room typeclass to use based on where the</span>
-<span class="sd">        builder is currently located.</span>
-
-<span class="sd">        Note: Although intended to be used with typeclasses, as long as this hook returns a class with a create method,</span>
-<span class="sd">            which accepts the same API as DefaultObject.create(), build commands and other places should take it.</span>
+<span class="sd">        This hook is called by build commands to determine which typeclass to use for a specific</span>
+<span class="sd">        purpose.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            obj_type (str, optional): The type of object that is being created. Defaults to &quot;object&quot;. Evennia provides</span>
-<span class="sd">                &quot;room&quot;, &quot;exit&quot;, and &quot;character&quot; by default, but this can be extended.</span>
-<span class="sd">            typeclass (str, optional): The typeclass that was requested by the player. Defaults to None.</span>
-<span class="sd">                Can also be an actual class.</span>
+<span class="sd">            obj_type (str, optional): The type of object that is being created. Defaults to</span>
+<span class="sd">                &quot;object&quot;. Evennia provides &quot;room&quot;, &quot;exit&quot;, and &quot;character&quot; by default, but this can be</span>
+<span class="sd">                extended.</span>
+<span class="sd">            typeclass (str, optional): The typeclass that was requested by the player. Defaults to</span>
+<span class="sd">                None.  Can also be an actual class.</span>
 <span class="sd">            method (str, optional): The method that is calling this hook. Defaults to &quot;cmd_create&quot;.</span>
 <span class="sd">                Others are &quot;cmd_dig&quot;, &quot;cmd_open&quot;, &quot;cmd_tunnel&quot;, etc.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            results_tuple (tuple[Optional[Builder], list[str]]): A tuple containing the typeclass to use and a list of</span>
-<span class="sd">                errors. (which might be empty.)</span>
+<span class="sd">            tuple: A tuple containing the typeclass to use and a list of errors. (which might be</span>
+<span class="sd">                empty.)</span>
+
+<span class="sd">        Notes:</span>
+<span class="sd">            Although intended to be used with typeclasses, as long as this hook returns a class with</span>
+<span class="sd">            a create method, which accepts the same API as DefaultObject.create(), build commands</span>
+<span class="sd">            and other places should take it. While not used by default, one could picture using this</span>
+<span class="sd">            for things like autodetecting which room to build next based on the current location.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">found_typeclass</span> <span class="o">=</span> <span class="n">typeclass</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_typeclasses</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">obj_type</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
@@ -1120,7 +1124,7 @@
         <span class="k">if</span> <span class="n">new_room</span><span class="o">.</span><span class="n">aliases</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
             <span class="n">alias_string</span> <span class="o">=</span> <span class="s2">&quot; (</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">new_room</span><span class="o">.</span><span class="n">aliases</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
 
-        <span class="n">room_string</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Created room </span><span class="si">{</span><span class="n">new_room</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">new_room</span><span class="o">.</span><span class="n">dbref</span><span class="si">}</span><span class="s2">)</span><span class="si">{</span><span class="n">alias_string</span><span class="si">}</span><span class="s2"> of type </span><span class="si">{</span><span class="n">new_room</span><span class="si">}</span><span class="s2">.&quot;</span>
+        <span class="n">room_string</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Created room </span><span class="si">{</span><span class="n">new_room</span><span class="si">}</span><span class="s2">(</span><span class="si">{</span><span class="n">new_room</span><span class="o">.</span><span class="n">dbref</span><span class="si">}</span><span class="s2">)</span><span class="si">{</span><span class="n">alias_string</span><span class="si">}</span><span class="s2"> of type </span><span class="si">{</span><span class="n">new_room</span><span class="o">.</span><span class="n">typeclass_path</span><span class="si">}</span><span class="s2">.&quot;</span>
 
         <span class="c1"># create exit to room</span>
 
