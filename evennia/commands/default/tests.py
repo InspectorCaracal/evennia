@@ -56,10 +56,14 @@ from evennia.utils.test_resources import BaseEvenniaTest, EvenniaCommandTest
 
 class TestGeneral(BaseEvenniaCommandTest):
     def test_look(self):
+        
+        
+        
         rid = self.room1.id
         self.call(general.CmdLook(), "here", "Room(#{})\nroom_desc".format(rid))
 
     def test_look_no_location(self):
+        
         self.char1.location = None
         self.call(general.CmdLook(), "", "You have no location to look at!")
 
@@ -67,13 +71,18 @@ class TestGeneral(BaseEvenniaCommandTest):
         self.call(general.CmdLook(), "yellow sign", "Could not find 'yellow sign'.")
 
     def test_home(self):
+        
+        
         self.call(general.CmdHome(), "", "You are already home")
 
     def test_go_home(self):
+        
+        
         self.call(building.CmdTeleport(), "/quiet Room2")
         self.call(general.CmdHome(), "", "There's no place like home")
 
     def test_no_home(self):
+        
         self.char1.home = None
         self.call(general.CmdHome(), "", "You have no home")
 
@@ -81,6 +90,8 @@ class TestGeneral(BaseEvenniaCommandTest):
         self.call(general.CmdInventory(), "", "You are not carrying anything.")
 
     def test_pose(self):
+        
+        
         self.char2.msg = Mock()
         self.call(general.CmdPose(), "looks around", "Char looks around")
         self.char2.msg.assert_called_with(
@@ -88,6 +99,7 @@ class TestGeneral(BaseEvenniaCommandTest):
         )
 
     def test_nick(self):
+        
         self.call(
             general.CmdNick(),
             "testalias = testaliasedstring1",
@@ -116,6 +128,9 @@ class TestGeneral(BaseEvenniaCommandTest):
         self.call(general.CmdNick(), "/list", "Defined Nicks:")
 
     def test_get_and_drop(self):
+        
+        
+        
         self.call(general.CmdGet(), "Obj", "You pick up an Obj.")
         self.call(general.CmdDrop(), "Obj", "You drop an Obj.")
         # test stacking
@@ -124,6 +139,9 @@ class TestGeneral(BaseEvenniaCommandTest):
         self.call(general.CmdDrop(), "2 Obj", "You drop two Objs.")
 
     def test_give(self):
+        
+        
+        
         self.call(general.CmdGive(), "Obj to Char2", "You aren't carrying Obj.")
         self.call(general.CmdGive(), "Obj = Char2", "You aren't carrying Obj.")
         self.call(general.CmdGet(), "Obj", "You pick up an Obj")
@@ -186,6 +204,8 @@ class TestGeneral(BaseEvenniaCommandTest):
         self.call(general.CmdSay(), "Testing", 'You say, "Testing"')
 
     def test_whisper(self):
+        
+        
         self.call(
             general.CmdWhisper(),
             "Obj = Testing",
@@ -202,6 +222,7 @@ class TestHelp(BaseEvenniaCommandTest):
 
     def setUp(self):
         super().setUp()
+        
         # we need to set up a logger here since lunr takes over the logger otherwise
         import logging
 
@@ -363,6 +384,7 @@ class TestHelp(BaseEvenniaCommandTest):
                 self.add(TestCmd())
                 self.add(help_module.CmdHelp())
 
+        
         self.call(help_module.CmdHelp(), helparg, expected, cmdset=TestCmdSet())
 
 
@@ -374,6 +396,7 @@ class TestSystem(BaseEvenniaCommandTest):
         self.call(system.CmdPy(), "/clientraw 1+2", ">>> 1+2|3")
 
     def test_scripts(self):
+        self.create_script()
         self.call(building.CmdScripts(), "", "dbref ")
 
     def test_objects(self):
@@ -442,6 +465,7 @@ class TestCmdTasks(BaseEvenniaCommandTest):
         self.assertRegex(cmd_result, "True")
 
     def test_pause_unpause(self):
+        
         # test pause
         args = f"/pause {self.task.get_id()}"
         wanted_msg = "Pause task 1 with completion date"
@@ -470,6 +494,7 @@ class TestCmdTasks(BaseEvenniaCommandTest):
         self.assertFalse(self.task.exists())
 
     def test_remove(self):
+        
         args = f"/remove {self.task.get_id()}"
         wanted_msg = "Remove task 1 with completion date"
         cmd_result = self.call(system.CmdTasks(), args, wanted_msg)
@@ -478,6 +503,7 @@ class TestCmdTasks(BaseEvenniaCommandTest):
         self.assertFalse(self.task.exists())
 
     def test_call(self):
+        
         args = f"/call {self.task.get_id()}"
         wanted_msg = "Call task 1 with completion date"
         cmd_result = self.call(system.CmdTasks(), args, wanted_msg)
@@ -490,6 +516,7 @@ class TestCmdTasks(BaseEvenniaCommandTest):
         self.assertFalse(self.task.exists())
 
     def test_cancel(self):
+        
         args = f"/cancel {self.task.get_id()}"
         wanted_msg = "Cancel task 1 with completion date"
         cmd_result = self.call(system.CmdTasks(), args, wanted_msg)
@@ -522,6 +549,7 @@ class TestCmdTasks(BaseEvenniaCommandTest):
         self.assertFalse(self.task.exists())
 
     def test_responce_of_yes(self):
+        
         self.call(system.CmdTasks(), f"/cancel {self.task.get_id()}")
         self.char1.msg = Mock()
         self.char1.execute_cmd("y")
@@ -533,6 +561,7 @@ class TestCmdTasks(BaseEvenniaCommandTest):
 
     def test_task_complete_waiting_input(self):
         """Test for task completing while waiting for input."""
+        
         self.call(system.CmdTasks(), f"/cancel {self.task.get_id()}")
         self.task_handler.clock.advance(self.timedelay + 1)
         self.char1.msg = Mock()
@@ -547,6 +576,7 @@ class TestCmdTasks(BaseEvenniaCommandTest):
         """
         Test task completing than a new task with the same ID being made while waitinf for input.
         """
+        
         self.assertTrue(self.task.get_id(), 1)
         self.call(system.CmdTasks(), f"/cancel {self.task.get_id()}")
         self.task_handler.clock.advance(self.timedelay + 1)
@@ -569,9 +599,11 @@ class TestCmdTasks(BaseEvenniaCommandTest):
 
 class TestAdmin(BaseEvenniaCommandTest):
     def test_emit(self):
+        
         self.call(admin.CmdEmit(), "Char2 = Test", "Emitted to Char2:\nTest")
 
     def test_perm(self):
+        
         self.call(
             admin.CmdPerm(),
             "Obj = Builder",
@@ -590,6 +622,7 @@ class TestAdmin(BaseEvenniaCommandTest):
         self.call(admin.CmdBan(), "Char", "Name-ban 'char' was added. Use unban to reinstate.")
 
     def test_force(self):
+        
         cid = self.char2.id
         self.call(
             admin.CmdForce(),
@@ -626,6 +659,7 @@ class TestAccount(BaseEvenniaCommandTest):
         ]
     )
     def test_ooc_look(self, multisession_mode, auto_puppet, max_nr_chars, expected_result):
+        
         self.account.characters.add(self.char1)
         self.account.unpuppet_all()
 
@@ -781,6 +815,9 @@ class TestBuilding(BaseEvenniaCommandTest):
         )
 
     def test_examine(self):
+        
+        
+        
         self.call(building.CmdExamine(), "", "Name/key: Room")
         self.call(building.CmdExamine(), "Obj", "Name/key: Obj")
         self.call(building.CmdExamine(), "*TestAccount", "Name/key: TestAccount")
@@ -799,13 +836,16 @@ class TestBuilding(BaseEvenniaCommandTest):
             "self/test2",
             "Attribute Char/test2 [category=None]:\n\nthis is a \$random() value.",
         )
-
+        self.create_script()
         self.room1.scripts.add(self.script.__class__)
         self.call(building.CmdExamine(), "")
         self.account.scripts.add(self.script.__class__)
         self.call(building.CmdExamine(), "*TestAccount")
 
     def test_set_obj_alias(self):
+        
+        
+        
         self.call(building.CmdSetObjAlias(), "Obj =", "Cleared aliases from Obj")
         self.call(
             building.CmdSetObjAlias(), "Obj = TestObj1b", "Alias(es) for 'Obj' set to 'testobj1b'."
@@ -836,6 +876,9 @@ class TestBuilding(BaseEvenniaCommandTest):
         self.call(building.CmdSetObjAlias(), "Obj =", "No aliases to clear.")
 
     def test_copy(self):
+        
+        
+        
         self.call(
             building.CmdCopy(),
             "Obj = TestObj2;TestObj2b, TestObj3;TestObj3b",
@@ -1338,10 +1381,14 @@ class TestBuilding(BaseEvenniaCommandTest):
         )
 
     def test_dig(self):
+        
+        
         self.call(building.CmdDig(), "TestRoom1=testroom;tr,back;b", "Created room TestRoom1")
         self.call(building.CmdDig(), "", "Usage: ")
 
     def test_tunnel(self):
+        
+        
         self.call(building.CmdTunnel(), "n = TestRoom2;test2", "Created room TestRoom2")
         self.call(building.CmdTunnel(), "", "Usage: ")
         self.call(building.CmdTunnel(), "foo = TestRoom2;test2", "tunnel can only understand the")
@@ -1351,6 +1398,8 @@ class TestBuilding(BaseEvenniaCommandTest):
         self.assertEqual(len(exits), 2)
 
     def test_tunnel_exit_typeclass(self):
+        
+        
         self.call(
             building.CmdTunnel(),
             "n:evennia.objects.objects.DefaultExit = TestRoom3",
@@ -1358,6 +1407,9 @@ class TestBuilding(BaseEvenniaCommandTest):
         )
 
     def test_exit_commands(self):
+        
+        
+        
         self.call(
             building.CmdOpen(), "TestExit1=Room2", "Created new Exit 'TestExit1' from Room to Room2"
         )
@@ -1407,6 +1459,9 @@ class TestBuilding(BaseEvenniaCommandTest):
         )
 
     def test_set_home(self):
+        
+        
+        
         self.call(
             building.CmdSetHome(), "Obj = Room2", "Home location of Obj was changed from Room"
         )
@@ -1425,6 +1480,9 @@ class TestBuilding(BaseEvenniaCommandTest):
         self.call(building.CmdListCmdSets(), "NotFound", "Could not find 'NotFound'")
 
     def test_typeclass(self):
+        
+        
+        
         self.call(building.CmdTypeclass(), "", "Usage: ")
         self.call(
             building.CmdTypeclass(),
@@ -1520,6 +1578,9 @@ class TestBuilding(BaseEvenniaCommandTest):
             assert self.obj1.db.desc == "protdesc"
 
     def test_lock(self):
+        
+        
+        
         self.call(building.CmdLock(), "", "Usage: ")
         self.call(building.CmdLock(), "Obj = test:all()", "Added lock 'test:all()' to Obj.")
         self.call(
@@ -1545,6 +1606,9 @@ class TestBuilding(BaseEvenniaCommandTest):
         self.call(building.CmdLock(), "*TestAccount", "boot:perm(Admin)")  # etc
 
     def test_find(self):
+        
+        
+        
         rid2 = self.room2.id
         rmax = rid2 + 100
         self.call(building.CmdFind(), "", "Usage: ")
@@ -1604,6 +1668,9 @@ class TestBuilding(BaseEvenniaCommandTest):
         self.call(building.CmdFind(), f"=#{id1}-{id2}", f"{mdiff} Matches(#{id1}-#{id2}):")
 
     def test_script(self):
+        
+        
+        
         self.call(building.CmdScripts(), "Obj =", "No scripts defined on Obj")
         self.call(
             building.CmdScripts(),
@@ -1673,6 +1740,9 @@ class TestBuilding(BaseEvenniaCommandTest):
         self.assertFalse(script3.pk)
 
     def test_teleport(self):
+        
+        
+        
         self.call(building.CmdTeleport(), "", "Usage: ")
         self.call(building.CmdTeleport(), "Obj = Room", "Obj is already at Room.")
         self.call(
@@ -1709,6 +1779,9 @@ class TestBuilding(BaseEvenniaCommandTest):
         )
 
     def test_tag(self):
+        
+        
+        
         self.call(building.CmdTag(), "", "Usage: ")
 
         self.call(building.CmdTag(), "Obj = testtag")
@@ -1739,6 +1812,10 @@ class TestBuilding(BaseEvenniaCommandTest):
         )
 
     def test_spawn(self):
+        
+        
+        
+
         def get_object(commandTest, obj_key):
             # A helper function to get a spawned object and
             # check that it exists in the process.

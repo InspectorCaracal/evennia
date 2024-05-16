@@ -137,6 +137,7 @@ class TestCreateMessage(BaseEvenniaTest):
     """
 
     def test_create_msg__simple(self):
+        self.create_chars()
         # from evennia import set_trace;set_trace()
         msg = create.create_message(self.char1, self.msgtext, header="TestHeader")
         msg.senders = "ExternalSender"
@@ -148,6 +149,7 @@ class TestCreateMessage(BaseEvenniaTest):
         self.assertEqual(msg.receivers, [self.char2, "ExternalReceiver"])
 
     def test_create_msg__custom(self):
+        self.create_chars()
         locks = "foo:false();bar:true()"
         tags = ["tag1", "tag2", "tag3"]
         msg = create.create_message(

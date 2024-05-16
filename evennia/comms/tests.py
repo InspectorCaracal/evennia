@@ -33,6 +33,8 @@ class ObjectCreationTest(BaseEvenniaTest):
 class ChannelSubscriptionTests(BaseEvenniaTest):
     def setUp(self):
         super().setUp()
+        self.create_objs()
+        self.create_chars()
         self.default_channel, _ = DefaultChannel.create(
             "catlovers", description="A place for feline fanciers."
         )
@@ -56,6 +58,7 @@ class ChannelSubscriptionTests(BaseEvenniaTest):
 class ChannelWholistTests(BaseEvenniaTest):
     def setUp(self):
         super().setUp()
+        self.create_objs()
         self.default_channel, _ = DefaultChannel.create(
             "coffeetalk", description="A place to talk about coffee."
         )
@@ -82,6 +85,7 @@ class ChannelWholistTests(BaseEvenniaTest):
         self.assertEqual(expected, result)
 
     def test_wholist_shows_connected_object_as_bold(self):
+        self.create_chars()
         self.default_channel.connect(self.char1)
         expected = "Obj, |wChar|n"
         result = self.default_channel.wholist

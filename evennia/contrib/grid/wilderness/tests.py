@@ -142,6 +142,8 @@ class TestWilderness(BaseEvenniaTest):
             self.assertEqual(new_loc, correct_loc, direction)
 
     def test_preserve_items(self):
+        self.create_objs()
+        self.create_chars()
         wilderness.create_wilderness()
         w = self.get_wilderness_script()
 

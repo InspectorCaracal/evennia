@@ -8,6 +8,9 @@ from .containers import CmdContainerGet, CmdContainerLook, CmdPut, ContribContai
 class TestContainer(BaseEvenniaTest):
     def setUp(self):
         super().setUp()
+        self.create_rooms()
+        self.create_objs()
+        self.create_chars()
         # create a container to test with
         self.container = create_object(key="Box", typeclass=ContribContainer, location=self.room1)
 

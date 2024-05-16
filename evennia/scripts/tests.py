@@ -18,10 +18,10 @@ from evennia.scripts.scripts import DoNothing, ExtendedLoopingCall
 from evennia.scripts.tickerhandler import TickerHandler
 from evennia.utils.create import create_script
 from evennia.utils.dbserialize import dbserialize
-from evennia.utils.test_resources import BaseEvenniaTest, EvenniaTest
+from evennia.utils.test_resources import BaseEvenniaTest, EvenniaTest, EvenniaTestCase
 
 
-class TestScript(BaseEvenniaTest):
+class TestScript(EvenniaTestCase):
     def test_create(self):
         "Check the script can be created via the convenience method."
         with mock.patch("evennia.scripts.scripts.DefaultScript.at_init") as mockinit:
@@ -313,7 +313,7 @@ class TestMonitorHandler(TestCase):
         self.assertEqual(self.handler.monitors[index][name], {})
 
 
-class TestOnDemandTask(EvenniaTest):
+class TestOnDemandTask(EvenniaTestCase):
     """
     Test the OnDemandTask class.
 
@@ -506,14 +506,14 @@ class TestOnDemandTask(EvenniaTest):
         self.assertEqual(task.get_stage(), "warm")
 
 
-class TestOnDemandHandler(EvenniaTest):
+class TestOnDemandHandler(EvenniaTestCase):
     """
     Test the OnDemandHandler class.
 
     """
 
     def setUp(self):
-        super(TestOnDemandHandler, self).setUp()
+        super().setUp()
         self.handler = OnDemandHandler()
         self.task1 = OnDemandTask(
             "rose",

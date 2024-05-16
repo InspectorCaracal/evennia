@@ -14,6 +14,7 @@ from . import cooldowns
 class TestCooldowns(BaseEvenniaTest):
     def setUp(self):
         super().setUp()
+        self.create_chars()
         self.handler = cooldowns.CooldownHandler(self.char1)
 
     def test_empty(self, mock_time):

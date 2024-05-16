@@ -315,6 +315,7 @@ class TestMenuTemplateParse(BaseEvenniaTest):
 
         """
         self.goto_callables = {"callnode1": _callnode1, "callnode2": _callnode2}
+        self.create_chars()
 
     def test_parse_menu_template(self):
         """EvMenu template testing"""

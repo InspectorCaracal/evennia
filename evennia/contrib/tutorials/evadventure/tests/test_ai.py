@@ -15,6 +15,7 @@ from ..npcs import EvAdventureMob
 class TestAI(BaseEvenniaTest):
     def setUp(self):
         super().setUp()
+        self.create_rooms()
         self.npc = create_object(EvAdventureMob, key="Goblin", location=self.room1)
         self.pc = create_object(EvAdventureCharacter, key="Player", location=self.room1)
 

@@ -1068,6 +1068,8 @@ class TestGetAndMergeCmdSets(TwistedTestCase, BaseEvenniaTest):
         return deferred
 
     def test_from_object(self):
+        self.create_objs()
+
         self.set_cmdsets(self.obj1, self.cmdset_a)
         (
             command_objects,
@@ -1091,6 +1093,7 @@ class TestGetAndMergeCmdSets(TwistedTestCase, BaseEvenniaTest):
         return deferred
 
     def test_multimerge(self):
+        self.create_objs()
         a, b, c, d = self.cmdset_a, self.cmdset_b, self.cmdset_c, self.cmdset_d
         a.no_exits = True
         a.no_channels = True
@@ -1115,6 +1118,7 @@ class TestGetAndMergeCmdSets(TwistedTestCase, BaseEvenniaTest):
         return deferred
 
     def test_duplicates(self):
+        self.create_objs()
         a, b, c, d = self.cmdset_a, self.cmdset_b, self.cmdset_c, self.cmdset_d
         a.no_exits = True
         a.no_channels = True
@@ -1256,6 +1260,7 @@ class TestCmdSetNesting(BaseEvenniaTest):
             def at_cmdset_creation(self):
                 self.add(CmdSetA)
 
+        self.create_chars()
         cmd = self.char1.cmdset.cmdset_stack[-1].commands[0]
         self.assertEqual(cmd.obj, self.char1)
 

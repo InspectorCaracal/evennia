@@ -760,6 +760,7 @@ class TestCallableSearch(test_resources.BaseEvenniaTest):
         Test searching for an object
 
         """
+        self.create_chars()
         string = "$search(Char)"
         expected = self.char1
 
@@ -771,6 +772,7 @@ class TestCallableSearch(test_resources.BaseEvenniaTest):
         Test searching for an account
 
         """
+        self.create_chars()
         string = "$search(TestAccount, type=account)"
         expected = self.account
         self.account.locks.add("control:id(%s)" % self.char1.dbref)
@@ -783,6 +785,8 @@ class TestCallableSearch(test_resources.BaseEvenniaTest):
         Test searching for a script
 
         """
+        self.create_chars()
+        self.create_script()
         string = "$search(Script, type=script)"
         expected = self.script
         self.script.locks.add("control:id(%s)" % self.char1.dbref)
@@ -795,6 +799,7 @@ class TestCallableSearch(test_resources.BaseEvenniaTest):
         Test searching for an object - embedded in str
 
         """
+        self.create_chars()
         string = "This is $search(Char) the guy."
         expected = "This is " + str(self.char1) + " the guy."
 
@@ -805,6 +810,7 @@ class TestCallableSearch(test_resources.BaseEvenniaTest):
         """
         Test searching for a tag
         """
+        self.create_chars()
         self.char1.tags.add("foo")
 
         string = "This is $search(foo, type=tag)"
@@ -814,6 +820,7 @@ class TestCallableSearch(test_resources.BaseEvenniaTest):
         self.assertEqual(expected, ret)
 
     def test_search_not_found(self):
+        self.create_chars()
         string = "$search(foo)"
         with self.assertRaises(funcparser.ParsingError):
             self.parser.parse(string, caller=self.char1, return_str=False, raise_errors=True)
@@ -830,21 +837,26 @@ class TestCallableSearch(test_resources.BaseEvenniaTest):
         """
         Test exception when search returns multiple results but list is not requested
         """
+        self.create_chars()
         string = "$search(BaseObject)"
         with self.assertRaises(funcparser.ParsingError):
             self.parser.parse(string, caller=self.char1, return_str=False, raise_errors=True)
 
     def test_search_no_access(self):
+        self.create_rooms()
+        self.create_chars()
         string = "Go to $search(Room)"
         with self.assertRaises(funcparser.ParsingError):
             self.parser.parse(string, caller=self.char2, return_list=True, raise_errors=True)
 
     def test_search_no_caller(self):
+        self.create_chars()
         string = "$search(Char)"
         with self.assertRaises(funcparser.ParsingError):
             self.parser.parse(string, caller=None, raise_errors=True)
 
     def test_search_no_args(self):
+        self.create_chars()
         string = "$search()"
         ret = self.parser.parse(string, caller=self.char1, return_list=False, raise_errors=True)
         self.assertEqual("None", ret)
@@ -857,7 +869,9 @@ class TestCallableSearch(test_resources.BaseEvenniaTest):
         Search for objects by-tag, check that the result is a valid object
 
         """
-        # we
+        self.create_chars()
+        self.create_objs()
+
         parser = funcparser.FuncParser(
             {**funcparser.SEARCHING_CALLABLES, **funcparser.FUNCPARSER_CALLABLES}
         )

@@ -21,6 +21,7 @@ class DictSubclass(dict):
 
 class TestAttributes(BaseEvenniaTest):
     def test_attrhandler(self):
+        self.create_objs()
         key = "testattr"
         value = "test attr value "
         self.obj1.attributes.add(key, value)
@@ -50,6 +51,7 @@ class TestAttributes(BaseEvenniaTest):
     @override_settings(TYPECLASS_AGGRESSIVE_CACHE=False)
     @patch("evennia.typeclasses.attributes._TYPECLASS_AGGRESSIVE_CACHE", False)
     def test_attrhandler_nocache(self):
+        self.create_objs()
         key = "testattr"
         value = "test attr value "
         self.obj1.attributes.add(key, value)
@@ -84,6 +86,7 @@ class TestAttributes(BaseEvenniaTest):
     def test_weird_text_save(self):
         "test 'weird' text type (different in py2 vs py3)"
         from django.utils.safestring import SafeText
+        self.create_objs()
 
         key = "test attr 2"
         value = SafeText("test attr value 2")
@@ -91,6 +94,7 @@ class TestAttributes(BaseEvenniaTest):
         self.assertEqual(self.obj1.attributes.get(key), value)
 
     def test_batch_add(self):
+        self.create_objs()
         attrs = [
             ("key1", "value1"),
             ("key2", "value2", "category2"),
@@ -104,6 +108,7 @@ class TestAttributes(BaseEvenniaTest):
         self.assertEqual(attrobj.locks.all(), ["attrread:id(1)"])
 
     def test_value_vs_strvalue(self):
+        self.create_objs()
         self.obj1.attributes.add("test", "one")
         self.assertEqual(self.obj1.attributes.get("test"), "one")
         self.assertEqual(self.obj1.attributes.get("test", strattr=True), None)
@@ -114,6 +119,10 @@ class TestAttributes(BaseEvenniaTest):
 
 
 class TestTypedObjectManager(BaseEvenniaTest):
+    def setUp(self):
+        super().setUp()
+        self.create_objs()
+
     def _manager(self, methodname, *args, **kwargs):
         return list(getattr(self.obj1.__class__.objects, methodname)(*args, **kwargs))
 
@@ -291,6 +300,10 @@ class TestSearchTypeclassFamily(EvenniaTestCase):
 
 
 class TestTags(BaseEvenniaTest):
+    def setUp(self):
+        super().setUp()
+        self.create_objs()
+
     def test_has_tag_key_only(self):
         self.obj1.tags.add("tagC")
         self.assertTrue(self.obj1.tags.has("tagC"))
@@ -436,6 +449,7 @@ class TestNickHandler(BaseEvenniaTest):
         Setting up nick patterns and make sure they replace as expected.
 
         """
+        self.create_chars()
         # from evennia import set_trace;set_trace()
         self.char1.nicks.add(
             pattern, replacement, category="inputline", pattern_is_regex=pattern_is_regex

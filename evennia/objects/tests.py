@@ -18,6 +18,7 @@ class DefaultObjectTest(BaseEvenniaTest):
     ip = "212.216.139.14"
 
     def test_object_create(self):
+        self.create_rooms()
         description = "A home for a grouch."
         home = self.room1.dbref
 
@@ -31,6 +32,7 @@ class DefaultObjectTest(BaseEvenniaTest):
         self.assertEqual(obj.db_home, self.room1)
 
     def test_character_create(self):
+        self.create_rooms()
         description = "A furry green monster, reeking of garbage."
         home = self.room1.dbref
 
@@ -44,12 +46,14 @@ class DefaultObjectTest(BaseEvenniaTest):
         self.assertEqual(obj.db_home, self.room1)
 
     def test_character_create_noaccount(self):
+        self.create_rooms()
         obj, errors = DefaultCharacter.create("oscar", None, home=self.room1.dbref)
         self.assertTrue(obj, errors)
         self.assertFalse(errors, errors)
         self.assertEqual(obj.db_home, self.room1)
 
     def test_character_create_weirdname(self):
+        self.create_rooms()
         obj, errors = DefaultCharacter.create(
             "SigurðurÞórarinsson", self.account, home=self.room1.dbref
         )
@@ -66,6 +70,7 @@ class DefaultObjectTest(BaseEvenniaTest):
         self.assertEqual(obj.db.creator_ip, self.ip)
 
     def test_exit_create(self):
+        self.create_rooms()
         description = (
             "The steaming depths of the dumpster, ripe with refuse in various states of"
             " decomposition."
@@ -79,6 +84,7 @@ class DefaultObjectTest(BaseEvenniaTest):
         self.assertEqual(obj.db.creator_ip, self.ip)
 
     def test_exit_get_return_exit(self):
+        self.create_rooms()
         ex1, _ = DefaultExit.create("north", self.room1, self.room2, account=self.account)
         single_return_exit = ex1.get_return_exit()
         all_return_exit = ex1.get_return_exit(return_all=True)
@@ -96,6 +102,8 @@ class DefaultObjectTest(BaseEvenniaTest):
         self.assertEqual(len(all_return_exit), 2)
 
     def test_exit_order(self):
+        self.create_rooms()
+        self.create_chars()
         DefaultExit.create("south", self.room1, self.room2, account=self.account)
         DefaultExit.create("portal", self.room1, self.room2, account=self.account)
         DefaultExit.create("north", self.room1, self.room2, account=self.account)
@@ -112,14 +120,18 @@ class DefaultObjectTest(BaseEvenniaTest):
 
     def test_urls(self):
         "Make sure objects are returning URLs"
+        self.create_rooms()
+        self.create_chars()
         self.assertTrue(self.char1.get_absolute_url())
         self.assertTrue("admin" in self.char1.web_get_admin_url())
 
         self.assertTrue(self.room1.get_absolute_url())
         self.assertTrue("admin" in self.room1.web_get_admin_url())
 
-    def test_search_stacked(self):
+    def test_search_stacked_and_plural(self):
         "Test searching stacks"
+        self.create_rooms()
+        self.create_chars()
         coin1 = DefaultObject.create("coin", location=self.room1)[0]
         coin2 = DefaultObject.create("coin", location=self.room1)[0]
         colon = DefaultObject.create("colon", location=self.room1)[0]
@@ -130,10 +142,7 @@ class DefaultObjectTest(BaseEvenniaTest):
         # partial match to 'colon' - multimatch error since stack is not homogenous
         self.assertEqual(self.char1.search("co", stacked=2), None)
 
-    def test_search_plural_form(self):
-        """Test searching for plural form of objects"""
-        coin1 = DefaultObject.create("coin", location=self.room1)[0]
-        coin2 = DefaultObject.create("coin", location=self.room1)[0]
+        # plural
         coin3 = DefaultObject.create("coin", location=self.room1)[0]
         # build the numbered aliases
         coin1.get_numbered_name(2, self.char1)
@@ -144,6 +153,7 @@ class DefaultObjectTest(BaseEvenniaTest):
         self.assertEqual(self.char1.search("coins", quiet=True), [coin1, coin2, coin3])
 
     def test_get_default_lockstring_base(self):
+        self.create_chars()
         pattern = (
             f"control:pid({self.account.id}) or id({self.char1.id}) or"
             f" perm(Admin);delete:pid({self.account.id}) or id({self.char1.id}) or"
@@ -155,6 +165,9 @@ class DefaultObjectTest(BaseEvenniaTest):
 
     def test_search_by_tag_kwarg(self):
         "Test the by_tag method"
+        self.create_rooms()
+        self.create_objs()
+        self.create_chars()
 
         self.obj1.tags.add("plugh", category="adventure")
 
@@ -171,6 +184,7 @@ class DefaultObjectTest(BaseEvenniaTest):
         self.assertEqual(list(search.search_object("Obj", tags=[("dummy", "adventure")])), [])
 
     def test_get_default_lockstring_room(self):
+        self.create_chars()
         pattern = (
             f"control:pid({self.account.id}) or id({self.char1.id}) or"
             f" perm(Admin);delete:pid({self.account.id}) or id({self.char1.id}) or"
@@ -181,6 +195,7 @@ class DefaultObjectTest(BaseEvenniaTest):
         )
 
     def test_get_default_lockstring_exit(self):
+        self.create_chars()
         pattern = (
             f"control:pid({self.account.id}) or id({self.char1.id}) or"
             f" perm(Admin);delete:pid({self.account.id}) or id({self.char1.id}) or"
@@ -191,6 +206,7 @@ class DefaultObjectTest(BaseEvenniaTest):
         )
 
     def test_get_default_lockstring_character(self):
+        self.create_chars()
         pattern = (
             f"puppet:pid({self.account.id}) or perm(Developer) or"
             f" pperm(Developer);delete:pid({self.account.id}) or"
@@ -202,6 +218,8 @@ class DefaultObjectTest(BaseEvenniaTest):
         )
 
     def test_get_name_without_article(self):
+        self.create_objs()
+        self.create_chars()
         self.assertEqual(self.obj1.get_numbered_name(1, self.char1, return_string=True), "an Obj")
         self.assertEqual(
             self.obj1.get_numbered_name(1, self.char1, return_string=True, no_article=True), "Obj"
@@ -212,6 +230,8 @@ class TestObjectManager(BaseEvenniaTest):
     "Test object manager methods"
 
     def test_get_object_with_account(self):
+        self.create_chars()
+        self.create_objs()
         query = ObjectDB.objects.get_object_with_account("TestAccount").first()
         self.assertEqual(query, self.char1)
         query = ObjectDB.objects.get_object_with_account(self.account.dbref)
@@ -230,6 +250,7 @@ class TestObjectManager(BaseEvenniaTest):
         self.assertEqual(list(query), [self.char1])
 
     def test_get_objs_with_key_and_typeclass(self):
+        self.create_chars()
         query = ObjectDB.objects.get_objs_with_key_and_typeclass(
             "Char", "evennia.objects.objects.DefaultCharacter"
         )
@@ -248,6 +269,8 @@ class TestObjectManager(BaseEvenniaTest):
         self.assertEqual(list(query), [self.char1])
 
     def test_get_objs_with_attr(self):
+        self.create_chars()
+        self.create_objs()
         self.obj1.db.testattr = "testval1"
         query = ObjectDB.objects.get_objs_with_attr("testattr")
         self.assertEqual(list(query), [self.obj1])
@@ -258,6 +281,7 @@ class TestObjectManager(BaseEvenniaTest):
 
     def test_copy_object(self):
         "Test that all attributes and tags properly copy across objects"
+        self.create_objs()
 
         # Add some tags
         self.obj1.tags.add("plugh", category="adventure")
@@ -286,6 +310,8 @@ class TestContentHandler(BaseEvenniaTest):
 
     def test_object_create_remove(self):
         """Create/destroy object"""
+        self.create_rooms()
+        self.create_objs()
         self.assertTrue(self.obj1 in self.room1.contents)
         self.assertTrue(self.obj2 in self.room1.contents)
 
@@ -297,6 +323,8 @@ class TestContentHandler(BaseEvenniaTest):
 
     def test_object_move(self):
         """Move object from room to room in various ways"""
+        self.create_rooms()
+        self.create_objs()
         self.assertTrue(self.obj1 in self.room1.contents)
         # use move_to hook
         self.obj1.move_to(self.room2)
@@ -309,6 +337,10 @@ class TestContentHandler(BaseEvenniaTest):
         self.assertFalse(self.obj1 in self.room2.contents)
 
     def test_content_type(self):
+        self.create_rooms()
+        self.create_objs()
+        self.create_chars()
+
         self.assertEqual(
             set(self.room1.contents_get()),
             set([self.char1, self.char2, self.obj1, self.obj2, self.exit]),
@@ -323,6 +355,10 @@ class TestContentHandler(BaseEvenniaTest):
 
     def test_contents_order(self):
         """Move object from room to room in various ways"""
+        self.create_rooms()
+        self.create_objs()
+        self.create_chars()
+
         self.assertEqual(
             self.room1.contents, [self.exit, self.obj1, self.obj2, self.char1, self.char2]
         )

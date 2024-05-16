@@ -32,6 +32,7 @@ class EvenniaWebTest(BaseEvenniaTest):
 
     def setUp(self):
         super().setUp()
+        self.create_chars()
 
         # Add chars to account rosters
         self.account.characters.add(self.char1)

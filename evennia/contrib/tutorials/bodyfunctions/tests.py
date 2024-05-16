@@ -16,6 +16,10 @@ class TestBodyFunctions(BaseEvenniaTest):
 
     def setUp(self):
         super().setUp()
+        self.create_rooms()
+        self.create_objs()
+        self.create_chars()
+        self.create_script()
         self.script.obj = self.char1
 
     def tearDown(self):

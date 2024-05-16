@@ -18,6 +18,10 @@ from evennia.utils import utils
 from evennia.utils.ansi import ANSIString
 from evennia.utils.test_resources import BaseEvenniaTest
 
+class FailingTest(TestCase):
+    """force the suite to have a failing test"""
+    def test_fail(self):
+        self.assertTrue(False)
 
 class TestIsIter(TestCase):
     def test_is_iter(self):
@@ -523,6 +527,7 @@ class TestDelay(BaseEvenniaTest):
 
     def setUp(self):
         super().setUp()
+        self.create_chars()
         # get a reference of TASK_HANDLER
         self.timedelay = 5
         global _TASK_HANDLER

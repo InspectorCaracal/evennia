@@ -99,6 +99,8 @@ class TestSpawner(BaseEvenniaTest):
 
 class TestUtils(BaseEvenniaTest):
     def test_prototype_from_object(self):
+        self.create_rooms()
+        self.create_objs()
         self.maxDiff = None
         self.obj1.attributes.add("test", "testval")
         self.obj1.tags.add("foo")
@@ -136,6 +138,8 @@ class TestUtils(BaseEvenniaTest):
         )
 
     def test_update_objects_from_prototypes(self):
+        self.create_rooms()
+        self.create_objs()
         self.maxDiff = None
         self.obj1.attributes.add("oldtest", "to_keep")
 
@@ -374,6 +378,7 @@ class TestUtils(BaseEvenniaTest):
 class TestProtLib(BaseEvenniaTest):
     def setUp(self):
         super().setUp()
+        self.create_objs()
         self.obj1.attributes.add("testattr", "testval")
         self.prot = spawner.prototype_from_object(self.obj1)
 
@@ -420,6 +425,7 @@ class TestProtFuncs(BaseEvenniaTest):
 class TestPrototypeStorage(BaseEvenniaTest):
     def setUp(self):
         super().setUp()
+        self.create_objs()
         self.maxDiff = None
 
         self.prot1 = spawner.prototype_from_object(self.obj1)
@@ -491,6 +497,7 @@ class TestPrototypeStorage(BaseEvenniaTest):
             self.assertCountEqual(protlib.search_prototype("prot"), [prot1b, prot2, prot3])
             self.assertCountEqual(protlib.search_prototype(tags="foo1"), [prot1b, prot2, prot3])
 
+        self.create_chars()
         self.assertTrue(str(str(protlib.list_prototypes(self.char1))))
 
 
@@ -503,6 +510,7 @@ class TestMenuModule(BaseEvenniaTest):
 
     def setUp(self):
         super().setUp()
+        self.create_chars()
 
         # set up fake store
         self.caller = self.char1
@@ -953,6 +961,8 @@ class PrototypeCrashTest(BaseEvenniaTest):
 
     def test_prototype_dos(self, *args, **kwargs):
         num_prototypes = self.num_prototypes
+        self.create_rooms()
+        self.create_chars()
         for x in range(2):
             self.create(num_prototypes)
             # print("Attempting to list prototypes...")
@@ -1032,6 +1042,10 @@ class TestIssue2908(BaseEvenniaTest):
     """
 
     def test_spawn_with_protfunc(self):
+        self.create_rooms()
+        self.create_objs()
+        self.create_chars()
+        
         self.room1.tags.add("beach", category="zone")
 
         prot = {

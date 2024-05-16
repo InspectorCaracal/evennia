@@ -8,10 +8,10 @@ from evennia.utils.search import (
     search_script_tag,
     search_typeclass,
 )
-from evennia.utils.test_resources import EvenniaTest
+from evennia.utils.test_resources import EvenniaTestCase
 
 
-class TestSearch(EvenniaTest):
+class TestSearch(EvenniaTestCase):
     def test_search_script_tag(self):
         """Check that a script can be found by its tag."""
         script, errors = DefaultScript.create("a-script")
