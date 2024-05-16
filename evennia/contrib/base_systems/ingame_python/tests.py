@@ -32,6 +32,8 @@ class TestEventHandler(BaseEvenniaTest):
     def setUp(self):
         """Create the event handler."""
         super().setUp()
+        self.create_rooms()
+        self.create_chars()
         self.handler = create_script(
             "evennia.contrib.base_systems.ingame_python.scripts.EventHandler"
         )

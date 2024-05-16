@@ -20,6 +20,7 @@ from . import puzzles
 class TestPuzzles(BaseEvenniaCommandTest):
     def setUp(self):
         super().setUp()
+        self.create_script()
         self.steel = create_object(self.object_typeclass, key="steel", location=self.char1.location)
         self.flint = create_object(self.object_typeclass, key="flint", location=self.char1.location)
         self.fire = create_object(self.object_typeclass, key="fire", location=self.char1.location)
@@ -273,6 +274,7 @@ class TestPuzzles(BaseEvenniaCommandTest):
         self._check_room_contents({"steel": 0, "flint": 0, "fire": 4}, check_test_tags=True)
 
     def test_puzzleedit(self):
+        self.create_script()
         recipe_dbref = self._good_recipe(
             "makefire", ["steel", "flint"], ["fire"], and_destroy_it=False
         )

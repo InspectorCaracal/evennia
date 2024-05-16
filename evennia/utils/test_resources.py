@@ -210,20 +210,22 @@ class EvenniaTestMixin:
         )
 
     def create_objs(self):
+        location = getattr(self, 'room1', None)
         self.obj1 = create.create_object(
-            self.object_typeclass, key="Obj", location=self.room1, home=self.room1
+            self.object_typeclass, key="Obj", location=location, home=location
         )
         self.obj2 = create.create_object(
-            self.object_typeclass, key="Obj2", location=self.room1, home=self.room1
+            self.object_typeclass, key="Obj2", location=location, home=location
         )
 
     def create_chars(self):
+        location = getattr(self, 'room1', None)
         self.char1 = create.create_object(
-            self.character_typeclass, key="Char", location=self.room1, home=self.room1
+            self.character_typeclass, key="Char", location=location, home=location
         )
         self.char1.permissions.add("Developer")
         self.char2 = create.create_object(
-            self.character_typeclass, key="Char2", location=self.room1, home=self.room1
+            self.character_typeclass, key="Char2", location=location, home=location
         )
         self.char1.account = self.account
         self.account.db._last_puppet = self.char1
@@ -263,10 +265,6 @@ class EvenniaTestMixin:
         evennia.SESSION_HANDLER.disconnect = Mock()
 
         self.create_accounts()
-        self.create_rooms()
-        self.create_objs()
-        self.create_chars()
-        self.create_script()
         self.setup_session()
 
     @override_settings(PROTOTYPE_MODULES=["evennia.utils.tests.data.prototypes_example"])
@@ -419,9 +417,10 @@ class EvenniaCommandTestMixin:
             - cmdobj.at_post_cmd()
 
         """
-        # The `self.char1` is created in the `EvenniaTest` base along with
-        # other helper objects like self.room and self.obj
-        caller = caller if caller else self.char1
+        if not caller:
+            if not hasattr(self, 'char1'):
+                self.create_chars()
+            caller = self.char1
         cmdobj.caller = caller
         cmdobj.cmdname = cmdstring if cmdstring else cmdobj.key
         cmdobj.raw_cmdname = cmdobj.cmdname
@@ -431,7 +430,7 @@ class EvenniaCommandTestMixin:
         cmdobj.session = evennia.SESSION_HANDLER.session_from_sessid(1)
         cmdobj.account = self.account
         cmdobj.raw_string = raw_string if raw_string is not None else cmdobj.key + " " + input_args
-        cmdobj.obj = obj or (caller if caller else self.char1)
+        cmdobj.obj = obj or caller
         inputs = inputs or []
 
         # set up receivers
@@ -595,6 +594,12 @@ class BaseEvenniaTest(EvenniaTestMixin, TestCase):
     This class parent has all default objects and uses only default settings.
 
     """
+    def setUp(self):
+        super().setUp()
+        # self.create_rooms()
+        # self.create_objs()
+        # self.create_chars()
+        # self.create_script()
 
 
 class EvenniaTest(EvenniaTestMixin, TestCase):
@@ -611,6 +616,14 @@ class EvenniaTest(EvenniaTestMixin, TestCase):
     exit_typeclass = settings.BASE_EXIT_TYPECLASS
     room_typeclass = settings.BASE_ROOM_TYPECLASS
     script_typeclass = settings.BASE_SCRIPT_TYPECLASS
+
+    def setUp(self):
+        super().setUp()
+        self.create_rooms()
+        self.create_objs()
+        self.create_chars()
+        self.create_script()
+        self.account.puppet_object(self.session, self.char1)
 
 
 @patch("evennia.commands.account.COMMAND_DEFAULT_CLASS", MuxCommand)
@@ -629,6 +642,12 @@ class BaseEvenniaCommandTest(BaseEvenniaTest, EvenniaCommandTestMixin):
     Commands only using the default settings.
 
     """
+    def setUp(self):
+        super().setUp()
+        self.create_rooms()
+        self.create_objs()
+        self.create_chars()
+        self.account.puppet_object(self.session, self.char1)
 
 
 class EvenniaCommandTest(EvenniaTest, EvenniaCommandTestMixin):

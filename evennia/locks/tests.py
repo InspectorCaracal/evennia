@@ -26,6 +26,7 @@ from evennia.utils.create import create_object
 
 class TestLockCheck(BaseEvenniaTest):
     def testrun(self):
+        self.create_objs()
         dbref = self.obj2.dbref
         self.obj1.locks.add(
             "owner:dbref(%s);edit:dbref(%s) or perm(Admin);examine:perm(Builder) "
@@ -45,6 +46,9 @@ class TestLockCheck(BaseEvenniaTest):
 class TestLockfuncs(BaseEvenniaTest):
     def setUp(self):
         super().setUp()
+        self.create_rooms()
+        self.create_objs()
+        self.create_chars()
         self.account2.permissions.add("Admin")
         self.char2.permissions.add("Builder")
 
@@ -199,6 +203,7 @@ class TestLockfuncs(BaseEvenniaTest):
         inventory_item.delete()
 
     def test_has_account(self):
+        self.account.puppet_object(self.session, self.char1)
         self.assertEqual(True, lockfuncs.has_account(self.char1, None))
         self.assertEqual(False, lockfuncs.has_account(self.obj1, None))
 
@@ -210,12 +215,15 @@ class TestLockfuncs(BaseEvenniaTest):
         self.assertEqual(False, lockfuncs.serversetting(None, None, "TESTVAL", "123"))
 
     def test_is_ooc__char(self):
+        self.account.puppet_object(self.session, self.char1)
         self.assertEqual(False, lockfuncs.is_ooc(self.char1, self.char1))
 
     def test_is_ooc__session(self):
+        self.account.puppet_object(self.session, self.char1)
         self.assertEqual(False, lockfuncs.is_ooc(self.session, self.char1))
 
     def test_is_ooc__account(self):
+        self.account.puppet_object(self.session, self.char1)
         self.assertEqual(False, lockfuncs.is_ooc(self.account, self.char1))
         self.account.unpuppet_all()
         self.assertEqual(True, lockfuncs.is_ooc(self.account, self.char1))
@@ -229,6 +237,9 @@ class TestPermissionCheck(BaseEvenniaTest):
 
     def test_check__success(self):
         """Test combinations that should pass the check"""
+        self.create_rooms()
+        self.create_chars()
+        self.account.puppet_object(self.session, self.char1)
         self.assertEqual(
             [perm for perm in self.char1.account.permissions.all()], ["developer", "player"]
         )
@@ -240,6 +251,9 @@ class TestPermissionCheck(BaseEvenniaTest):
 
     def test_check__fail(self):
         """Test combinations that should fail the check"""
+        self.create_rooms()
+        self.create_chars()
+        self.account.puppet_object(self.session, self.char1)
         self.assertFalse(self.char1.permissions.check("dummy"))
         self.assertFalse(self.char1.permissions.check("Builder", "dummy", require_all=True))
         self.assertFalse(self.char1.permissions.check("Developer", "foobar", require_all=True))

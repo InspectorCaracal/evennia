@@ -26,6 +26,10 @@ class TestEvenniaRESTApi(BaseEvenniaTest):
 
     def setUp(self):
         super().setUp()
+        self.create_rooms()
+        self.create_objs()
+        self.create_chars()
+        self.create_script()
         self.account.is_superuser = True
         self.account.save()
         self.client.force_login(self.account)

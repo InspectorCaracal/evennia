@@ -91,6 +91,7 @@ class TestDefaultGuest(BaseEvenniaTest):
 
     @patch("evennia.accounts.accounts.ChannelDB.objects.get_channel")
     def test_create(self, get_channel):
+        self.create_rooms()
         get_channel.connect = MagicMock(return_value=True)
         with override_settings(GUEST_HOME=self.room1.dbref):
             account, errors = DefaultGuest.create()
@@ -98,11 +99,14 @@ class TestDefaultGuest(BaseEvenniaTest):
         self.assertFalse(errors)
 
     def test_at_post_login(self):
+        self.create_rooms()
+        self.create_chars()
         self.account.db._last_puppet = self.char1
         self.account.at_post_login(self.session)
         self.account.at_post_login()
 
     def test_at_server_shutdown(self):
+        self.create_chars()
         account, errors = DefaultGuest.create(ip=self.ip)
         self.char1.delete = MagicMock()
         account.characters.add(self.char1)
@@ -110,6 +114,7 @@ class TestDefaultGuest(BaseEvenniaTest):
         self.char1.delete.assert_called()
 
     def test_at_post_disconnect(self):
+        self.create_chars()
         account, errors = DefaultGuest.create(ip=self.ip)
         self.char1.delete = MagicMock()
         account.characters.add(self.char1)
@@ -382,6 +387,7 @@ class TestDefaultAccount(TestCase):
 class TestAccountPuppetDeletion(BaseEvenniaTest):
     @override_settings(MULTISESSION_MODE=2)
     def test_puppet_deletion(self):
+        self.create_chars()
         # Check for existing chars
         self.assertFalse(self.account.characters, "Account should not have any chars by default.")
 
@@ -406,26 +412,33 @@ class TestDefaultAccountEv(BaseEvenniaTest):
 
     def test_characters_property(self):
         "test existence of None in _playable_characters Attr"
+        self.create_chars()
         self.account.db._playable_characters = [self.char1, None]
         self.assertEqual(self.account.characters.all(), [self.char1])
         self.assertEqual(self.account.db._playable_characters, [self.char1])
 
     def test_add_character_to_playable_list(self):
+        self.create_chars()
         self.assertEqual(self.account.characters.all(), [])
         self.account.characters.add(self.char1)
         self.assertEqual(self.account.characters.all(), [self.char1])
 
     def test_remove_character_from_playable_list(self):
+        self.create_chars()
         self.account.characters.add(self.char1)
         self.assertEqual(self.account.characters.all(), [self.char1])
         self.account.characters.remove(self.char1)
         self.assertEqual(self.account.characters.all(), [])
 
-    def test_puppet_success(self):
-        self.account.msg = MagicMock()
-        with patch("evennia.accounts.accounts._MULTISESSION_MODE", 2):
-            self.account.puppet_object(self.session, self.char1)
-            self.account.msg.assert_called_with("You are already puppeting this object.")
+    # def test_puppet_success(self):
+    #     # NOTE: how on earth is this test supposed to be testing "puppet success"??
+    #     # it's just verifying you were already puppetted by the test setup
+    #     self.create_rooms()
+    #     self.create_chars()
+    #     self.account.msg = MagicMock()
+    #     with patch("evennia.accounts.accounts._MULTISESSION_MODE", 2):
+    #         self.account.puppet_object(self.session, self.char1)
+    #         self.account.msg.assert_called_with("You are already puppeting this object.")
 
     @patch("evennia.accounts.accounts.time.time", return_value=10000)
     def test_idle_time(self, mock_time):
@@ -462,6 +475,7 @@ class TestDefaultAccountEv(BaseEvenniaTest):
         self.assertTrue(acct.pk)
 
     def test_at_look(self):
+        self.create_objs()
         ret = self.account.at_look()
         self.assertTrue("Out-of-Character" in ret)
         ret = self.account.at_look(target=self.obj1)

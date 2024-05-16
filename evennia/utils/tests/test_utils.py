@@ -523,6 +523,7 @@ class TestDelay(BaseEvenniaTest):
 
     def setUp(self):
         super().setUp()
+        self.create_chars()
         # get a reference of TASK_HANDLER
         self.timedelay = 5
         global _TASK_HANDLER

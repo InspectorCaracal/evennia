@@ -228,6 +228,8 @@ class TestUtils(BaseEvenniaTest):
 class TestEvScapeRoom(BaseEvenniaTest):
     def setUp(self):
         super().setUp()
+        self.create_rooms()
+        self.create_chars()
         self.room = utils.create_evscaperoom_object(
             "evscaperoom.room.EvscapeRoom", key="Testroom", home=self.room1
         )
@@ -256,6 +258,8 @@ class TestEvScapeRoom(BaseEvenniaTest):
 class TestStates(BaseEvenniaTest):
     def setUp(self):
         super().setUp()
+        self.create_rooms()
+        self.create_chars()
         self.room = utils.create_evscaperoom_object(
             "evscaperoom.room.EvscapeRoom", key="Testroom", home=self.room1
         )
