@@ -99,6 +99,7 @@ class TestSpawner(BaseEvenniaTest):
 
 class TestUtils(BaseEvenniaTest):
     def test_prototype_from_object(self):
+        self.create_rooms()
         self.create_objs()
         self.maxDiff = None
         self.obj1.attributes.add("test", "testval")
@@ -137,6 +138,7 @@ class TestUtils(BaseEvenniaTest):
         )
 
     def test_update_objects_from_prototypes(self):
+        self.create_rooms()
         self.create_objs()
         self.maxDiff = None
         self.obj1.attributes.add("oldtest", "to_keep")
