@@ -1316,9 +1316,10 @@ class DefaultObject(ObjectDB, metaclass=TypeclassBase):
             returns the new clone name on the form keyXX
             """
             key = self.key
+            objs = self.location.contents if self.location else []
             num = sum(
                 1
-                for obj in self.location.contents
+                for obj in objs
                 if obj.key.startswith(key) and obj.key.lstrip(key).isdigit()
             )
             return "%s%03i" % (key, num)
