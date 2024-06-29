@@ -19,6 +19,7 @@ from zope.interface import implementer
 
 import evennia
 from evennia.accounts.models import AccountDB
+from evennia.server.game_stats import get_game_stats
 from evennia.utils import get_evennia_version, logger
 
 _EGI_HOST = "http://evennia-game-index.appspot.com"
@@ -82,25 +83,24 @@ class EvenniaGameIndexClient:
             b"User-Agent": [b"Evennia Game Index Client"],
             b"Content-Type": [b"application/x-www-form-urlencoded"],
         }
-        egi_config = settings.GAME_INDEX_LISTING
-        # We are using `or` statements below with dict.get() to avoid sending
-        # stringified 'None' values to the server.
+        # TODO: instead of having this be in settings, make a module for the dict
+        game_stats = get_game_stats()
         try:
             values = {
                 # Game listing stuff
-                "game_name": egi_config.get("game_name", settings.SERVERNAME),
-                "game_status": egi_config["game_status"],
-                "game_website": egi_config.get("game_website", ""),
-                "short_description": egi_config["short_description"],
-                "long_description": egi_config.get("long_description", ""),
-                "listing_contact": egi_config["listing_contact"],
+                "game_name": game_stats["name"],
+                "game_status": game_stats.get("status", "pre-alpha"),
+                "game_website": game_stats["website"],
+                "short_description": game_stats["summary"],
+                "long_description": game_stats.get("description", ""),
+                "listing_contact": game_stats.get("contact", ""),
                 # How to play
-                "telnet_hostname": egi_config.get("telnet_hostname", ""),
-                "telnet_port": egi_config.get("telnet_port", ""),
-                "web_client_url": egi_config.get("web_client_url", ""),
+                "telnet_hostname": game_stats.get("hostname", ""),
+                "telnet_port": game_stats.get("ports", ""),
+                "web_client_url": game_stats.get("webclient", ""),
                 # Game stats
-                "connected_account_count": evennia.SESSION_HANDLER.account_count(),
-                "total_account_count": AccountDB.objects.num_total_accounts() or 0,
+                "connected_account_count": game_stats['online_players'],
+                "total_account_count": game_stats["total_players"],
                 # System info
                 "evennia_version": get_evennia_version(),
                 "python_version": platform.python_version(),

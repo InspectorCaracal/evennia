@@ -216,6 +216,9 @@ MXP_ENABLED = True
 # allow malevolent players to lure others to execute commands they did not
 # intend to.
 MXP_OUTGOING_ONLY = True
+# Allow MSSP requests. MSSP is used by MUD crawlers to determine
+# what type of game you are running, how many accounts you have etc.
+MSSP_ENABLED = True
 # Database objects are cached in what is known as the idmapper. The idmapper
 # caching results in a massive speedup of the server (since it dramatically
 # limits the number of database accesses needed) and also allows for
@@ -420,8 +423,7 @@ SERVER_SERVICES_PLUGIN_MODULES = ["server.conf.server_services_plugins"]
 # main Evennia Portal application when the Portal is initiated.
 # It will be called last in the startup sequence.
 PORTAL_SERVICES_PLUGIN_MODULES = ["server.conf.portal_services_plugins"]
-# Module holding MSSP meta data. This is used by MUD-crawlers to determine
-# what type of game you are running, how many accounts you have etc.
+# TODO: remove the module setting below
 MSSP_META_MODULE = "server.conf.mssp"
 # Module for web plugins.
 WEB_PLUGINS_MODULE = "server.conf.web_plugins"
@@ -848,18 +850,11 @@ DEFAULT_CHANNELS = [
 # The Evennia Game Index is a dynamic listing of Evennia games. You can add your game
 # to this list also if it is in closed pre-alpha development.
 GAME_INDEX_ENABLED = False
-# This dict
-GAME_INDEX_LISTING = {
-    "game_name": "Mygame",  # usually SERVERNAME
-    "game_status": "pre-alpha",  # pre-alpha, alpha, beta or launched
-    "short_description": "",  # could be GAME_SLOGAN
-    "long_description": "",
-    "listing_contact": "",  # email
-    "telnet_hostname": "",  # mygame.com
-    "telnet_port": "",  # 1234
-    "game_website": "",  # http://mygame.com
-    "web_client_url": "",  # http://mygame.com/webclient
-}
+# TODO: move this to a different section where it matches better
+GAME_STATS_DATA = None
+
+# TODO: temporary backwards compatability
+GAME_INDEX_LISTING = GAME_STATS_DATA
 # Evennia can connect to external IRC channels and
 # echo what is said on the channel to IRC and vice
 # versa. Obs - make sure the IRC network allows bots.

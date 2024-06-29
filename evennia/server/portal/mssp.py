@@ -13,6 +13,7 @@ active players and so on.
 
 from django.conf import settings
 
+from evennia.server.game_stats import get_game_stats
 from evennia.utils import utils
 
 MSSP = bytes([70])  # b"\x46"
@@ -20,8 +21,7 @@ MSSP_VAR = bytes([1])  # b"\x01"
 MSSP_VAL = bytes([2])  # b"\x02"
 
 # try to get the customized mssp info, if it exists.
-MSSPTable_CUSTOM = utils.variable_from_module(settings.MSSP_META_MODULE, "MSSPTable", default={})
-
+#MSSPTable_CUSTOM = utils.variable_from_module(settings.MSSP_META_MODULE, "MSSPTable", default={})
 
 class Mssp:
     """
@@ -40,27 +40,10 @@ class Mssp:
 
         """
         self.protocol = protocol
-        self.protocol.will(MSSP).addCallbacks(self.do_mssp, self.no_mssp)
-
-    def get_player_count(self):
-        """
-        Get number of logged-in players.
-
-        Returns:
-            count (int): The number of players in the MUD.
-
-        """
-        return str(self.protocol.sessionhandler.count_loggedin())
-
-    def get_uptime(self):
-        """
-        Get how long the portal has been online (reloads are not counted).
-
-        Returns:
-            uptime (int): Number of seconds of uptime.
-
-        """
-        return str(self.protocol.sessionhandler.uptime)
+        if settings.MSSP_ENABLED:
+            self.protocol.will(MSSP).addCallbacks(self.do_mssp, self.no_mssp)
+        else:
+            self.protocol.wont(MSSP)
 
     def no_mssp(self, option):
         """
@@ -82,18 +65,20 @@ class Mssp:
 
         """
 
+        game_stats = get_game_stats()
+
         self.mssp_table = {
             # Required fields
-            "NAME": settings.SERVERNAME,
-            "PLAYERS": self.get_player_count,
-            "UPTIME": self.get_uptime,
+            "NAME": game_stats.pop('name'),
+            "PLAYERS": game_stats.pop('players_online'),
+            "UPTIME": game_stats.pop('uptime'),
             "PORT": list(
                 str(port) for port in reversed(settings.TELNET_PORTS)
             ),  # most important port should be last in list
             # Evennia auto-filled
-            "CRAWL DELAY": "-1",
+            "CRAWL DELAY": game_stats.pop("crawl_delay", "-1"),
             "CODEBASE": utils.get_evennia_version(mode="pretty"),
-            "FAMILY": "Custom",
+            "FAMILY": "Evennia",
             "ANSI": "1",
             "GMCP": "1" if settings.TELNET_OOB_ENABLED else "0",
             "ATCP": "0",
@@ -101,7 +86,7 @@ class Mssp:
             "MCP": "0",
             "MSDP": "1" if settings.TELNET_OOB_ENABLED else "0",
             "MSP": "0",
-            "MXP": "1",
+            "MXP": "1" if settings.MXP_ENABLED else "0",
             "PUEBLO": "0",
             "SSL": "1" if settings.SSL_ENABLED else "0",
             "UTF-8": "1",
@@ -110,10 +95,10 @@ class Mssp:
             "XTERM 256 COLORS": "1",
         }
 
-        # update the static table with the custom one
-        if MSSPTable_CUSTOM:
-            self.mssp_table.update(MSSPTable_CUSTOM)
-
+        # auto-generated data should take precedence to custom
+        # also, MSSP expects all keys to be capitalized
+        self.mssp_table = { key.upper(): val for key, val in game_stats.items() } | self.mssp_table
+ 
         varlist = b""
         for variable, value in self.mssp_table.items():
             if callable(value):
