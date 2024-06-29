@@ -161,7 +161,8 @@ class ConnectionWizard(object):
                 sys.exit()
             return resp
 
-
+# TODO: rework and probably rename this entire wizard to configure reported stats, since
+# the original intent of using this to manage multiple external connections is obsolete
 def node_start(wizard):
     text = """
     This wizard helps to attach your Evennia server to external networks. It

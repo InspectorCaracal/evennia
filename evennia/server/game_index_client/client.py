@@ -83,7 +83,6 @@ class EvenniaGameIndexClient:
             b"User-Agent": [b"Evennia Game Index Client"],
             b"Content-Type": [b"application/x-www-form-urlencoded"],
         }
-        # TODO: instead of having this be in settings, make a module for the dict
         game_stats = get_game_stats()
         try:
             values = {
@@ -108,7 +107,7 @@ class EvenniaGameIndexClient:
                 "server_platform": platform.platform(),
             }
         except KeyError as err:
-            raise KeyError(f"Error loading GAME_INDEX_LISTING: {err}")
+            raise KeyError(f"Error loading game stats: {err}")
 
         data = urllib.parse.urlencode(values)
 
