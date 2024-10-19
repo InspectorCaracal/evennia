@@ -1462,6 +1462,15 @@ class CounterTrait(Trait):
         return self._enforce_boundaries((self.current + self.mod) * self.mult)
 
     @property
+    def rate(self):
+        return self._data["rate"]
+
+    @rate.setter
+    def rate(self, value):
+        self._data["rate"] = value
+        self._check_and_start_timer(self.value)
+    
+    @property
     def ratetarget(self):
         return self._data["ratetarget"]
 
