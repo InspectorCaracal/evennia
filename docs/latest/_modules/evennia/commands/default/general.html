@@ -210,7 +210,7 @@
 <span class="sd">      nick build $1 $2 = create/drop $1;$2</span>
 <span class="sd">      nick tell $1 $2=page $1=$2</span>
 <span class="sd">      nick tm?$1=page tallman=$1</span>
-<span class="sd">      nick tm\=$1=page tallman=$1</span>
+<span class="sd">      nick tm\\\\=$1=page tallman=$1</span>
 
 <span class="sd">    A &#39;nick&#39; is a personal string replacement. Use $1, $2, ... to catch arguments.</span>
 <span class="sd">    Put the last $-marker without an ending space to catch all remaining text. You</span>
@@ -220,7 +220,7 @@
 <span class="sd">        ? - matches 0 or 1 single characters</span>
 <span class="sd">        [abcd] - matches these chars in any order</span>
 <span class="sd">        [!abcd] - matches everything not among these chars</span>
-<span class="sd">        \= - escape literal &#39;=&#39; you want in your &lt;string&gt;</span>
+<span class="sd">        \\\\= - escape literal &#39;=&#39; you want in your &lt;string&gt;</span>
 
 <span class="sd">    Note that no objects are actually renamed or changed by this command - your nicks</span>
 <span class="sd">    are only available to you. If you want to permanently add keywords to an object</span>

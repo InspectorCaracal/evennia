@@ -765,12 +765,6 @@
 <span class="sd">        shutdown or a reset.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># We need to do this just in case the server was killed in a way where</span>
-        <span class="c1"># the normal cleanup operations did not have time to run.</span>
-        <span class="kn">from</span><span class="w"> </span><span class="nn">evennia.objects.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">ObjectDB</span>
-
-        <span class="n">ObjectDB</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">clear_all_sessids</span><span class="p">()</span>
-
         <span class="c1"># Remove non-persistent scripts</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">evennia.scripts.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScriptDB</span>
 

@@ -426,18 +426,20 @@
         <span class="n">infuncstr</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>  <span class="c1"># string parts inside the current level of $funcdef (including $)</span>
         <span class="n">literal_infuncstr</span> <span class="o">=</span> <span class="kc">False</span>
 
-        <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">string</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">ichar</span><span class="p">,</span> <span class="n">char</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">escaped</span><span class="p">:</span>
                 <span class="c1"># always store escaped characters verbatim</span>
                 <span class="k">if</span> <span class="n">curr_func</span><span class="p">:</span>
                     <span class="n">infuncstr</span> <span class="o">+=</span> <span class="n">char</span>
+                    <span class="n">curr_func</span><span class="o">.</span><span class="n">rawstr</span> <span class="o">+=</span> <span class="n">char</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">fullstr</span> <span class="o">+=</span> <span class="n">char</span>
                 <span class="n">escaped</span> <span class="o">=</span> <span class="kc">False</span>
                 <span class="k">continue</span>
 
-            <span class="k">if</span> <span class="n">char</span> <span class="o">==</span> <span class="n">escape_char</span><span class="p">:</span>
-                <span class="c1"># don&#39;t store the escape-char itself</span>
+            <span class="k">if</span> <span class="n">char</span> <span class="o">==</span> <span class="n">escape_char</span> <span class="ow">and</span> <span class="n">string</span><span class="p">[</span><span class="n">ichar</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:</span> <span class="n">ichar</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span> <span class="o">!=</span> <span class="n">escape_char</span><span class="p">:</span>
+                <span class="c1"># don&#39;t store the escape-char itself, but keep one escape-char,</span>
+                <span class="c1"># if it&#39;s followed by another escape-char</span>
                 <span class="n">escaped</span> <span class="o">=</span> <span class="kc">True</span>
                 <span class="k">continue</span>
 
@@ -464,7 +466,8 @@
                         <span class="n">curr_func</span><span class="o">.</span><span class="n">open_lsquare</span> <span class="o">=</span> <span class="n">open_lsquare</span>
                         <span class="n">curr_func</span><span class="o">.</span><span class="n">open_lcurly</span> <span class="o">=</span> <span class="n">open_lcurly</span>
                         <span class="c1"># we must strip the remaining funcstr so it&#39;s not counted twice</span>
-                        <span class="n">curr_func</span><span class="o">.</span><span class="n">rawstr</span> <span class="o">=</span> <span class="n">curr_func</span><span class="o">.</span><span class="n">rawstr</span><span class="p">[:</span> <span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">infuncstr</span><span class="p">)]</span>
+                        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">infuncstr</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                            <span class="n">curr_func</span><span class="o">.</span><span class="n">rawstr</span> <span class="o">=</span> <span class="n">curr_func</span><span class="o">.</span><span class="n">rawstr</span><span class="p">[:</span> <span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">infuncstr</span><span class="p">)]</span>
                         <span class="n">current_kwarg</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
                         <span class="n">infuncstr</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
                         <span class="n">double_quoted</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>

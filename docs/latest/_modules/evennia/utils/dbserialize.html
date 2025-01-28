@@ -127,6 +127,7 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">evennia</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">evennia.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">logger</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">evennia.utils.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_iter</span><span class="p">,</span> <span class="n">to_bytes</span><span class="p">,</span> <span class="n">uses_database</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">IntFlag</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;to_pickle&quot;</span><span class="p">,</span> <span class="s2">&quot;from_pickle&quot;</span><span class="p">,</span> <span class="s2">&quot;do_pickle&quot;</span><span class="p">,</span> <span class="s2">&quot;do_unpickle&quot;</span><span class="p">,</span> <span class="s2">&quot;dbserialize&quot;</span><span class="p">,</span> <span class="s2">&quot;dbunserialize&quot;</span><span class="p">)</span>
 
@@ -764,6 +765,8 @@
 
         <span class="k">if</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">SafeString</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">item</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">IntFlag</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">item</span><span class="o">.</span><span class="n">value</span>
         <span class="k">elif</span> <span class="n">dtype</span> <span class="o">==</span> <span class="nb">tuple</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">process_item</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">item</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">dtype</span> <span class="ow">in</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">_SaverList</span><span class="p">):</span>

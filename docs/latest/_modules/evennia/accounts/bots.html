@@ -647,24 +647,28 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">factory_path</span> <span class="o">=</span> <span class="s2">&quot;evennia.server.portal.discord.DiscordWebsocketServerFactory&quot;</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">_load_channels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ndb</span><span class="o">.</span><span class="n">ev_channels</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">channel_links</span> <span class="o">:=</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">channels</span><span class="p">:</span>
+            <span class="c1"># this attribute contains a list of evennia&lt;-&gt;discord links in the form</span>
+            <span class="c1"># of (&quot;evennia_channel&quot;, &quot;discord_chan_id&quot;)</span>
+            <span class="c1"># grab Evennia channels, cache and connect</span>
+            <span class="n">channel_set</span> <span class="o">=</span> <span class="p">{</span><span class="n">evchan</span> <span class="k">for</span> <span class="n">evchan</span><span class="p">,</span> <span class="n">dcid</span> <span class="ow">in</span> <span class="n">channel_links</span><span class="p">}</span>
+            <span class="k">for</span> <span class="n">channel_name</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">channel_set</span><span class="p">):</span>
+                <span class="n">channel</span> <span class="o">=</span> <span class="n">search</span><span class="o">.</span><span class="n">search_channel</span><span class="p">(</span><span class="n">channel_name</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">channel</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">log_err</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Evennia Channel </span><span class="si">{</span><span class="n">channel_name</span><span class="si">}</span><span class="s2"> not found; skipping.&quot;</span><span class="p">)</span>
+                    <span class="k">continue</span>
+                <span class="n">channel</span> <span class="o">=</span> <span class="n">channel</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ndb</span><span class="o">.</span><span class="n">ev_channels</span><span class="p">[</span><span class="n">channel_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">channel</span>
 
 <div class="viewcode-block" id="DiscordBot.at_init"><a class="viewcode-back" href="../../../api/evennia.accounts.bots.html#evennia.accounts.bots.DiscordBot.at_init">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">at_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Load required channels back into memory</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">channel_links</span> <span class="o">:=</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">channels</span><span class="p">:</span>
-            <span class="c1"># this attribute contains a list of evennia&lt;-&gt;discord links in the form</span>
-            <span class="c1"># of (&quot;evennia_channel&quot;, &quot;discord_chan_id&quot;)</span>
-            <span class="c1"># grab Evennia channels, cache and connect</span>
-            <span class="n">channel_set</span> <span class="o">=</span> <span class="p">{</span><span class="n">evchan</span> <span class="k">for</span> <span class="n">evchan</span><span class="p">,</span> <span class="n">dcid</span> <span class="ow">in</span> <span class="n">channel_links</span><span class="p">}</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ndb</span><span class="o">.</span><span class="n">ev_channels</span> <span class="o">=</span> <span class="p">{}</span>
-            <span class="k">for</span> <span class="n">channel_name</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">channel_set</span><span class="p">):</span>
-                <span class="n">channel</span> <span class="o">=</span> <span class="n">search</span><span class="o">.</span><span class="n">search_channel</span><span class="p">(</span><span class="n">channel_name</span><span class="p">)</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">channel</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Evennia Channel </span><span class="si">{</span><span class="n">channel_name</span><span class="si">}</span><span class="s2"> not found.&quot;</span><span class="p">)</span>
-                <span class="n">channel</span> <span class="o">=</span> <span class="n">channel</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">ndb</span><span class="o">.</span><span class="n">ev_channels</span><span class="p">[</span><span class="n">channel_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">channel</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_load_channels</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DiscordBot.start"><a class="viewcode-back" href="../../../api/evennia.accounts.bots.html#evennia.accounts.bots.DiscordBot.start">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -675,27 +679,18 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
             <span class="k">return</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ndb</span><span class="o">.</span><span class="n">ev_channels</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ndb</span><span class="o">.</span><span class="n">ev_channels</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-                <span class="n">channel</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">ndb</span><span class="o">.</span><span class="n">ev_channels</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_load_channels</span><span class="p">()</span>
 
-        <span class="k">elif</span> <span class="n">channel_links</span> <span class="o">:=</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">channels</span><span class="p">:</span>
-            <span class="c1"># this attribute contains a list of evennia&lt;-&gt;discord links in the form</span>
-            <span class="c1"># of (&quot;evennia_channel&quot;, &quot;discord_chan_id&quot;)</span>
-            <span class="c1"># grab Evennia channels, cache and connect</span>
-            <span class="n">channel_set</span> <span class="o">=</span> <span class="p">{</span><span class="n">evchan</span> <span class="k">for</span> <span class="n">evchan</span><span class="p">,</span> <span class="n">dcid</span> <span class="ow">in</span> <span class="n">channel_links</span><span class="p">}</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ndb</span><span class="o">.</span><span class="n">ev_channels</span> <span class="o">=</span> <span class="p">{}</span>
-            <span class="k">for</span> <span class="n">channel_name</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">channel_set</span><span class="p">):</span>
-                <span class="n">channel</span> <span class="o">=</span> <span class="n">search</span><span class="o">.</span><span class="n">search_channel</span><span class="p">(</span><span class="n">channel_name</span><span class="p">)</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">channel</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Evennia Channel </span><span class="si">{</span><span class="n">channel_name</span><span class="si">}</span><span class="s2"> not found.&quot;</span><span class="p">)</span>
-                <span class="n">channel</span> <span class="o">=</span> <span class="n">channel</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">ndb</span><span class="o">.</span><span class="n">ev_channels</span><span class="p">[</span><span class="n">channel_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">channel</span>
-                <span class="n">channel</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ndb</span><span class="o">.</span><span class="n">ev_channels</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">channel</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">log_warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s2"> could not connect to Evennia channel </span><span class="si">{</span><span class="n">channel</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">channel</span><span class="o">.</span><span class="n">access</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;send&quot;</span><span class="p">):</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">log_warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s2"> doesn&#39;t have permission to send messages to Evennia channel </span><span class="si">{</span><span class="n">channel</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
 
-        <span class="c1"># connect</span>
         <span class="c1"># these will be made available as properties on the protocol factory</span>
         <span class="n">configdict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;uid&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dbid</span><span class="p">}</span>
+        <span class="c1"># finally, connect</span>
         <span class="n">evennia</span><span class="o">.</span><span class="n">SESSION_HANDLER</span><span class="o">.</span><span class="n">start_bot_session</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">factory_path</span><span class="p">,</span> <span class="n">configdict</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DiscordBot.at_pre_channel_msg"><a class="viewcode-back" href="../../../api/evennia.accounts.bots.html#evennia.accounts.bots.DiscordBot.at_pre_channel_msg">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">at_pre_channel_msg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">senders</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
