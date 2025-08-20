@@ -977,8 +977,13 @@ class EvString(str, metaclass=EvStringMeta):
         
         Evennia 
         """
+        # first, we need to handle escaped markup characters (||)
+        # We'll temporarily replace them with a placeholder to avoid confusion during parsing
+        ESCAPE_PLACEHOLDER = '\x00ESCAPED_PIPE\x00'
+        temp_string = self._raw_string.replace('||', ESCAPE_PLACEHOLDER)
+        
         # first, we split out any MXP
-        chunks = _RE_MXP.split(self._raw_string)
+        chunks = _RE_MXP.split(temp_string)
         if remainder := len(chunks) % 4:
             # take off the remainder items, to make sure we can iterate through the links
             i = len(chunks)-remainder
@@ -1029,10 +1034,10 @@ class EvString(str, metaclass=EvStringMeta):
                 else:
                     # text items are zero and even indices, e.g. mod 2 is falsey
                     # this escapes any single, unescaped markup characters left
-                    split_chunk = [EvCode(i, 1) if i == _MARKUP_CHAR else i for i in re.split(f"(\\{_MARKUP_CHAR})", text) if i]
-                    final_chunks += split_chunk
-                    # if text:
-                    #     final_chunks.append(text)
+                    # but first, restore escaped pipes
+                    text = text.replace(ESCAPE_PLACEHOLDER, '|')
+                    if text:
+                        final_chunks.append(text)
 
         # since this may have added escaped markup characters, we re-generate the raw and clean strings
         self._raw_string = ''.join([str(c) for c in final_chunks])
