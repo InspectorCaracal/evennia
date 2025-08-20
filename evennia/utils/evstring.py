@@ -1023,7 +1023,7 @@ class EvString(str, metaclass=EvStringMeta):
                 else:
                     # text items are zero and even indices, e.g. mod 2 is falsey
                     # this escapes any single, unescaped markup characters left
-                    split_chunk = [EvCode(i, 1) if i == _MARKUP_CHAR else i for i in re.split(f"(\{_MARKUP_CHAR})", text) if i]
+                    split_chunk = [EvCode(i, 1) if i == _MARKUP_CHAR else i for i in re.split(f"(\\{_MARKUP_CHAR})", text) if i]
                     final_chunks += split_chunk
                     # if text:
                     #     final_chunks.append(text)
