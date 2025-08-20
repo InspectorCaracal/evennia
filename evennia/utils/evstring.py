@@ -918,7 +918,7 @@ class EvString(str, metaclass=EvStringMeta):
         start of the text to a link and convert the tail to a normal EvString.
 
         Args:
-            sep (str): The separator to split the string on.
+            sep (str or EvString): The separator to split the string on.
             reverse (boolean): Whether to split the string on the last
                 occurrence of the separator rather than the first.
 
@@ -928,13 +928,19 @@ class EvString(str, metaclass=EvStringMeta):
             EvString: The part of the string after the separator.
 
         """
+        # Convert EvString separator to string
+        if hasattr(sep, 'clean'):
+            sep_str = sep.clean()
+        else:
+            sep_str = sep
+            
         result = tuple()
         if reverse:
             for i, chunk in reversed(enumerate(self._code_chunks)):
                 # we do not split within codes
                 if isinstance(chunk, EvCode):
                     continue
-                result = chunk.rpartition(sep)
+                result = chunk.rpartition(sep_str)
                 if result[0]:
                     break
                 else:
@@ -945,7 +951,7 @@ class EvString(str, metaclass=EvStringMeta):
                 # we do not split within codes
                 if isinstance(chunk, EvCode):
                     continue
-                result = chunk.partition(sep)
+                result = chunk.partition(sep_str)
                 if result[-1]:
                     break
                 else:
@@ -960,7 +966,7 @@ class EvString(str, metaclass=EvStringMeta):
             first = self._code_chunks[:i] + (result[0],)
             last = (result[2],) + self._code_chunks[i+1:]
             # create new EvStrings from our partitioned results and return
-            return ( EvString(''.join(first), chunks=first), sep, EvString(''.join(last), chunks=last), )
+            return ( EvString(''.join(first), chunks=first), sep_str, EvString(''.join(last), chunks=last), )
             
     def rpartition(self, sep):
         return self.partition(sep, reverse=True)
@@ -1066,7 +1072,7 @@ class EvString(str, metaclass=EvStringMeta):
         Splits a string based on a separator.
 
         Args:
-            sep (str): A string to search for which will be used to split
+            sep (str or EvString): A string to search for which will be used to split
                 the string. For instance, ',' for 'Hello,world' would
                 result in ['Hello', 'world']
             maxsplit (int): The maximum number of times to split the string.
@@ -1079,6 +1085,10 @@ class EvString(str, metaclass=EvStringMeta):
                 this string.
 
         """
+        # Convert EvString separator to string
+        if hasattr(sep, 'clean'):
+            sep = sep.clean()
+        
         if len(sep) == 0:
             raise ValueError("empty separator")
 
@@ -1104,7 +1114,7 @@ class EvString(str, metaclass=EvStringMeta):
         beginning.
 
         Args:
-            by (str): A string to search for which will be used to split
+            sep (str or EvString): A string to search for which will be used to split
                 the string. For instance, ',' for 'Hello,world' would
                 result in ['Hello', 'world']
             maxsplit (int): The maximum number of times to split the string.
@@ -1117,6 +1127,10 @@ class EvString(str, metaclass=EvStringMeta):
                 this string.
 
         """
+        # Convert EvString separator to string
+        if hasattr(sep, 'clean'):
+            sep = sep.clean()
+            
         if len(sep) == 0:
             raise ValueError("empty separator")
 
