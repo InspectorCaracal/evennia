@@ -1153,7 +1153,7 @@ class EvString(str, metaclass=EvStringMeta):
         """
         if len(self._code_chunks) == 1:
             if not len(self._code_chunks[0]):
-                return EvString(self._raw_string, chunks=self.code_chunks)
+                return EvString(self._raw_string, chunks=self._code_chunks)
             else:
                 return EvString(str(self._code_chunks[0]).strip())
 
@@ -1222,7 +1222,7 @@ class EvString(str, metaclass=EvStringMeta):
         """
         if len(self._code_chunks) == 1:
             if not len(self._code_chunks[0]):
-                return EvString(self._raw_string, chunks=self.code_chunks)
+                return EvString(self._raw_string, chunks=self._code_chunks)
             else:
                 return EvString(str(self._code_chunks[0]).lstrip())
 
@@ -1263,7 +1263,7 @@ class EvString(str, metaclass=EvStringMeta):
         """
         if len(self._code_chunks) == 1:
             if not len(self._code_chunks[0]):
-                return EvString(self._raw_string, chunks=self.code_chunks)
+                return EvString(self._raw_string, chunks=self._code_chunks)
             else:
                 return EvString(str(self._code_chunks[0]).rstrip())
 
@@ -1468,7 +1468,7 @@ class EvStringContainer:
         Return the container's data formatted with ANSI code
         """
         sep = self.sep
-        if not hasattr(sep, 'ansi'):
+        if not hasattr(sep, 'to_ansi'):
             sep = EvString(self.sep)
         return sep.to_ansi(**kwargs).join([item.to_ansi(**kwargs) for item in self.collect_evstring() if item])
     
@@ -1477,9 +1477,9 @@ class EvStringContainer:
         Return the container's data formatted for HTML
         """
         sep = self.sep
-        if not hasattr(sep, 'html'):
+        if not hasattr(sep, 'to_html'):
             sep = EvString(self.sep)
-        return sep.html(**kwargs).join([item.html(**kwargs) for item in self.collect_evstring() if item])
+        return sep.to_html(**kwargs).join([item.to_html(**kwargs) for item in self.collect_evstring() if item])
 
 
 
