@@ -174,7 +174,7 @@ class EvForm(EvStringContainer):
         "pad_top": 0,
         "pad_bottom": 0,
         "align": "l",
-        "valign": "t",
+        "valign": "c",
         "enforce_size": True,
     }
 
@@ -396,6 +396,19 @@ class EvForm(EvStringContainer):
                 original_line = EvForm._to_evstring(matrix[iy])
                 original_clean = original_line.clean()
                 
+                # Determine alignment based on identifier position within the rectangle
+                identifier_pos = original_clean.find(key, leftix, rightix)
+                rect_width = rightix - leftix
+                relative_pos = (identifier_pos - leftix) / max(1, rect_width - 1)  # Avoid division by zero
+                
+                # Determine alignment based on relative position
+                if relative_pos < 0.33:
+                    cell_align = "l"  # left
+                elif relative_pos > 0.67:
+                    cell_align = "r"  # right  
+                else:
+                    cell_align = "c"  # center
+                
                 # scan up to find top of rectangle
                 dy_up = 0
                 if iy > 0:
@@ -409,14 +422,7 @@ class EvForm(EvStringContainer):
                         if rightix <= len(line_above):
                             chars_in_range = line_above[leftix:rightix]
                             # If it's all formchars and matches the width, include it
-                            # But if the original line has escaped markup, be more selective
-                            if ('|' in original_clean[:leftix] and 
-                                all(c == char for c in chars_in_range) and
-                                not any(c in chars_in_range for c in '|-')):
-                                # This looks like a decorative line that aligns with an escaped markup line
-                                # Don't include it in the rectangle to avoid over-expansion
-                                break
-                            elif all(c == char for c in chars_in_range):
+                            if all(c == char for c in chars_in_range):
                                 dy_up += 1
                             else:
                                 break
@@ -434,14 +440,7 @@ class EvForm(EvStringContainer):
                         if rightix <= len(line_below):
                             chars_in_range = line_below[leftix:rightix]
                             # If it's all formchars and matches the width, include it
-                            # But if the original line has escaped markup, be more selective
-                            if ('|' in original_clean[:leftix] and 
-                                all(c == char for c in chars_in_range) and
-                                not any(c in chars_in_range for c in '|-')):
-                                # This looks like a decorative line that aligns with an escaped markup line
-                                # Don't include it in the rectangle to avoid over-expansion
-                                break
-                            elif all(c == char for c in chars_in_range):
+                            if all(c == char for c in chars_in_range):
                                 dy_down += 1
                             else:
                                 break
@@ -454,12 +453,12 @@ class EvForm(EvStringContainer):
                 width = rightix - leftix
                 height = abs(iyup - iydown) + 1
 
-                # store (key, y, x, width, height) of rectangle
-                rects.append((key, iyup, leftix, width, height))
+                # store (key, y, x, width, height, align) of rectangle
+                rects.append((key, iyup, leftix, width, height, cell_align))
             return rects
 
         # Map EvCells into form rectangles
-        for key, y, x, width, height in _get_rectangles(formchar):
+        for key, y, x, width, height, align in _get_rectangles(formchar):
             # get data to populate cell
             data = self.cells_mapping.get(key, "")
             if isinstance(data, EvCell):
@@ -476,13 +475,18 @@ class EvForm(EvStringContainer):
                     **(cell_options | {"align": custom_align, "valign": custom_valign}),
                 )
             else:
-                # generating cell on the fly
-                cell = EvCell(data, width=width, height=height, **cell_options)
+                # generating cell on the fly, use the calculated alignment
+                cell_options_with_align = cell_options.copy()
+                cell_options_with_align["align"] = align
+                cell = EvCell(data, width=width, height=height, **cell_options_with_align)
 
             mapping[key] = (y, x, width, height, cell)
 
         # Map EvTables into form rectangles
-        for key, y, x, width, height in _get_rectangles(tablechar):
+        for rect_data in _get_rectangles(tablechar):
+            # Handle the fact that rectangles now return 6 elements (including alignment)
+            # but for tables we only need the first 5
+            key, y, x, width, height = rect_data[:5]
             # get EvTable from mapping
             table = self.tables_mapping.get(key, None)
 
