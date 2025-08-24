@@ -392,26 +392,59 @@ class EvForm(EvStringContainer):
                         break
 
             for key, (iy, leftix, rightix) in coords.items():
+                # Store the original line that contained the identifier
+                original_line = EvForm._to_evstring(matrix[iy])
+                original_clean = original_line.clean()
+                
                 # scan up to find top of rectangle
                 dy_up = 0
                 if iy > 0:
                     for i in range(1, iy + 1):
                         # Use clean strings for consistent coordinate mapping
                         line_above = EvForm._to_evstring(matrix[iy - i]).clean()
-                        # Check if the range is valid and all characters match
-                        if rightix <= len(line_above) and all(line_above[ix] == char for ix in range(leftix, rightix)):
-                            dy_up += 1
+                        
+                        # More restrictive check: the line should contain the same pattern structure
+                        # not just all formchars. Check if it looks like a "decorative" line
+                        # vs a line that contains meaningful cell content.
+                        if rightix <= len(line_above):
+                            chars_in_range = line_above[leftix:rightix]
+                            # If it's all formchars and matches the width, include it
+                            # But if the original line has escaped markup, be more selective
+                            if ('|' in original_clean[:leftix] and 
+                                all(c == char for c in chars_in_range) and
+                                not any(c in chars_in_range for c in '|-')):
+                                # This looks like a decorative line that aligns with an escaped markup line
+                                # Don't include it in the rectangle to avoid over-expansion
+                                break
+                            elif all(c == char for c in chars_in_range):
+                                dy_up += 1
+                            else:
+                                break
                         else:
                             break
-                # find bottom edge of rectangle
+                            
+                # find bottom edge of rectangle  
                 dy_down = 0
                 if iy < nmatrix - 1:
                     for i in range(1, nmatrix - iy):
                         # Use clean strings for consistent coordinate mapping
                         line_below = EvForm._to_evstring(matrix[iy + i]).clean()
-                        # Check if the range is valid and all characters match
-                        if rightix <= len(line_below) and all(line_below[ix] == char for ix in range(leftix, rightix)):
-                            dy_down += 1
+                        
+                        # Same restrictive check for lines below
+                        if rightix <= len(line_below):
+                            chars_in_range = line_below[leftix:rightix]
+                            # If it's all formchars and matches the width, include it
+                            # But if the original line has escaped markup, be more selective
+                            if ('|' in original_clean[:leftix] and 
+                                all(c == char for c in chars_in_range) and
+                                not any(c in chars_in_range for c in '|-')):
+                                # This looks like a decorative line that aligns with an escaped markup line
+                                # Don't include it in the rectangle to avoid over-expansion
+                                break
+                            elif all(c == char for c in chars_in_range):
+                                dy_down += 1
+                            else:
+                                break
                         else:
                             break
 
