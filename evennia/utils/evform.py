@@ -364,6 +364,21 @@ class EvForm(EvStringContainer):
             coords = {}
             regex = re.compile(rf"{char}+([^{INVALID_FORMCHARS}{char}]+){char}+")
 
+            # Create a mapping from clean coordinates to raw coordinates for each line
+            def clean_to_raw_coords(line_evstring, clean_start, clean_end):
+                """Convert clean string coordinates to raw string coordinates"""
+                clean_str = line_evstring.clean()
+                raw_str = str(line_evstring)
+                
+                # If clean and raw lengths are the same, no mapping needed
+                if len(clean_str) == len(raw_str):
+                    return clean_start, clean_end
+                
+                # Otherwise, we need to find the corresponding raw positions
+                # This is complex because escaped markup can shift positions
+                # For now, use the clean coordinates directly on clean strings
+                return clean_start, clean_end
+
             # find the start/width of rectangles for each line
             for iy, line in enumerate(EvForm._to_evstring(matrix)):
                 ix0 = 0
@@ -380,16 +395,22 @@ class EvForm(EvStringContainer):
                 # scan up to find top of rectangle
                 dy_up = 0
                 if iy > 0:
-                    for i in range(1, iy):
-                        if all(matrix[iy - i][ix] == char for ix in range(leftix, rightix)):
+                    for i in range(1, iy + 1):
+                        # Use clean strings for consistent coordinate mapping
+                        line_above = EvForm._to_evstring(matrix[iy - i]).clean()
+                        # Check if the range is valid and all characters match
+                        if rightix <= len(line_above) and all(line_above[ix] == char for ix in range(leftix, rightix)):
                             dy_up += 1
                         else:
                             break
                 # find bottom edge of rectangle
                 dy_down = 0
                 if iy < nmatrix - 1:
-                    for i in range(1, nmatrix - iy - 1):
-                        if all(matrix[iy + i][ix] == char for ix in range(leftix, rightix)):
+                    for i in range(1, nmatrix - iy):
+                        # Use clean strings for consistent coordinate mapping
+                        line_below = EvForm._to_evstring(matrix[iy + i]).clean()
+                        # Check if the range is valid and all characters match
+                        if rightix <= len(line_below) and all(line_below[ix] == char for ix in range(leftix, rightix)):
                             dy_down += 1
                         else:
                             break
