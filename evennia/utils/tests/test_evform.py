@@ -303,7 +303,7 @@ class TestEvFormErrors(TestCase):
 
 |---|  Monty
 
-        """
+"""
 
         self._validate(expected, self._form(form, cells=cell_mapping))
 

@@ -403,13 +403,25 @@ class EvForm(EvStringContainer):
                         # Use clean strings for consistent coordinate mapping
                         line_above = EvForm._to_evstring(matrix[iy - i]).clean()
                         
-                        # More restrictive check: the line should contain the same pattern structure
-                        # not just all formchars. Check if it looks like a "decorative" line
-                        # vs a line that contains meaningful cell content.
+                        # More restrictive check: only expand if the line structure matches
+                        # the original line with the identifier
                         if rightix <= len(line_above):
                             chars_in_range = line_above[leftix:rightix]
-                            # If it's all formchars and matches the width, include it
+                            # If it's all formchars and matches the width, check structure
                             if all(c == char for c in chars_in_range):
+                                # Check if the line structure is similar to the original line
+                                # Original line has content before position leftix
+                                orig_prefix = original_clean[:leftix]
+                                line_prefix = line_above[:leftix]
+                                
+                                # If the original line has significant content before the rectangle
+                                # but this line doesn't (or vice versa), don't expand
+                                orig_has_content = bool(orig_prefix.strip())
+                                line_has_content = bool(line_prefix.strip())
+                                
+                                if orig_has_content != line_has_content:
+                                    break
+                                    
                                 dy_up += 1
                             else:
                                 break
@@ -426,8 +438,20 @@ class EvForm(EvStringContainer):
                         # Same restrictive check for lines below
                         if rightix <= len(line_below):
                             chars_in_range = line_below[leftix:rightix]
-                            # If it's all formchars and matches the width, include it
+                            # If it's all formchars and matches the width, check structure
                             if all(c == char for c in chars_in_range):
+                                # Check if the line structure is similar to the original line
+                                orig_prefix = original_clean[:leftix]
+                                line_prefix = line_below[:leftix]
+                                
+                                # If the original line has significant content before the rectangle
+                                # but this line doesn't (or vice versa), don't expand
+                                orig_has_content = bool(orig_prefix.strip())
+                                line_has_content = bool(line_prefix.strip())
+                                
+                                if orig_has_content != line_has_content:
+                                    break
+                                    
                                 dy_down += 1
                             else:
                                 break
@@ -440,40 +464,12 @@ class EvForm(EvStringContainer):
                 width = rightix - leftix
                 height = abs(iyup - iydown) + 1
 
-                # Determine alignment - only override defaults for specific cases
-                # Default to original behavior
-                cell_align = "l"  # default left alignment
-                cell_valign = "t"  # default top alignment
-                
-                # Only apply custom alignment for specific multi-line rectangle cases
-                if height == 3:  # 3-line rectangle
-                    # Check for test_2757 specific pattern: escaped markup with center identifier
-                    has_escaped_markup = '|' in original_clean
-                    lines_above = dy_up
-                    lines_below = dy_down
-                    is_identifier_in_middle = lines_above > 0 and lines_below > 0
-                    
-                    if has_escaped_markup and is_identifier_in_middle:
-                        # Calculate horizontal alignment based on identifier position
-                        identifier_pos = original_clean.find(key, leftix, rightix)
-                        rect_width = rightix - leftix
-                        relative_pos = (identifier_pos - leftix) / max(1, rect_width - 1)
-                        
-                        if relative_pos < 0.33:
-                            cell_align = "l"
-                        elif relative_pos > 0.67:
-                            cell_align = "r"
-                        else:
-                            cell_align = "c"  # center align for test_2757
-                        
-                        cell_valign = "c"  # center vertical alignment for test_2757
-
-                # store (key, y, x, width, height, align, valign) of rectangle
-                rects.append((key, iyup, leftix, width, height, cell_align, cell_valign))
+                # store (key, y, x, width, height) of rectangle
+                rects.append((key, iyup, leftix, width, height))
             return rects
 
         # Map EvCells into form rectangles
-        for key, y, x, width, height, align, valign in _get_rectangles(formchar):
+        for key, y, x, width, height in _get_rectangles(formchar):
             # get data to populate cell
             data = self.cells_mapping.get(key, "")
             if isinstance(data, EvCell):
@@ -490,19 +486,13 @@ class EvForm(EvStringContainer):
                     **(cell_options | {"align": custom_align, "valign": custom_valign}),
                 )
             else:
-                # generating cell on the fly, use the calculated alignment
-                cell_options_with_align = cell_options.copy()
-                cell_options_with_align["align"] = align
-                cell_options_with_align["valign"] = valign
-                cell = EvCell(data, width=width, height=height, **cell_options_with_align)
+                # generating cell on the fly
+                cell = EvCell(data, width=width, height=height, **cell_options)
 
             mapping[key] = (y, x, width, height, cell)
 
         # Map EvTables into form rectangles
-        for rect_data in _get_rectangles(tablechar):
-            # Handle the fact that rectangles now return 7 elements (including alignment)
-            # but for tables we only need the first 5
-            key, y, x, width, height = rect_data[:5]
+        for key, y, x, width, height in _get_rectangles(tablechar):
             # get EvTable from mapping
             table = self.tables_mapping.get(key, None)
 
