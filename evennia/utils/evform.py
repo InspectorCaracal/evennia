@@ -409,17 +409,19 @@ class EvForm(EvStringContainer):
                             chars_in_range = line_above[leftix:rightix]
                             # If it's all formchars and matches the width, check structure
                             if all(c == char for c in chars_in_range):
-                                # Check if the line structure is similar to the original line
+                                # Check if the line structure is compatible for rectangle expansion
                                 # Original line has content before position leftix
                                 orig_prefix = original_clean[:leftix]
                                 line_prefix = line_above[:leftix]
                                 
-                                # If the original line has significant content before the rectangle
-                                # but this line doesn't (or vice versa), don't expand
+                                # Allow expansion if:
+                                # 1. Both lines have similar content structure, OR
+                                # 2. The line above contains only spaces/formchars (pure rectangle line)
                                 orig_has_content = bool(orig_prefix.strip())
                                 line_has_content = bool(line_prefix.strip())
+                                line_is_pure_rect = not line_has_content or all(c in ' ' + char for c in line_prefix)
                                 
-                                if orig_has_content != line_has_content:
+                                if orig_has_content != line_has_content and not line_is_pure_rect:
                                     break
                                     
                                 dy_up += 1
@@ -440,16 +442,18 @@ class EvForm(EvStringContainer):
                             chars_in_range = line_below[leftix:rightix]
                             # If it's all formchars and matches the width, check structure
                             if all(c == char for c in chars_in_range):
-                                # Check if the line structure is similar to the original line
+                                # Check if the line structure is compatible for rectangle expansion
                                 orig_prefix = original_clean[:leftix]
                                 line_prefix = line_below[:leftix]
                                 
-                                # If the original line has significant content before the rectangle
-                                # but this line doesn't (or vice versa), don't expand
+                                # Allow expansion if:
+                                # 1. Both lines have similar content structure, OR
+                                # 2. The line below contains only spaces/formchars (pure rectangle line)
                                 orig_has_content = bool(orig_prefix.strip())
                                 line_has_content = bool(line_prefix.strip())
+                                line_is_pure_rect = not line_has_content or all(c in ' ' + char for c in line_prefix)
                                 
-                                if orig_has_content != line_has_content:
+                                if orig_has_content != line_has_content and not line_is_pure_rect:
                                     break
                                     
                                 dy_down += 1

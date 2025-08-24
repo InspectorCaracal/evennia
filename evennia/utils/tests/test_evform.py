@@ -300,8 +300,8 @@ class TestEvFormErrors(TestCase):
         cell_mapping = {1: "Monty"}
 
         expected = """
-
-|---|  Monty
+       Monty
+|---|
 
 """
 
