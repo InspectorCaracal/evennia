@@ -39,7 +39,7 @@ _RE_XTERM_BG = re.compile(fr'(?<!\{_MARKUP_CHAR})\{_MARKUP_CHAR}\[([0-5][0-5][0-
 _GREYS = "abcdefghijklmnopqrstuvwxyz"
 _RE_WHITESPACE = re.compile(fr'(?<!\{_MARKUP_CHAR})\{_MARKUP_CHAR}\[?([\/\-\_\>])')
 # ALL evennia markup, except for links and escapes
-_RE_STYLES = re.compile(fr'\{_MARKUP_CHAR}(\[?[rRgGbBcCyYwWxXmMhHu\*n\/\-\_\>\^\{_MARKUP_CHAR}]|#[0-9a-fA-F]{6}|[0-5]{3}|\=[a-z])')
+_RE_STYLES = re.compile(fr'\{_MARKUP_CHAR}(\[?[rRgGbBcCyYwWxXmMhHu\*n\/\-\_\>\^\{_MARKUP_CHAR}]|#[0-9a-fA-F]{{6}}|\[#[0-9a-fA-F]{{6}}|[0-5]{{3}}|\[[0-5]{{3}}|\=[a-z]|\[=[a-z])')
 _RE_MXP = re.compile(fr"(?<!\{_MARKUP_CHAR})\{_MARKUP_CHAR}l([uc])(.*?)\{_MARKUP_CHAR}lt(.*?)\{_MARKUP_CHAR}le", re.DOTALL)
 _RE_LINE = re.compile(r'^(-+|_+)$', re.MULTILINE)
 
@@ -995,25 +995,32 @@ class EvString(str, metaclass=EvStringMeta):
         
         # first, we split out any MXP
         chunks = _RE_MXP.split(temp_string)
-        if remainder := len(chunks) % 4:
-            # take off the remainder items, to make sure we can iterate through the links
-            i = len(chunks)-remainder
-            tail = chunks[i:]
-            chunks = chunks[:i]
+        
+        # Check if we actually found any MXP links
+        if len(chunks) > 1:
+            # We found MXP links, process them
+            if remainder := len(chunks) % 4:
+                # take off the remainder items, to make sure we can iterate through the links
+                i = len(chunks)-remainder
+                tail = chunks[i:]
+                chunks = chunks[:i]
+            else:
+                tail = []
 
-        # now we can be sure there is a multiple of 4, if there are any
-        if chunks:
-            link_chunks = [chunks[i:i+4] for i in range(0, len(chunks), 4)]
-            chunks = []
-            for not_mxp, key, link, text in link_chunks:
-                chunks.append(not_mxp)
-                # since the display text for a link can contain codes, it needs to be an EvString itself
-                # however, it can't contain another clickable length, so it is only ever nested 1 deep
-                text = EvString(text)
-                ev_link = EvLink(text, link_value=link, link_key=key)
-                chunks.append(ev_link)
-        # add the tail back in
-        chunks.extend(tail)
+            # now we can be sure there is a multiple of 4, if there are any
+            if chunks:
+                link_chunks = [chunks[i:i+4] for i in range(0, len(chunks), 4)]
+                chunks = []
+                for not_mxp, key, link, text in link_chunks:
+                    chunks.append(not_mxp)
+                    # since the display text for a link can contain codes, it needs to be an EvString itself
+                    # however, it can't contain another clickable length, so it is only ever nested 1 deep
+                    text = EvString(text)
+                    ev_link = EvLink(text, link_value=link, link_key=key)
+                    chunks.append(ev_link)
+            # add the tail back in
+            chunks.extend(tail)
+        # if len(chunks) == 1, there were no MXP links, so chunks[0] is the original string
 
         # next, iterate through again, but parse the plain str items for codes
         final_chunks = []
