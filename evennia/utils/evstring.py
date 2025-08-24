@@ -711,6 +711,17 @@ class EvString(str, metaclass=EvStringMeta):
             other = EvString(other)
         return self._adder(other, self)
 
+    def __mul__(self, other):
+        if not isinstance(other, int):
+            return NotImplemented
+        if other <= 0:
+            return EvString('')
+        result = EvString(str.__mul__(self, other))
+        return result
+
+    def __rmul__(self, other):
+        return self.__mul__(other)
+
     def _slice(self, slc):
         """
         This function takes a slice() object.
