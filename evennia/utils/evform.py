@@ -355,7 +355,6 @@ class EvForm(EvStringContainer):
         table_options.update(self.options)
 
         nmatrix = len(matrix)
-
         mapping = {}
 
         def _get_rectangles(char):
@@ -364,123 +363,62 @@ class EvForm(EvStringContainer):
             coords = {}
             regex = re.compile(rf"{char}+([^{INVALID_FORMCHARS}{char}]+){char}+")
 
-            # Create a mapping from clean coordinates to raw coordinates for each line
-            def clean_to_raw_coords(line_evstring, clean_start, clean_end):
-                """Convert clean string coordinates to raw string coordinates"""
-                clean_str = line_evstring.clean()
-                raw_str = str(line_evstring)
-                
-                # If clean and raw lengths are the same, no mapping needed
-                if len(clean_str) == len(raw_str):
-                    return clean_start, clean_end
-                
-                # Otherwise, we need to find the corresponding raw positions
-                # This is complex because escaped markup can shift positions
-                # For now, use the clean coordinates directly on clean strings
-                return clean_start, clean_end
-
-            # find the start/width of rectangles for each line
+            # identify rectangle horizontal spans + id per line
             for iy, line in enumerate(EvForm._to_evstring(matrix)):
                 ix0 = 0
+                clean_line = line.clean()
                 while True:
-                    match = regex.search(line.clean(), ix0)
-                    if match:
-                        # get the width of the rectangle directly from the match
-                        coords[match.group(1)] = [iy, match.start(), match.end()]
-                        ix0 = match.end()
-                    else:
+                    match = regex.search(clean_line, ix0)
+                    if not match:
                         break
+                    coords[match.group(1)] = [iy, match.start(), match.end()]
+                    ix0 = match.end()
+
+            def _vertical_extent(iy, leftix, rightix, char, original_clean):
+                """
+                Calculate how far we can extend rectangle vertically up/down.
+                Returns (dy_up, dy_down).
+                """
+                orig_prefix = original_clean[:leftix]
+
+                def scan(direction):
+                    dy = 0
+                    while True:
+                        ny = iy + (dy + 1) * direction
+                        if not (0 <= ny < nmatrix):
+                            break
+                        line_clean = EvForm._to_evstring(matrix[ny]).clean()
+                        if rightix > len(line_clean):
+                            break
+                        segment = line_clean[leftix:rightix]
+                        if not all(c == char for c in segment):
+                            break
+                        line_prefix = line_clean[:leftix]
+                        orig_has_content = bool(orig_prefix.strip())
+                        line_has_content = bool(line_prefix.strip())
+                        line_is_pure_rect = (not line_has_content) or all(c in ' ' + char for c in line_prefix)
+                        # break if content mismatch AND not pure rectangle line
+                        if (orig_has_content != line_has_content) and not line_is_pure_rect:
+                            break
+                        dy += 1
+                    return dy
+
+                return scan(-1), scan(1)
 
             for key, (iy, leftix, rightix) in coords.items():
-                # Store the original line that contained the identifier
-                original_line = EvForm._to_evstring(matrix[iy])
-                original_clean = original_line.clean()
-                
-                # scan up to find top of rectangle
-                dy_up = 0
-                if iy > 0:
-                    for i in range(1, iy + 1):
-                        # Use clean strings for consistent coordinate mapping
-                        line_above = EvForm._to_evstring(matrix[iy - i]).clean()
-                        
-                        # More restrictive check: only expand if the line structure matches
-                        # the original line with the identifier
-                        if rightix <= len(line_above):
-                            chars_in_range = line_above[leftix:rightix]
-                            # If it's all formchars and matches the width, check structure
-                            if all(c == char for c in chars_in_range):
-                                # Check if the line structure is compatible for rectangle expansion
-                                # Original line has content before position leftix
-                                orig_prefix = original_clean[:leftix]
-                                line_prefix = line_above[:leftix]
-                                
-                                # Allow expansion if:
-                                # 1. Both lines have similar content structure, OR
-                                # 2. The line above contains only spaces/formchars (pure rectangle line)
-                                orig_has_content = bool(orig_prefix.strip())
-                                line_has_content = bool(line_prefix.strip())
-                                line_is_pure_rect = not line_has_content or all(c in ' ' + char for c in line_prefix)
-                                
-                                if orig_has_content != line_has_content and not line_is_pure_rect:
-                                    break
-                                    
-                                dy_up += 1
-                            else:
-                                break
-                        else:
-                            break
-                            
-                # find bottom edge of rectangle  
-                dy_down = 0
-                if iy < nmatrix - 1:
-                    for i in range(1, nmatrix - iy):
-                        # Use clean strings for consistent coordinate mapping
-                        line_below = EvForm._to_evstring(matrix[iy + i]).clean()
-                        
-                        # Same restrictive check for lines below
-                        if rightix <= len(line_below):
-                            chars_in_range = line_below[leftix:rightix]
-                            # If it's all formchars and matches the width, check structure
-                            if all(c == char for c in chars_in_range):
-                                # Check if the line structure is compatible for rectangle expansion
-                                orig_prefix = original_clean[:leftix]
-                                line_prefix = line_below[:leftix]
-                                
-                                # Allow expansion if:
-                                # 1. Both lines have similar content structure, OR
-                                # 2. The line below contains only spaces/formchars (pure rectangle line)
-                                orig_has_content = bool(orig_prefix.strip())
-                                line_has_content = bool(line_prefix.strip())
-                                line_is_pure_rect = not line_has_content or all(c in ' ' + char for c in line_prefix)
-                                
-                                if orig_has_content != line_has_content and not line_is_pure_rect:
-                                    break
-                                    
-                                dy_down += 1
-                            else:
-                                break
-                        else:
-                            break
-
-                #  we have our rectangle. Calculate size
+                original_clean = EvForm._to_evstring(matrix[iy]).clean()
+                dy_up, dy_down = _vertical_extent(iy, leftix, rightix, char, original_clean)
                 iyup = iy - dy_up
                 iydown = iy + dy_down
                 width = rightix - leftix
-                height = abs(iyup - iydown) + 1
-
-                # store (key, y, x, width, height) of rectangle
+                height = iydown - iyup + 1
                 rects.append((key, iyup, leftix, width, height))
             return rects
 
         # Map EvCells into form rectangles
         for key, y, x, width, height in _get_rectangles(formchar):
-            # get data to populate cell
             data = self.cells_mapping.get(key, "")
             if isinstance(data, EvCell):
-                # mapping already provides the cell. We need to override some
-                # of the cell's options to make it work in the evform rectangle.
-                # We retain the align/valign since this may be interesting to
-                # play with within the rectangle.
                 cell = data
                 custom_align = cell.align
                 custom_valign = cell.valign
@@ -490,21 +428,16 @@ class EvForm(EvStringContainer):
                     **(cell_options | {"align": custom_align, "valign": custom_valign}),
                 )
             else:
-                # generating cell on the fly
                 cell = EvCell(data, width=width, height=height, **cell_options)
-
             mapping[key] = (y, x, width, height, cell)
 
         # Map EvTables into form rectangles
         for key, y, x, width, height in _get_rectangles(tablechar):
-            # get EvTable from mapping
             table = self.tables_mapping.get(key, None)
-
             if table:
                 table.reformat(width=width, height=height, **table_options)
             else:
                 table = EvTable(width=width, height=height, **table_options)
-
             mapping[key] = (y, x, width, height, table)
 
         return mapping
