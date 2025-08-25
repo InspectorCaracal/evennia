@@ -347,7 +347,6 @@ class TestEvTable(EvenniaTestCase):
         self.assertIn(ANSI_RED, table.to_ansi())
         self.assertIn(ANSI_CYAN, table.to_ansi())
 
-    @skip("Pending refactor into client-side ansi parsing")
     def test_mxp_links(self):
         """
         Testing https://github.com/evennia/evennia/issues/3082
@@ -363,16 +362,16 @@ class TestEvTable(EvenniaTestCase):
 
         # set_trace()
 
-        cell1 = ansi.strip_mxp(str(evtable.EvCell(f"|lcsay This is command 1|ltcommand 1|le")))
+        cell1 = evstring.strip_mxp(str(evtable.EvCell(f"|lcsay This is command 1|ltcommand 1|le")))
         cell2 = str(evtable.EvCell(f"command 1"))
 
         print(f"cell1:------------\n{cell1}")
         print(f"cell2:------------\n{cell2}")
 
-        table1a = ansi.strip_mxp(str(evtable.EvTable(*commands1)))
+        table1a = evstring.strip_mxp(str(evtable.EvTable(*commands1)))
         table1b = str(evtable.EvTable(*commands2))
 
-        table2a = ansi.strip_mxp(str(evtable.EvTable(table=[commands1])))
+        table2a = evstring.strip_mxp(str(evtable.EvTable(table=[commands1])))
         table2b = str(evtable.EvTable(table=[commands2]))
 
         print(f"1a:---------------\n{table1a}")

@@ -172,10 +172,9 @@ class TestEvString(TestCase):
 
         self.assertEqual(expected, result)
 
-    # skipping these two regex tests for now as the regex search is currently operating on the raw string
+    # these two regex tests are failing right now since the regex search is currently operating on the raw string
     # it's not clear how best to return indices that are useful to the evstring from the regular string, or
     # if such a reverse-conversion is necessary
-    @skip
     def test_regex_search(self):
         """
         Test regex-search in ANSIString - the found position should ignore any ansi-markers
@@ -185,12 +184,9 @@ class TestEvString(TestCase):
         self.assertTrue(match)
         self.assertEqual(match.span(), (3, 7))
 
-    @skip
     def test_regex_replace(self):
         """
-        Inserting text into an ansistring at an index position should ignore
-        the ansi markers but not remove them!
-
+        Inserting text into an ansistring at an index position should ignore the ansi markers but not remove them!
         """
         string = EvString("A |rTest|n string")
         match = re.search(r"Test", string)

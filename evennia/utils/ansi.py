@@ -115,7 +115,7 @@ ANSI_TAB = "\t"
 ANSI_SPACE = " "
 
 # Escapes
-ANSI_ESCAPES = ("{{", "\\\\", "\|\|")
+ANSI_ESCAPES = ("{{", "\\\\", "\\|\\|")
 
 _COLOR_NO_DEFAULT = settings.COLOR_NO_DEFAULT
 

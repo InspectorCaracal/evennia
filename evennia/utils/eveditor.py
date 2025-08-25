@@ -1104,7 +1104,7 @@ class EvEditor:
         )
         if linenums:
             main = EvString("\n").join(
-                EvString(f"|b{iline + 1 + offset:02}|||n {escape_markup(line)}")
+                EvString(f"|b{iline + 1 + offset:02}|n{escape_markup(line)}")
                 for iline, line in enumerate(lines)
             )
         else:

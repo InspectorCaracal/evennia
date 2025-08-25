@@ -355,7 +355,6 @@ class EvForm(EvStringContainer):
         table_options.update(self.options)
 
         nmatrix = len(matrix)
-
         mapping = {}
 
         def _get_rectangles(char):
@@ -364,55 +363,62 @@ class EvForm(EvStringContainer):
             coords = {}
             regex = re.compile(rf"{char}+([^{INVALID_FORMCHARS}{char}]+){char}+")
 
-            # find the start/width of rectangles for each line
+            # identify rectangle horizontal spans + id per line
             for iy, line in enumerate(EvForm._to_evstring(matrix)):
                 ix0 = 0
+                clean_line = line.clean()
                 while True:
-                    match = regex.search(line.clean(), ix0)
-                    if match:
-                        # get the width of the rectangle directly from the match
-                        coords[match.group(1)] = [iy, match.start(), match.end()]
-                        ix0 = match.end()
-                    else:
+                    match = regex.search(clean_line, ix0)
+                    if not match:
                         break
+                    coords[match.group(1)] = [iy, match.start(), match.end()]
+                    ix0 = match.end()
+
+            def _vertical_extent(iy, leftix, rightix, char, original_clean):
+                """
+                Calculate how far we can extend rectangle vertically up/down.
+                Returns (dy_up, dy_down).
+                """
+                orig_prefix = original_clean[:leftix]
+
+                def scan(direction):
+                    dy = 0
+                    while True:
+                        ny = iy + (dy + 1) * direction
+                        if not (0 <= ny < nmatrix):
+                            break
+                        line_clean = EvForm._to_evstring(matrix[ny]).clean()
+                        if rightix > len(line_clean):
+                            break
+                        segment = line_clean[leftix:rightix]
+                        if not all(c == char for c in segment):
+                            break
+                        line_prefix = line_clean[:leftix]
+                        orig_has_content = bool(orig_prefix.strip())
+                        line_has_content = bool(line_prefix.strip())
+                        line_is_pure_rect = (not line_has_content) or all(c in ' ' + char for c in line_prefix)
+                        # break if content mismatch AND not pure rectangle line
+                        if (orig_has_content != line_has_content) and not line_is_pure_rect:
+                            break
+                        dy += 1
+                    return dy
+
+                return scan(-1), scan(1)
 
             for key, (iy, leftix, rightix) in coords.items():
-                # scan up to find top of rectangle
-                dy_up = 0
-                if iy > 0:
-                    for i in range(1, iy):
-                        if all(matrix[iy - i][ix] == char for ix in range(leftix, rightix)):
-                            dy_up += 1
-                        else:
-                            break
-                # find bottom edge of rectangle
-                dy_down = 0
-                if iy < nmatrix - 1:
-                    for i in range(1, nmatrix - iy - 1):
-                        if all(matrix[iy + i][ix] == char for ix in range(leftix, rightix)):
-                            dy_down += 1
-                        else:
-                            break
-
-                #  we have our rectangle. Calculate size
+                original_clean = EvForm._to_evstring(matrix[iy]).clean()
+                dy_up, dy_down = _vertical_extent(iy, leftix, rightix, char, original_clean)
                 iyup = iy - dy_up
                 iydown = iy + dy_down
                 width = rightix - leftix
-                height = abs(iyup - iydown) + 1
-
-                # store (key, y, x, width, height) of rectangle
+                height = iydown - iyup + 1
                 rects.append((key, iyup, leftix, width, height))
             return rects
 
         # Map EvCells into form rectangles
         for key, y, x, width, height in _get_rectangles(formchar):
-            # get data to populate cell
             data = self.cells_mapping.get(key, "")
             if isinstance(data, EvCell):
-                # mapping already provides the cell. We need to override some
-                # of the cell's options to make it work in the evform rectangle.
-                # We retain the align/valign since this may be interesting to
-                # play with within the rectangle.
                 cell = data
                 custom_align = cell.align
                 custom_valign = cell.valign
@@ -422,21 +428,16 @@ class EvForm(EvStringContainer):
                     **(cell_options | {"align": custom_align, "valign": custom_valign}),
                 )
             else:
-                # generating cell on the fly
                 cell = EvCell(data, width=width, height=height, **cell_options)
-
             mapping[key] = (y, x, width, height, cell)
 
         # Map EvTables into form rectangles
         for key, y, x, width, height in _get_rectangles(tablechar):
-            # get EvTable from mapping
             table = self.tables_mapping.get(key, None)
-
             if table:
                 table.reformat(width=width, height=height, **table_options)
             else:
                 table = EvTable(width=width, height=height, **table_options)
-
             mapping[key] = (y, x, width, height, table)
 
         return mapping

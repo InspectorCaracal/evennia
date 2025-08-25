@@ -300,10 +300,10 @@ class TestEvFormErrors(TestCase):
         cell_mapping = {1: "Monty"}
 
         expected = """
+       Monty
+|---|
 
-|---|  Monty
-
-        """
+"""
 
         self._validate(expected, self._form(form, cells=cell_mapping))
 
