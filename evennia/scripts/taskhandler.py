@@ -494,7 +494,10 @@ class TaskHandler:
         if task_id in self.tasks:
             # if the task has not been run, cancel it
             self.cancel(task_id)
-            del self.tasks[task_id]  # delete the task from the tasks dictionary
+            # unset the task ID on the task to avoid stale references
+            self.tasks[task_id].task_id = None
+            # delete the task from the tasks dictionary
+            del self.tasks[task_id]
         # remove the task from the persistent dictionary and ServerConfig
         if task_id in self.to_save:
             del self.to_save[task_id]
@@ -520,6 +523,8 @@ class TaskHandler:
             for task_id in self.tasks.keys():
                 if cancel:
                     self.cancel(task_id)
+                # unset the task ID on the task to avoid stale references
+                self.tasks[task_id].task_id = None
             self.tasks = {}
         if self.to_save:
             self.to_save = {}
